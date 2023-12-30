@@ -1,7 +1,7 @@
 package io.woori.account.wooriaccount.repository.jpa;
 
 import io.woori.account.wooriaccount.domain.entity.Account;
-import io.woori.account.wooriaccount.repository.CommonAccountRepository;
+import io.woori.account.wooriaccount.repository.common.CommonAccountRepository;
 import org.springframework.data.repository.Repository;
 
 /* JpaRepository, CrudRepository 대신 그냥 Repository를 상속 받아 사용합니다.
