@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.12'
     id 'io.spring.dependency-management' version '1.1.4'
+
 }
 
 group = 'io.woori.account'
@@ -22,14 +23,35 @@ repositories {
 }
 
 dependencies {
+    //spring data jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //querydsl 설정 추가
+    // QueryDSL Implementation
+    implementation 'com.querydsl:querydsl-jpa'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
+
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.named('test') {
+test{
     useJUnitPlatform()
 }
+
+def querydslDir = "src/main/generated"
+sourceSets {
+    main.java.srcDirs += [ querydslDir ]
+}
+
+clean {
+    delete file('src/main/generated')
+}
+
