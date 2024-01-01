@@ -19,7 +19,23 @@ public class QCustomer extends EntityPathBase<Customer> {
 
     public static final QCustomer customer = new QCustomer("customer");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdTime = _super.createdTime;
+
+    public final StringPath customerEmail = createString("customerEmail");
+
+    public final NumberPath<Long> customerId = createNumber("customerId", Long.class);
+
+    public final StringPath customerName = createString("customerName");
+
+    public final StringPath customerPhone = createString("customerPhone");
+
+    public final StringPath customerPwd = createString("customerPwd");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedTime = _super.lastModifiedTime;
 
     public QCustomer(String variable) {
         super(Customer.class, forVariable(variable));

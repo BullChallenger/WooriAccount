@@ -2,7 +2,7 @@ package io.woori.account.wooriaccount.repository.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.woori.account.wooriaccount.domain.entity.Account;
-import io.woori.account.wooriaccount.domain.entity.QAccount;
+//import io.woori.account.wooriaccount.domain.entity.QAccount;
 import io.woori.account.wooriaccount.repository.querydsl.inter.QueryAccountRepository;
 import io.woori.account.wooriaccount.repository.querydsl.inter.QueryCustomerRepository;
 import lombok.RequiredArgsConstructor;
