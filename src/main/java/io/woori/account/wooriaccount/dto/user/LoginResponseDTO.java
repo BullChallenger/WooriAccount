@@ -2,10 +2,8 @@ package io.woori.account.wooriaccount.dto.user;
 
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Getter
-@Builder
 public class LoginResponseDTO {
     private Long customerId;  //고객 ID
     private String customerName;  // 고객 이름
