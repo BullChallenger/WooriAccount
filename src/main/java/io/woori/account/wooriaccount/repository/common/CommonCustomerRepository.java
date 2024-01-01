@@ -7,9 +7,6 @@ public interface CommonCustomerRepository {
 
     Customer findById(Long id);
     void deleteById(Long id);
-    Customer findByCustomerEmail(String customerEmail);
-
-    void save(Customer customer);
 
 
 }

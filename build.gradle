@@ -39,10 +39,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    //Bcrypt 암호화 의존성
-    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
+    //testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test{
