@@ -14,13 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final EncryptHelper encryptHelper;
-
-    @Transactional
+    
     public String signUp(SignUpRequestDTO dto) {
         //이메일 중복여부 체크
         if(customerRepository.findByCustomerEmail(dto.getCustomerEmail()) != null) {
