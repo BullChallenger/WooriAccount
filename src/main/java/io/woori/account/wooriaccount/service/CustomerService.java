@@ -1,6 +1,8 @@
 package io.woori.account.wooriaccount.service;
 
 import io.woori.account.wooriaccount.domain.entity.Customer;
+import io.woori.account.wooriaccount.dto.user.LoginRequestDTO;
+import io.woori.account.wooriaccount.dto.user.LoginResponseDTO;
 import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
 import io.woori.account.wooriaccount.encryption.EncryptHelper;
 import io.woori.account.wooriaccount.exception.CustomException;
@@ -32,6 +34,28 @@ public class CustomerService {
         customerRepository.save(customer);
 
         return "success";
+    }
+
+    public LoginResponseDTO login(LoginRequestDTO dto) {
+        //해당하는 회원이 있는지 체크
+        Customer find = customerRepository.findByCustomerEmail(dto.getEmail());
+
+        if(find == null){
+            throw new CustomException(ErrorCode.INVALID_Customer_Login);
+        }
+
+        String encrypted = find.getCustomerPwd(); // pwd 암호화되어 저장되어 있음
+        boolean result = encryptHelper.isMatch(dto.getPwd(), encrypted);
+
+        //비밀번호 일치여부 체크
+        if(!result){
+            throw new CustomException(ErrorCode.INVALID_Customer_Password);
+        }
+
+        LoginResponseDTO loginResponseDTO =
+                new LoginResponseDTO(find.getCustomerId(),find.getCustomerName(),find.getCustomerPhone(),find.getCustomerEmail());
+
+        return loginResponseDTO;
     }
 
 
