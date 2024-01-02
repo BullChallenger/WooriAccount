@@ -13,14 +13,14 @@ import io.woori.account.wooriaccount.dto.user.LoginRequestDTO;
 import io.woori.account.wooriaccount.dto.user.LoginResponseDTO;
 import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
 import io.woori.account.wooriaccount.exception.CustomException;
-import io.woori.account.wooriaccount.service.CustomerService;
+import io.woori.account.wooriaccount.service.CustomerServiceImpl;
 
 @SpringBootTest
 @Transactional
 public class UserTest {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerServiceImpl customerServiceImpl;
 
     @Test
     @Rollback
@@ -28,7 +28,7 @@ public class UserTest {
         //given
         SignUpRequestDTO dto = new SignUpRequestDTO("봉", "010-1234-1234", "abc@naver.com", "1234");
         //when
-        String result = customerService.signUp(dto);
+        String result = customerServiceImpl.signUp(dto);
         //then
         assertEquals("success", result);
     }
@@ -37,10 +37,10 @@ public class UserTest {
     @Rollback
     public void 로그인(){
         SignUpRequestDTO dto = new SignUpRequestDTO("봉", "010-1234-1234", "abc@naver.com", "1234");
-        customerService.signUp(dto);
+        customerServiceImpl.signUp(dto);
 
         LoginRequestDTO loginRequestDTO = new LoginRequestDTO("abc@naver.com", "1234");
-        LoginResponseDTO loginResponseDTO = customerService.login(loginRequestDTO);
+        LoginResponseDTO loginResponseDTO = customerServiceImpl.login(loginRequestDTO);
         System.out.println(loginResponseDTO.getCustomerEmail());
     }
 
@@ -49,12 +49,12 @@ public class UserTest {
     public void 로그인시도_오류() throws Exception{
         //given
         SignUpRequestDTO dto = new SignUpRequestDTO("봉", "010-1234-1234", "abc@naver.com", "1234");
-        customerService.signUp(dto);
+        customerServiceImpl.signUp(dto);
 
         // when
         CustomException exception = assertThrows(CustomException.class, () -> {
             LoginRequestDTO loginRequestDTO = new LoginRequestDTO("def@naver", "1234"); // 잘못된 이메일로 로그인 시도
-            customerService.login(loginRequestDTO);
+            customerServiceImpl.login(loginRequestDTO);
         });
 
         // then
@@ -69,8 +69,8 @@ public class UserTest {
 
         // when
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            customerService.signUp(dto1);
-            customerService.signUp(dto2);
+            customerServiceImpl.signUp(dto1);
+            customerServiceImpl.signUp(dto2);
         });
 
         // then

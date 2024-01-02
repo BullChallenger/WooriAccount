@@ -8,6 +8,7 @@ import io.woori.account.wooriaccount.encryption.EncryptHelper;
 import io.woori.account.wooriaccount.exception.CustomException;
 import io.woori.account.wooriaccount.exception.ErrorCode;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
+import io.woori.account.wooriaccount.service.inter.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CustomerService {
+public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final EncryptHelper encryptHelper;
-    
+
+    @Override
     public String signUp(SignUpRequestDTO dto) {
         //이메일 중복여부 체크
         customerRepository.findByCustomerEmail(dto.getCustomerEmail()).orElseThrow(
@@ -35,6 +37,7 @@ public class CustomerService {
         return "success";
     }
 
+    @Override
     public LoginResponseDTO login(LoginRequestDTO dto) {
         //해당하는 회원이 있는지 체크
         Customer find = customerRepository.findByCustomerEmail(dto.getEmail()).orElseThrow(
