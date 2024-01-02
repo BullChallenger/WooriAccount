@@ -2,6 +2,7 @@ package io.woori.account.wooriaccount.service.inter;
 
 import io.woori.account.wooriaccount.domain.entity.Account;
 import io.woori.account.wooriaccount.dto.account.AccountDTO;
+import io.woori.account.wooriaccount.dto.account.AccountRemittanceDTO;
 
 import java.math.BigDecimal;
 
@@ -20,12 +21,10 @@ public interface AccountService {
 	
 	/* 송금(이체)에 사용하는 메서드입니다.
 	 * 
-	 * @param accountNumber 송금을 하는 주체의 계좌번호
-	 * @param targetAccountNumber 송금을 받는 주체의 계좌번호
-	 * @param amount 송금 금액
+	 * @param AccountRemittanceDTO
 	 * @return return type 수정 
 	 * */
-	AccountDTO accountRemittance(String accountNumber, String targetAccountNumber, BigDecimal amount);
+	AccountDTO accountRemittance(AccountRemittanceDTO dto);
 
 
 	/* 새로운 객체를 생성하는 메서드입니다.
