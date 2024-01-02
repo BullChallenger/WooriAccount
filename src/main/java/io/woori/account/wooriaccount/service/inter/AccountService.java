@@ -1,4 +1,4 @@
-package io.woori.account.wooriaccount.service;
+package io.woori.account.wooriaccount.service.inter;
 
 import io.woori.account.wooriaccount.domain.entity.Account;
 
