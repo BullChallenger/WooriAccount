@@ -65,6 +65,7 @@ public class AccountServiceImpl implements AccountService{
 
 		}
 		Account account = Account.createAccount(String.valueOf(randomNumber), accountBalance, accountLimit, customer);
+		accountRepository.save(account);
 
 		return AccountDTO.builder()
 				.accountId(account.getAccountId())
