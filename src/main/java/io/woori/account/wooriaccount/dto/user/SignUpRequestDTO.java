@@ -2,10 +2,12 @@ package io.woori.account.wooriaccount.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class SignUpRequestDTO {
     private String customerName;  // 고객 이름
