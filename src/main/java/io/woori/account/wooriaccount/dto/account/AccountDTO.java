@@ -25,7 +25,7 @@ public class AccountDTO {
     private BigDecimal accountLimit; // 계좌 한도
 
 
-    private Customer customer; // 계좌 주인
+    private String customerName; // 계좌 주인
 
     private List<AbstractTxHistory> withdrawTxHistories = new ArrayList<>(); // 출금 기록
 
@@ -44,7 +44,7 @@ public class AccountDTO {
     			.accountId(account.getAccountId())
     			.accountNumber(account.getAccountNumber())
     			.accountLimit(account.getAccountLimit())
-    			.customer(account.getCustomer())
+    			.customerName(account.getCustomer().getCustomerName())
     			.withdrawTxHistories(account.getWithdrawTxHistories())
     			.depositTxHistories(account.getDepositTxHistories())
     			.build();

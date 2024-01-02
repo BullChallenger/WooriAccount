@@ -37,6 +37,8 @@ public class AccountServiceImpl implements AccountService{
 		Account account = optionalAccount.orElseThrow(() ->
 				new CustomException(ErrorCode.ACCOUNT_NOT_FOUND)
 		);
+
+
 		return AccountDTO.fromEntity(account);
 	}
 
@@ -104,7 +106,7 @@ public class AccountServiceImpl implements AccountService{
 				.accountId(account.getAccountId())
 				.accountNumber(account.getAccountNumber())
 				.accountBalance(account.getAccountLimit())
-				.customer(customer)
+				.customerName(customer.getCustomerName())
 				.build();
 
 	}
