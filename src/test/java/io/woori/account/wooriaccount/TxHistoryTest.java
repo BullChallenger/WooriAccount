@@ -6,7 +6,7 @@ import io.woori.account.wooriaccount.domain.entity.Customer;
 import io.woori.account.wooriaccount.domain.entity.DepositTxHistory;
 import io.woori.account.wooriaccount.repository.jpa.AccountRepository;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
-import io.woori.account.wooriaccount.repository.jpa.DepositTxHistoryRepository;
+import io.woori.account.wooriaccount.repository.jpa.TxHistoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class TxHistoryTest {
     AccountRepository accountRepository;
 
     @Autowired
-    DepositTxHistoryRepository depositTxHistoryRepository;
+    TxHistoryRepository depositTxHistoryRepository;
 
     @Autowired
     EntityManager entityManager;
