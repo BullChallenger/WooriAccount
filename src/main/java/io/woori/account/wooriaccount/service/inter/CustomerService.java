@@ -14,7 +14,4 @@ public interface CustomerService {
     String delete(Long id);
 
     LoginResponseDTO login(LoginRequestDTO dto);
-
-
-
 }
