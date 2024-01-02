@@ -1,7 +1,11 @@
 package io.woori.account.wooriaccount.service;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import io.woori.account.wooriaccount.domain.entity.Account;
+import io.woori.account.wooriaccount.domain.entity.Customer;
 import io.woori.account.wooriaccount.dto.account.AccountDTO;
 import io.woori.account.wooriaccount.repository.jpa.AccountRepository;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
@@ -33,9 +37,14 @@ public class AccountServiceImpl implements AccountService{
 		return null;
 	}
 
+	
+	
 	@Override
-	public AccountDTO accontCreate() {
-		// TODO Auto-generated method stub
+	public AccountDTO accontCreate(Long customerId) {
+		customerRepository.findById(customerId).orElseThrow()
+		
+		
+		
 		return null;
 	}
 
