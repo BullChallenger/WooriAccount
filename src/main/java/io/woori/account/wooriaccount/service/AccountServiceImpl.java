@@ -39,8 +39,34 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public AccountDTO accountRemittance(String accountNumber, String targetAccountNumber) {
-		// TODO Auto-generated method stub
+	@Transactional
+	public AccountDTO accountRemittance(String accountNumber, String targetAccountNumber, BigDecimal amount) {
+		/*
+		// 출금 계좌 조회
+		Account sourceAccount = accountRepository.findByAccountNumber(accountNumber)
+				.orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+		// 입금 계좌 조회
+		Account targetAccount = accountRepository.findByAccountNumber(targetAccountNumber)
+				.orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+		// 잔액 확인
+		if (sourceAccount.getAccountBalance().compareTo(amount) < 0) {
+			throw new CustomException(ErrorCode.INSUFFICIENT_FUNDS);
+		}
+		// 출금 계좌에서 금액 차감
+		sourceAccount.setAccountBalance(sourceAccount.getAccountBalance().subtract(amount));
+		accountRepository.save(sourceAccount);
+
+		// 입금 계좌에 금액 추가
+		targetAccount.setAccountBalance(targetAccount.getAccountBalance().add(amount));
+		accountRepository.save(targetAccount);
+
+		// 거래 내역 기록
+		createTransactionHistory(sourceAccount, targetAccount, amount);
+
+		// 송금 후 출금 계좌 상태를 AccountDTO로 변환하여 반환
+		return convertToAccountDTO(sourceAccount);*/
 		return null;
 	}
 
