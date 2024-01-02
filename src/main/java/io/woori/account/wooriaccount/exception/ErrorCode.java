@@ -28,9 +28,9 @@ public enum ErrorCode implements EnumModel{
     INSUFFICIENT_FUNDS(500, "A002", "잔액이 부족합니다."),
     INVALID_TRANSACTION(500, "A003", "유효하지 않은 거래입니다."),
 	
-        // 404 not fount Exception
-        NOT_FOUND_CUSTOMER(404, "N001", "존재하지 않는 회원입니다."),
-        NOT_FOUND_ACCOUNT(404, "N002", "존재하지 않는 계좌입니다.");
+    // 404 not fount Exception
+    NOT_FOUND_CUSTOMER(404, "N001", "존재하지 않는 회원입니다."),
+    NOT_FOUND_ACCOUNT(404, "N002", "존재하지 않는 계좌입니다.");
 	
     private int status;
     private String code;
