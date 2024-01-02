@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/api/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
