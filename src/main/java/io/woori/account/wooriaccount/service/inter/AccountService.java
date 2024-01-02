@@ -22,9 +22,10 @@ public interface AccountService {
 	 * 
 	 * @param accountNumber 송금을 하는 주체의 계좌번호
 	 * @param targetAccountNumber 송금을 받는 주체의 계좌번호
+	 * @param amount 송금 금액
 	 * @return return type 수정 
 	 * */
-	AccountDTO accountRemittance(String accountNumber, String targetAccountNumber);
+	AccountDTO accountRemittance(String accountNumber, String targetAccountNumber, BigDecimal amount);
 
 
 	/* 새로운 객체를 생성하는 메서드입니다.
