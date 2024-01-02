@@ -2,15 +2,20 @@ package io.woori.account.wooriaccount.domain.entity;
 
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Getter
+@DynamicInsert
+@DynamicUpdate
+@Where(clause = "IS_DELETED = false")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
