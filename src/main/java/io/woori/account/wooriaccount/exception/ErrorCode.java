@@ -14,8 +14,13 @@ public enum ErrorCode implements EnumModel{
     INVALID_Customer_Password(401, "C002", "비밀번호가 일치하지 않습니다."),
 
     //중복여부 체크
-    DUPLICATE_CUSTOMER(400,"D001","중복된 이메일입니다.");
+    DUPLICATE_CUSTOMER(400,"D001","중복된 이메일입니다."),
 
+	
+	// 404 not fount Exception
+	NOT_FOUND_CUSTOMER(404, "N001", "존재하지 않는 회원입니다."),
+	NOT_FOUND_ACCOUNT(404, "N002", "존재하지 않는 계좌입니다.");
+	
     private int status;
     private String code;
     private String message;
