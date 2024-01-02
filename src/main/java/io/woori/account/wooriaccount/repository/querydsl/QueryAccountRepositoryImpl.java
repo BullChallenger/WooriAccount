@@ -17,6 +17,13 @@ public class QueryAccountRepositoryImpl implements QueryAccountRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+	@Override
+	public Account queryFindByAccountNumber(String accountNumber) {
+		
+		
+		return null;}
+	
+
 //    @Override
 //    public Account queryFindById(Long id) {
 //        QAccount account = QAccount.account;
@@ -26,4 +33,7 @@ public class QueryAccountRepositoryImpl implements QueryAccountRepository {
 //                .where(account.id.eq(id))
 //                .fetchOne();
 //    }
+    
+    
+    
 }

@@ -2,13 +2,11 @@ package io.woori.account.wooriaccount.domain.entity;
 
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -43,6 +41,7 @@ public class Account extends BaseTimeEntity{
     @JoinColumn(name = "customer_id")
     private Customer customer; // 계좌 주인
 
+
     @OneToMany(mappedBy = "sender")
     private List<AbstractTxHistory> withdrawTxHistories = new ArrayList<>(); // 출금 기록
 
@@ -56,4 +55,10 @@ public class Account extends BaseTimeEntity{
         this.customer = customer;
     }
 
+
+    
+    @OneToMany(mappedBy = "account")
+    private List<TransactionHistory> transactionHistories; // 거래내역들
+    
+    
 }

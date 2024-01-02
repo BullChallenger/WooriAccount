@@ -1,18 +1,19 @@
 package io.woori.account.wooriaccount;
 
-import io.woori.account.wooriaccount.dto.user.LoginRequestDTO;
-import io.woori.account.wooriaccount.dto.user.LoginResponseDTO;
-import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
-import io.woori.account.wooriaccount.exception.CustomException;
-import io.woori.account.wooriaccount.service.CustomerService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import io.woori.account.wooriaccount.dto.user.LoginRequestDTO;
+import io.woori.account.wooriaccount.dto.user.LoginResponseDTO;
+import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
+import io.woori.account.wooriaccount.exception.CustomException;
+import io.woori.account.wooriaccount.service.CustomerService;
 
 @SpringBootTest
 @Transactional

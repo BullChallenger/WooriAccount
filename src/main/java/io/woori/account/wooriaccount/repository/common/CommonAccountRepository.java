@@ -8,4 +8,7 @@ public interface CommonAccountRepository {
     void deleteById(Long id);
     Account save(Account account);
 
+    Account findByAccountNumber(String accountNnumber);
+
+
 }

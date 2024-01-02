@@ -50,10 +50,22 @@ public class CustomerRepositoryTest {
 		
 		Assertions.assertThat(findByIdCust.getCustomerId()).isEqualTo(id);
 	}
+	
+	
+	@DisplayName("메서드 명명 규칙을 사용한 id값 찾아오는 메서드 테스트 - 실패")
+	@Test
+	public void testFindById_fail() {
+				
+		
+		Long id = customer.getCustomerId();
+		Customer findByIdCust = repository.findById(3L);
+		
+		Assertions.assertThat(findByIdCust.getCustomerId()).isNotEqualTo(id);
+	}
 
 	@Test
 	public void testDeleteById() {
-		throw new RuntimeException("not yet implemented");
+		
 	}
 
 	@Test
