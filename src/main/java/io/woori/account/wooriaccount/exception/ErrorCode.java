@@ -22,10 +22,15 @@ public enum ErrorCode implements EnumModel{
 
     // 해당 거래내역이 존재하지 않을 때 발생하는 예외
     NOT_FOUND_TX(301, "T001", "존재하지 않는 거래내역입니다."),
+
+    //계좌 관련 예외
+    ACCOUNT_NOT_FOUND(404, "A001", "계좌를 찾을 수 없습니다."),
+    INSUFFICIENT_FUNDS(400, "A002", "잔액이 부족합니다."),
+    INVALID_TRANSACTION(400, "A003", "유효하지 않은 거래입니다.");
 	
-	// 404 not fount Exception
-	NOT_FOUND_CUSTOMER(404, "N001", "존재하지 않는 회원입니다."),
-	NOT_FOUND_ACCOUNT(404, "N002", "존재하지 않는 계좌입니다.");
+    // 404 not fount Exception
+    NOT_FOUND_CUSTOMER(404, "N001", "존재하지 않는 회원입니다."),
+    NOT_FOUND_ACCOUNT(404, "N002", "존재하지 않는 계좌입니다.");
 	
     private int status;
     private String code;
