@@ -1,14 +1,12 @@
 package io.woori.account.wooriaccount.service;
 
 import io.woori.account.wooriaccount.domain.entity.WithdrawTxHistory;
-import io.woori.account.wooriaccount.dto.tx.AbstractFindAllTxResponseDTO;
 import io.woori.account.wooriaccount.dto.tx.SaveTxRequestDTO;
 import io.woori.account.wooriaccount.exception.ErrorCode;
 import io.woori.account.wooriaccount.exception.TxHistoryException;
 import io.woori.account.wooriaccount.repository.jpa.TxHistoryRepository;
 import io.woori.account.wooriaccount.service.inter.TxHistoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

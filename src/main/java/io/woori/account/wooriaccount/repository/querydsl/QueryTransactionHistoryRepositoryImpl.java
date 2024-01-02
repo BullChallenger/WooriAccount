@@ -3,7 +3,6 @@ package io.woori.account.wooriaccount.repository.querydsl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.woori.account.wooriaccount.dto.tx.AbstractFindAllTxResponseDTO;
 import io.woori.account.wooriaccount.dto.tx.FindAllDepositTxResponseDTO;
 import io.woori.account.wooriaccount.dto.tx.QFindAllDepositTxResponseDTO;
 import io.woori.account.wooriaccount.repository.querydsl.inter.QueryTransactionHistoryRepository;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static io.woori.account.wooriaccount.domain.entity.QAbstractTxHistory.abstractTxHistory;
 import static io.woori.account.wooriaccount.domain.entity.QCustomer.customer;
 import static io.woori.account.wooriaccount.domain.entity.QDepositTxHistory.depositTxHistory;
 

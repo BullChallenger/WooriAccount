@@ -1,14 +1,13 @@
 package io.woori.account.wooriaccount.service;
 
 import io.woori.account.wooriaccount.domain.entity.DepositTxHistory;
-import io.woori.account.wooriaccount.dto.tx.AbstractFindAllTxResponseDTO;
 import io.woori.account.wooriaccount.dto.tx.FindAllDepositTxResponseDTO;
 import io.woori.account.wooriaccount.dto.tx.SaveTxRequestDTO;
 import io.woori.account.wooriaccount.exception.ErrorCode;
 import io.woori.account.wooriaccount.exception.TxHistoryException;
+import io.woori.account.wooriaccount.repository.jpa.AccountRepository;
 import io.woori.account.wooriaccount.repository.jpa.TxHistoryRepository;
 import io.woori.account.wooriaccount.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
-import io.woori.account.wooriaccount.repository.querydsl.inter.QueryTransactionHistoryRepository;
 import io.woori.account.wooriaccount.service.inter.TxHistoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,15 +25,18 @@ import java.util.List;
 public class DepositTxServiceImpl implements TxHistoryService<DepositTxHistory, Long> {
 
     private final TxHistoryRepository<DepositTxHistory> txHistoryRepository;
+    private final AccountRepository accountRepository;
     private final QueryTransactionHistoryRepositoryImpl queryTransactionHistoryRepository;
 
     @Override
     public DepositTxHistory save(SaveTxRequestDTO dto) {
-        return DepositTxHistory.of(dto.getSender(),
+        return DepositTxHistory.of(
+                dto.getSender(),
                 dto.getReceiver(),
                 dto.getAmount(),
                 dto.getBalanceAfterTx(),
-                dto.getDescription());
+                dto.getDescription()
+        );
     }
 
     @Override
