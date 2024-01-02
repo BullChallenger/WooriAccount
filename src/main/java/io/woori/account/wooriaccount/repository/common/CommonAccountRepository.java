@@ -10,7 +10,7 @@ public interface CommonAccountRepository {
     void deleteById(Long id);
     Account save(Account account);
 
-    Optional<Account> findByAccountNumber(String accountNnumber);
+    Optional<Account> findByAccountNumber(String accountNumber);
 
 
 }
