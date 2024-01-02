@@ -12,11 +12,6 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public void accountRemittance(String accountNumber, String targetAccountNumber) {
-		
-	}
-
-	@Override
 	public void accountWithdraw(String accountNumber, String targetAccountNumber) {
 		// TODO Auto-generated method stub
 		
@@ -24,6 +19,12 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public void accontCreate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void accountDeposit(String accountNumber, String targetAccountNumber) {
 		// TODO Auto-generated method stub
 		
 	}

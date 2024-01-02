@@ -21,7 +21,7 @@ public interface AccountService {
 	 * @param targetAccountNumber 송금을 받는 주체의 계좌번호
 	 * @return return type 수정 
 	 * */
-	void accountRemittance(String accountNumber, String targetAccountNumber);
+	void accountDeposit(String accountNumber, String targetAccountNumber);
 
 	/* 이체(출금)에 사용하는 메서드입니다.
 	 * 
