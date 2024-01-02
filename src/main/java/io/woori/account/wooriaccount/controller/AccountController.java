@@ -2,6 +2,7 @@ package io.woori.account.wooriaccount.controller;
 
 import io.woori.account.wooriaccount.dto.account.AccountDTO;
 import io.woori.account.wooriaccount.dto.account.AccountRemittanceDTO;
+import io.woori.account.wooriaccount.service.AccountServiceImpl;
 import io.woori.account.wooriaccount.service.inter.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
 
-    private final AccountService accountService;
+    private final AccountServiceImpl accountService;
 
 
     @PostMapping("/create/{customerId}")

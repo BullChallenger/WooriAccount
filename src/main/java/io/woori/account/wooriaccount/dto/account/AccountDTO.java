@@ -9,9 +9,10 @@ import io.woori.account.wooriaccount.domain.entity.Account;
 import io.woori.account.wooriaccount.domain.entity.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,12 +25,7 @@ public class AccountDTO {
 
     private BigDecimal accountLimit; // 계좌 한도
 
-
     private String customerName; // 계좌 주인
-
-    private List<AbstractTxHistory> withdrawTxHistories = new ArrayList<>(); // 출금 기록
-
-    private List<AbstractTxHistory> depositTxHistories = new ArrayList<>(); // 입금 기록
     
     
     /* Entity -> DTO로 변환할 때 사용하는 메서드입니다.
@@ -45,8 +41,6 @@ public class AccountDTO {
     			.accountNumber(account.getAccountNumber())
     			.accountLimit(account.getAccountLimit())
     			.customerName(account.getCustomer().getCustomerName())
-    			.withdrawTxHistories(account.getWithdrawTxHistories())
-    			.depositTxHistories(account.getDepositTxHistories())
     			.build();
     	
     }
