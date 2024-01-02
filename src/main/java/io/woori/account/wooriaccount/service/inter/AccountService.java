@@ -34,9 +34,7 @@ public interface AccountService {
 	   @param initialDeposit 초기 입금액
 	   @return 생성된 계좌의 정보를 담은 Account 객체
 	 */
-	AccountDTO accountCreate(Long customerId,
-							BigDecimal accountBalance,
-							BigDecimal accountLimit);
+	AccountDTO accountCreate(Long customerId);
 	
 	
 	/* 계좌 삭제에 사용하는 메서드입니다.

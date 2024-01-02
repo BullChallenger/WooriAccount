@@ -75,7 +75,7 @@ public class AccountServiceImpl implements AccountService{
 
 	@Transactional
 	@Override
-	public AccountDTO accountCreate(Long customerId, BigDecimal accountBalance, BigDecimal accountLimit) {
+	public AccountDTO accountCreate(Long customerId) {
 		customerRepository.findById(customerId).orElseThrow();
 
 		
@@ -92,7 +92,8 @@ public class AccountServiceImpl implements AccountService{
 			throw new CustomException(ErrorCode.NOT_FOUND_ACCOUNT);
 		}
 
-		Account account = Account.createAccount(String.valueOf(randomNumber), accountBalance, accountLimit, customer);
+		// 기본값으로 fix
+		Account account = Account.createAccount(String.valueOf(randomNumber), BigDecimal.valueOf(1000), BigDecimal.valueOf(1000000), customer);
 		accountRepository.save(account);
 
 		return AccountDTO.builder()
@@ -111,7 +112,7 @@ public class AccountServiceImpl implements AccountService{
 		Account account = accountRepository.findByAccountNumber(accountNumber).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
 
 		Account deletedAccount = account.deletedAccount(account.getAccountNumber());
-		
+
 		return AccountDTO.fromEntity(deletedAccount);
 	}
 
