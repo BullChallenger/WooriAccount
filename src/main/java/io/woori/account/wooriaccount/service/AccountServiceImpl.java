@@ -1,31 +1,23 @@
 package io.woori.account.wooriaccount.service;
-<<<<<<< HEAD
+
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.Optional;
 
-=======
 import io.woori.account.wooriaccount.domain.entity.Customer;
 import io.woori.account.wooriaccount.exception.CustomException;
 import io.woori.account.wooriaccount.exception.ErrorCode;
->>>>>>> 68ed727b652ff481e62c2e0885819d28afdec92a
+
 import org.springframework.stereotype.Service;
 
 import io.woori.account.wooriaccount.domain.entity.Account;
 import io.woori.account.wooriaccount.dto.account.AccountDTO;
-import io.woori.account.wooriaccount.exception.CustomException;
-import io.woori.account.wooriaccount.exception.ErrorCode;
 import io.woori.account.wooriaccount.repository.jpa.AccountRepository;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
 import io.woori.account.wooriaccount.repository.querydsl.inter.QueryAccountRepository;
 import io.woori.account.wooriaccount.service.inter.AccountService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Optional;
 
-import static io.woori.account.wooriaccount.dto.account.AccountDTO.fromEntity;
 
 
 @RequiredArgsConstructor
@@ -72,7 +64,6 @@ public class AccountServiceImpl implements AccountService{
 		}
 		Account account = Account.createAccount(String.valueOf(randomNumber), accountBalance, accountLimit, customer);
 
-
 		return AccountDTO.builder()
 				.accountId(account.getAccountId())
 				.accountNumber(account.getAccountNumber())
@@ -84,7 +75,9 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public AccountDTO accountDelete(String accountNumber) {
-		// TODO Auto-generated method stub
+
+
+
 		return null;
 	}
 
