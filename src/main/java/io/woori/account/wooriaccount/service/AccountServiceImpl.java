@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService{
 	private final TxHistoryRepository txHistoryRepository;
 
 	@Override
-	public AccountDTO AccountInquiry(String accountNumber) {
+	public AccountDTO accountInquiry(String accountNumber) {
 		Optional<Account> optionalAccount = accountRepository.findByAccountNumber(accountNumber);
 		Account account = optionalAccount.orElseThrow(() ->
 				new CustomException(ErrorCode.ACCOUNT_NOT_FOUND)
@@ -43,7 +43,6 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	@Transactional
 	public AccountDTO accountRemittance(AccountRemittanceDTO dto) {
-
 
 		//출금 계좌 조회
 		Account sourceAccount = accountRepository.findByAccountNumber(dto.getAccountNumber())
@@ -74,22 +73,6 @@ public class AccountServiceImpl implements AccountService{
 
 
 		return AccountDTO.fromEntity(sourceAccount);
-
-	}
-
-
-	private AbstractTxHistory withDrawCreateTransactionHistory(Account sourceAccount,
-															   Account targetAccount,
-															   BigDecimal amount, String description) {
-
-		return WithdrawTxHistory.of(sourceAccount, targetAccount, amount, sourceAccount.getAccountBalance(), description);
-
-	}
-
-	private AbstractTxHistory depositCreateTransactionHistory(Account sourceAccount, Account targetAccount, BigDecimal amount,
-															  String description) {
-
-		return DepositTxHistory.of(sourceAccount, targetAccount, amount, sourceAccount.getAccountBalance(), description);
 
 	}
 
@@ -138,6 +121,21 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 
+
+	private AbstractTxHistory withDrawCreateTransactionHistory(Account sourceAccount,
+															   Account targetAccount,
+															   BigDecimal amount, String description) {
+
+		return WithdrawTxHistory.of(sourceAccount, targetAccount, amount, sourceAccount.getAccountBalance(), description);
+
+	}
+
+	private AbstractTxHistory depositCreateTransactionHistory(Account sourceAccount, Account targetAccount, BigDecimal amount,
+															  String description) {
+
+		return DepositTxHistory.of(sourceAccount, targetAccount, amount, sourceAccount.getAccountBalance(), description);
+
+	}
 
 	
 

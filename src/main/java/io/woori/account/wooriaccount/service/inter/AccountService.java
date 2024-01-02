@@ -16,7 +16,7 @@ public interface AccountService {
 	 * @param accountNumber 조회하려는 계좌의 계좌번호
 	 * @return 
 	 * */
-	AccountDTO AccountInquiry(String accountNumber);
+	AccountDTO accountInquiry(String accountNumber);
 	
 	
 	/* 송금(이체)에 사용하는 메서드입니다.
