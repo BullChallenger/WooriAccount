@@ -46,6 +46,7 @@ public class DepositTxServiceImpl implements TxHistoryService<DepositTxHistory, 
         );
     }
 
+    @Transactional(readOnly = true)
     public Page<FindAllDepositTxResponseDTO> findTxHistoryAll(Long accountId,
                                                                Long lastTxHistoryId,
                                                                Pageable pageable)
