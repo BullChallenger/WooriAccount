@@ -55,15 +55,17 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+	
 }
 
-def querydslDir = "src/main/generated"
+def querydslDir = "src/main/generated/queryDsl"
 
 sourceSets {
     main.java.srcDirs += [ querydslDir ]
 }
 
+
 clean {
-    delete file('src/main/generated')
+    delete file('src/main/generated/queryDsl')
 }
 

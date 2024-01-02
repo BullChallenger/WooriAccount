@@ -55,7 +55,7 @@ public class Account extends BaseEntity {
         this.customer = customer;
     }
 
-    public static Account of(String accountNumber, BigDecimal accountBalance, BigDecimal accountLimit, Customer customer) {
+    public static Account createAccount(String accountNumber, BigDecimal accountBalance, BigDecimal accountLimit, Customer customer) {
         return Account.builder()
                         .accountNumber(accountNumber)
                         .accountBalance(accountBalance)
@@ -63,5 +63,7 @@ public class Account extends BaseEntity {
                         .customer(customer)
                         .build();
     }
-    
+
+
+
 }

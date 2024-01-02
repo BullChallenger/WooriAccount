@@ -3,8 +3,12 @@ package io.woori.account.wooriaccount.repository.querydsl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.woori.account.wooriaccount.domain.entity.Account;
 //import io.woori.account.wooriaccount.domain.entity.QAccount;
+import io.woori.account.wooriaccount.domain.entity.QAccount;
 import io.woori.account.wooriaccount.repository.querydsl.inter.QueryAccountRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 /*
@@ -17,11 +21,17 @@ public class QueryAccountRepositoryImpl implements QueryAccountRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+
 	@Override
-	public Account queryFindByAccountNumber(String accountNumber) {
+	public Optional<Account> queryFindByAccountNumber(String accountNumber) {
+
+		QAccount account = QAccount.account;
+
+		return Optional.ofNullable(jpaQueryFactory
+				.selectFrom(account)
+				.where(account.accountNumber.eq(accountNumber)).fetchOne());
 		
-		
-		return null;}
+	}
 	
 
 //    @Override
