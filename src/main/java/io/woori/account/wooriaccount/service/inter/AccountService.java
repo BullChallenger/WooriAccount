@@ -3,6 +3,8 @@ package io.woori.account.wooriaccount.service.inter;
 import io.woori.account.wooriaccount.domain.entity.Account;
 import io.woori.account.wooriaccount.dto.account.AccountDTO;
 
+import java.math.BigDecimal;
+
 
 //TODO: DTO로 응답하기 
 public interface AccountService {
@@ -31,7 +33,9 @@ public interface AccountService {
 	   @param initialDeposit 초기 입금액
 	   @return 생성된 계좌의 정보를 담은 Account 객체
 	 */
-	AccountDTO accontCreate(Long customerId);
+	AccountDTO accountCreate(Long customerId,
+							BigDecimal accountBalance,
+							BigDecimal accountLimit);
 	
 	
 	/* 계좌 삭제에 사용하는 메서드입니다.
