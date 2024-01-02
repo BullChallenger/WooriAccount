@@ -31,6 +31,7 @@ public interface AccountService {
 	 * */
 	void accountWithdraw(String accountNumber, String targetAccountNumber);
 
+
 	/* 새로운 객체를 생성하는 메서드입니다.
 
 	   @param customer 고객 정보 객체
