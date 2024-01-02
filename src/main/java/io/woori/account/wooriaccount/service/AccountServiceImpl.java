@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 =======
+import io.woori.account.wooriaccount.domain.entity.Customer;
 import io.woori.account.wooriaccount.exception.CustomException;
 import io.woori.account.wooriaccount.exception.ErrorCode;
 >>>>>>> 68ed727b652ff481e62c2e0885819d28afdec92a
@@ -54,13 +55,9 @@ public class AccountServiceImpl implements AccountService{
 	
 	
 	@Override
-<<<<<<< HEAD
 	public AccountDTO accountCreate(Long customerId, BigDecimal accountBalance, BigDecimal accountLimit) {
-=======
-	public AccountDTO accontCreate(Long customerId) {
 		customerRepository.findById(customerId).orElseThrow();
->>>>>>> 68ed727b652ff481e62c2e0885819d28afdec92a
-		
+
 		
 		Customer customer = customerRepository.findById(customerId).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_CUSTOMER));
 		
@@ -73,14 +70,16 @@ public class AccountServiceImpl implements AccountService{
 			throw new CustomException(ErrorCode.NOT_FOUND_ACCOUNT);
 
 		}
-		Account.createAccount(String.valueOf(randomNumber), accountBalance, accountLimit, customer);
+		Account account = Account.createAccount(String.valueOf(randomNumber), accountBalance, accountLimit, customer);
 
 
+		return AccountDTO.builder()
+				.accountId(account.getAccountId())
+				.accountNumber(account.getAccountNumber())
+				.accountBalance(account.getAccountLimit())
+				.customer(customer)
+				.build();
 
-
-
-
-		return null;
 	}
 
 	@Override
