@@ -18,7 +18,7 @@ configurations {
     }
 }
 
-repositories {
+repositories {  
     mavenCentral()
 }
 
@@ -27,7 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     //querydsl 설정 추가
-    // QueryDSL Implementation
+    // QueryDSL Implementation  
     implementation 'com.querydsl:querydsl-jpa'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
 
@@ -41,17 +41,20 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    testImplementation('junit:junit:4.13')
+    testImplementation(platform('org.junit:junit-bom:5.10.1'))
+	testImplementation('org.junit.jupiter:junit-jupiter')
 
     //Bcrypt 암호화 의존성
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
 }
 
-test{
-    useJUnitPlatform()
+
+test {
+	useJUnitPlatform()
 }
 
 def querydslDir = "src/main/generated"
+
 sourceSets {
     main.java.srcDirs += [ querydslDir ]
 }

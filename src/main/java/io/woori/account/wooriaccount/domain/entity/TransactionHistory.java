@@ -14,6 +14,7 @@ public class TransactionHistory extends BaseTimeEntity{
     @OneToOne
     @JoinColumn(name = "target_id")
     private Account target; // 대상 , 단방향
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account; // 어느 계좌 거래내역인지, 양방향
