@@ -6,6 +6,6 @@ public interface CommonAccountRepository {
 
     Account findById(Long id);
     void deleteById(Long id);
-
+    Account save(Account account);
 
 }

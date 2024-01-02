@@ -24,6 +24,13 @@ public class Customer extends BaseTimeEntity{
     private String customerEmail;  // 고객 이메일
     private String customerPwd;  //고객 비밀번호
 
+    public Customer(String customerName, String customerPhone, String customerEmail, String customerPwd) {
+        this.customerName = customerName;
+        this.customerPhone = customerPhone;
+        this.customerEmail = customerEmail;
+        this.customerPwd = customerPwd;
+    }
+
     @Builder
     public static Customer of(SignUpRequestDTO dto) {
         return Customer.builder()
