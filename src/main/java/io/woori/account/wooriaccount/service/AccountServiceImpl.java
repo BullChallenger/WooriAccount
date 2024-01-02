@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService{
 		return null;
 	}
 
-	
+
 	
 	@Override
 	public AccountDTO accountCreate(Long customerId, BigDecimal accountBalance, BigDecimal accountLimit) {
@@ -77,8 +77,12 @@ public class AccountServiceImpl implements AccountService{
 	public AccountDTO accountDelete(String accountNumber) {
 
 
+		Account account = accountRepository.findByAccountNumber(accountNumber).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
 
-		return null;
+		Account deletedAccount = account.deletedAccount(account.getAccountNumber());
+
+
+		return AccountDTO.fromEntity(deletedAccount);
 	}
 
 

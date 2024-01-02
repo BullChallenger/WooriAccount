@@ -65,5 +65,12 @@ public class Account extends BaseEntity {
     }
 
 
+    public Account deletedAccount(String accountNumber){
+        this.accountNumber = "deleted " + accountNumber;
+        setIsDeleted(true);
+
+        return this;
+    }
+
 
 }
