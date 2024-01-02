@@ -3,10 +3,7 @@ package io.woori.account.wooriaccount.repository.querydsl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.woori.account.wooriaccount.dto.tx.FindAllDepositTxResponseDTO;
-import io.woori.account.wooriaccount.dto.tx.FindAllWithdrawTxResponseDTO;
-import io.woori.account.wooriaccount.dto.tx.QFindAllDepositTxResponseDTO;
-import io.woori.account.wooriaccount.dto.tx.QFindAllWithdrawTxResponseDTO;
+import io.woori.account.wooriaccount.dto.tx.*;
 import io.woori.account.wooriaccount.repository.querydsl.inter.QueryTransactionHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -66,8 +63,8 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
     }
 
     public Page<FindAllWithdrawTxResponseDTO> readWithdrawTxHistoryAll(Long accountId,
-                                                                      Long lastTxHistoryId,
-                                                                      Pageable pageable) {
+                                                                       Long lastTxHistoryId,
+                                                                       Pageable pageable) {
         List<FindAllWithdrawTxResponseDTO> pageContent = jpaQueryFactory.select(
                         new QFindAllWithdrawTxResponseDTO(
                                 withdrawTxHistory.receiver.customer.customerName,
@@ -77,18 +74,18 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
                                 withdrawTxHistory.createdTime
                         )
                 ).from(withdrawTxHistory)
-                .where(withdrawTxHistory.receiver.accountId.eq(accountId).and(ltDepositTxHistoryId(lastTxHistoryId)))
+                .where(withdrawTxHistory.receiver.accountId.eq(accountId).and(ltWithdrawTxHistoryId(lastTxHistoryId)))
                 .innerJoin(withdrawTxHistory.sender, account)
                 .innerJoin(account.customer, customer)
                 .orderBy(withdrawTxHistory.createdTime.desc())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        JPAQuery<Long> countDepositTxHistoryQuery = jpaQueryFactory
+        JPAQuery<Long> countWithdrawTxHistoryQuery = jpaQueryFactory
                 .select(withdrawTxHistory.count())
                 .from(withdrawTxHistory);
 
-        return PageableExecutionUtils.getPage(pageContent, pageable, countDepositTxHistoryQuery::fetchOne);
+        return PageableExecutionUtils.getPage(pageContent, pageable, countWithdrawTxHistoryQuery::fetchOne);
     }
 
     private BooleanExpression ltWithdrawTxHistoryId(Long depositTxHistoryId) {
