@@ -16,12 +16,12 @@ import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
 import io.woori.account.wooriaccount.repository.querydsl.inter.QueryAccountRepository;
 import io.woori.account.wooriaccount.service.inter.AccountService;
 import lombok.RequiredArgsConstructor;
-
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class AccountServiceImpl implements AccountService{
 	
 	
@@ -45,7 +45,9 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 
-	
+
+
+	@Transactional
 	@Override
 	public AccountDTO accountCreate(Long customerId, BigDecimal accountBalance, BigDecimal accountLimit) {
 		customerRepository.findById(customerId).orElseThrow();
