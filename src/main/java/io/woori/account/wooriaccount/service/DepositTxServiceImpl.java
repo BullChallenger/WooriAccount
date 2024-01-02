@@ -25,7 +25,6 @@ import java.util.Optional;
 public class DepositTxServiceImpl implements TxHistoryService<DepositTxHistory, Long> {
 
     private final TxHistoryRepository<DepositTxHistory> txHistoryRepository;
-    private final AccountRepository accountRepository;
     private final QueryTransactionHistoryRepositoryImpl queryTransactionHistoryRepository;
 
     @Override
