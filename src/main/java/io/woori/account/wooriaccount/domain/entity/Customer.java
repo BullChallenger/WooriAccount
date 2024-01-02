@@ -11,7 +11,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Getter @Setter
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "customers")
