@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseTimeEntity {
+public abstract class BaseEntity {
 
     @CreatedDate
     @Column(updatable = false, columnDefinition = "datetime default CURRENT_TIMESTAMP NOT NULL COMMENT '생성일자'")
@@ -29,5 +29,9 @@ public abstract class BaseTimeEntity {
     @Setter
     @Column(columnDefinition = "bit default false NOT NULL COMMENT '이용가능여부'")
     private Boolean isDeleted;
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 
 }

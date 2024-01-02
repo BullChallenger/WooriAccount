@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractTxHistory extends BaseTimeEntity {
+public abstract class AbstractTxHistory extends BaseEntity {
 
     @Id
     @Column(name = "tx_id")
