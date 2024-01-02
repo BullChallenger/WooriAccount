@@ -25,5 +25,11 @@ public class AccountController {
         return ResponseEntity.ok(accountService.accountCreate(customerId));
     }
 
+    @PostMapping("/delete/{accountNumber}")
+    public ResponseEntity<AccountDTO> deletedAccount(@PathVariable("accountNumber") String accountNumber){
+
+        return ResponseEntity.ok(accountService.accountDelete(accountNumber));
+
+    }
 
 }
