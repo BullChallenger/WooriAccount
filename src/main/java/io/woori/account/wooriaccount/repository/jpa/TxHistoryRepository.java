@@ -10,6 +10,6 @@ import io.woori.account.wooriaccount.repository.common.CommonTxHistoryRepository
 
 
 
-public interface TxHistoryRepository extends Repository<AbstractTxHistory, Long>, CommonTxHistoryRepository {
+public interface TxHistoryRepository<Tx> extends Repository<AbstractTxHistory, Long>, CommonTxHistoryRepository<Tx> {
 
 }
