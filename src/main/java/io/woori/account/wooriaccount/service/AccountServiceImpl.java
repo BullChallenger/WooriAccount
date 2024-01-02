@@ -85,8 +85,7 @@ public class AccountServiceImpl implements AccountService{
 		Account account = accountRepository.findByAccountNumber(accountNumber).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
 
 		Account deletedAccount = account.deletedAccount(account.getAccountNumber());
-
-
+		
 		return AccountDTO.fromEntity(deletedAccount);
 	}
 
