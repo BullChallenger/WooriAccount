@@ -39,6 +39,7 @@ public class AccountDTO {
     	return AccountDTO.builder()
     			.accountId(account.getAccountId())
     			.accountNumber(account.getAccountNumber())
+                .accountBalance(account.getAccountBalance())
     			.accountLimit(account.getAccountLimit())
     			.customerName(account.getCustomer().getCustomerName())
     			.build();

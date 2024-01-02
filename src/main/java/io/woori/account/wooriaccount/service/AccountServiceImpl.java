@@ -29,7 +29,8 @@ public class AccountServiceImpl implements AccountService{
 	private final AccountRepository accountRepository;
 	private final QueryAccountRepository queryAccountRepository;
 	private final CustomerRepository customerRepository;
-	private final TxHistoryRepository txHistoryRepository;
+	private final TxHistoryRepository<DepositTxHistory> depositTxHistoryRepository;
+	private final TxHistoryRepository<WithdrawTxHistory> withdrawTxHistoryRepository;
 
 	@Override
 	public AccountDTO accountInquiry(String accountNumber) {
@@ -67,13 +68,13 @@ public class AccountServiceImpl implements AccountService{
 		targetAccount.setAccountBalance(targetAccount.getAccountBalance().add(BigDecimal.valueOf(Long.parseLong(dto.getAmount()))));
 
 		// 거래 내역 기록
-		AbstractTxHistory withedDrawCreateTransactionHistory = withDrawCreateTransactionHistory(sourceAccount, targetAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())),dto.getDescription() );
-		AbstractTxHistory depositCreateTransactionHistory = depositCreateTransactionHistory(targetAccount, sourceAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())), dto.getDescription());
+		WithdrawTxHistory withedDrawCreateTransactionHistory = withDrawCreateTransactionHistory(sourceAccount, targetAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())),dto.getDescription() );
+		DepositTxHistory depositCreateTransactionHistory = depositCreateTransactionHistory(targetAccount, sourceAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())), dto.getDescription());
 
 
 
-		txHistoryRepository.save(withedDrawCreateTransactionHistory);
-		txHistoryRepository.save(depositCreateTransactionHistory);
+		withdrawTxHistoryRepository.save(withedDrawCreateTransactionHistory);
+		depositTxHistoryRepository.save(depositCreateTransactionHistory);
 
 
 		return AccountDTO.fromEntity(sourceAccount);
@@ -126,7 +127,7 @@ public class AccountServiceImpl implements AccountService{
 
 
 
-	private AbstractTxHistory withDrawCreateTransactionHistory(Account sourceAccount,
+	private WithdrawTxHistory withDrawCreateTransactionHistory(Account sourceAccount,
 															   Account targetAccount,
 															   BigDecimal amount, String description) {
 
@@ -134,7 +135,7 @@ public class AccountServiceImpl implements AccountService{
 
 	}
 
-	private AbstractTxHistory depositCreateTransactionHistory(Account sourceAccount, Account targetAccount, BigDecimal amount,
+	private DepositTxHistory depositCreateTransactionHistory(Account sourceAccount, Account targetAccount, BigDecimal amount,
 															  String description) {
 
 		return DepositTxHistory.of(sourceAccount, targetAccount, amount, sourceAccount.getAccountBalance(), description);
