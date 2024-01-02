@@ -71,4 +71,9 @@ public class Account extends BaseEntity {
     }
 
 
+    public BigDecimal setAccountBalance(BigDecimal newAmount){
+
+        return this.accountBalance =newAmount;
+
+    }
 }
