@@ -46,7 +46,7 @@ public class AccountServiceImpl implements AccountService{
 	
 	@Override
 	public AccountDTO accontCreate(Long customerId) {
-		customerRepository.findById(customerId).orElseThrow()
+		customerRepository.findById(customerId).orElseThrow();
 		
 		
 		

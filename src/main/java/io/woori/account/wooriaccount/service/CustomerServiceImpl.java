@@ -1,6 +1,7 @@
 package io.woori.account.wooriaccount.service;
 
 import io.woori.account.wooriaccount.domain.entity.Customer;
+import io.woori.account.wooriaccount.dto.user.CustomerUpdateDTO;
 import io.woori.account.wooriaccount.dto.user.LoginRequestDTO;
 import io.woori.account.wooriaccount.dto.user.LoginResponseDTO;
 import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
@@ -34,6 +35,28 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = Customer.of(dto);
         customerRepository.save(customer);
 
+        return "success";
+    }
+
+    @Override
+    public String update(CustomerUpdateDTO dto) {
+
+        Customer customer = customerRepository.findById(dto.getCustomerId()).get();
+
+        String encrypted = encryptHelper.encrypt(dto.getCustomerPwd());
+        dto.setCustomerPwd(encrypted);
+
+        customer.setCustomerName(dto.getCustomerName());
+        customer.setCustomerEmail(dto.getCustomerEmail());
+        customer.setCustomerPhone(dto.getCustomerPhone());
+        customer.setCustomerPwd(dto.getCustomerPwd());
+
+        return "success";
+    }
+
+    @Override
+    public String delete(Long id) {
+        customerRepository.deleteById(id);
         return "success";
     }
 
