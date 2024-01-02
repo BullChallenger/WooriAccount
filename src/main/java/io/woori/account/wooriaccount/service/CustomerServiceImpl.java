@@ -24,9 +24,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String signUp(SignUpRequestDTO dto) {
-        //이메일 중복여부 체크
-        customerRepository.findByCustomerEmail(dto.getCustomerEmail()).orElseThrow(
-                () -> new CustomException(ErrorCode.DUPLICATE_CUSTOMER)
+        // 이메일 중복 여부 체크
+        customerRepository.findByCustomerEmail(dto.getCustomerEmail()).ifPresent(
+                existingCustomer -> {
+                    throw new CustomException(ErrorCode.DUPLICATE_CUSTOMER);
+                }
         );
 
         String encrypted = encryptHelper.encrypt(dto.getCustomerPwd());
@@ -62,24 +64,20 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO dto) {
-        //해당하는 회원이 있는지 체크
-        Customer find = customerRepository.findByCustomerEmail(dto.getEmail()).orElseThrow(
-                () -> new CustomException(ErrorCode.INVALID_Customer_Login)
-        );
+        // 해당하는 회원이 있는지 체크
+        Customer find = customerRepository.findByCustomerEmail(dto.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_Customer_Login));
 
-        String encrypted = find.getCustomerPwd(); // pwd 암호화되어 저장되어 있음
-        boolean result = encryptHelper.isMatch(dto.getPwd(), encrypted);
-
-        //비밀번호 일치여부 체크
-        if(!result){
+        // 비밀번호 일치여부 체크
+        if (!encryptHelper.isMatch(dto.getPwd(), find.getCustomerPwd())) {
             throw new CustomException(ErrorCode.INVALID_Customer_Password);
         }
 
-        LoginResponseDTO loginResponseDTO =
-                new LoginResponseDTO(find.getCustomerId(),find.getCustomerName(),find.getCustomerPhone(),find.getCustomerEmail());
-
-        return loginResponseDTO;
+        // 로그인 성공 시
+        return new LoginResponseDTO(find.getCustomerId(), find.getCustomerName(), find.getCustomerPhone(), find.getCustomerEmail());
     }
+
+
 
 
 

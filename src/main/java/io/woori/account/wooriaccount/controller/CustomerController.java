@@ -1,5 +1,6 @@
 package io.woori.account.wooriaccount.controller;
 
+import io.woori.account.wooriaccount.dto.user.CustomerUpdateDTO;
 import io.woori.account.wooriaccount.dto.user.LoginRequestDTO;
 import io.woori.account.wooriaccount.dto.user.LoginResponseDTO;
 import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
@@ -26,11 +27,17 @@ public class CustomerController {
         return loginResponseDTO;
     }
 
+    @PostMapping("/signUp")
     public String signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
         return customerService.signUp(signUpRequestDTO);
     }
-
+    @PostMapping("/delete")
     public String delete(@RequestParam(name = "customerId") Long customerId) {
         return customerService.delete(customerId);
+    }
+
+    @PostMapping("/update")
+    public String update(@RequestBody CustomerUpdateDTO customerUpdateDTO) {
+        return customerService.update(customerUpdateDTO);
     }
 }
