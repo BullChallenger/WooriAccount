@@ -30,5 +30,13 @@ public interface AccountService {
 	 * @return return type 수정
 	 * */
 	void accountWithdraw(String accountNumber, String targetAccountNumber);
+
+	/* 새로운 객체를 생성하는 메서드입니다.
+
+	   @param customer 고객 정보 객체
+	   @param initialDeposit 초기 입금액
+	   @return 생성된 계좌의 정보를 담은 Account 객체
+	 */
+	void accontCreate();
 	
 }
