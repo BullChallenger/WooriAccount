@@ -1,11 +1,9 @@
 package io.woori.account.wooriaccount.service;
-import java.util.Objects;
-import java.util.Optional;
-
+import io.woori.account.wooriaccount.exception.CustomException;
+import io.woori.account.wooriaccount.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import io.woori.account.wooriaccount.domain.entity.Account;
-import io.woori.account.wooriaccount.domain.entity.Customer;
 import io.woori.account.wooriaccount.dto.account.AccountDTO;
 import io.woori.account.wooriaccount.repository.jpa.AccountRepository;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
@@ -14,6 +12,10 @@ import io.woori.account.wooriaccount.service.inter.AccountService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+
+import static io.woori.account.wooriaccount.dto.account.AccountDTO.fromEntity;
 
 
 @RequiredArgsConstructor
@@ -27,8 +29,11 @@ public class AccountServiceImpl implements AccountService{
 	
 	@Override
 	public AccountDTO AccountInquiry(String accountNumber) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Account> optionalAccount = accountRepository.findByAccountNumber(accountNumber);
+		Account account = optionalAccount.orElseThrow(() ->
+				new CustomException(ErrorCode.ACCOUNT_NOT_FOUND)
+		);
+		return AccountDTO.fromEntity(account);
 	}
 
 	@Override
