@@ -51,7 +51,7 @@ public class AccountServiceImpl implements AccountService{
 				.orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
 		// 입금 계좌 조회
-		Account targetAccount = accountRepository.findByAccountNumber(dto.getAccountNumber())
+		Account targetAccount = accountRepository.findByAccountNumber(dto.getTargetAccountNumber())
 				.orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
 
@@ -61,14 +61,16 @@ public class AccountServiceImpl implements AccountService{
 		}
 
 		// 출금 계좌에서 금액 차감
-		BigDecimal newSourceAmount = sourceAccount.setAccountBalance(sourceAccount.getAccountBalance().subtract(BigDecimal.valueOf(Long.parseLong(dto.getAmount()))));
+		sourceAccount.setAccountBalance(sourceAccount.getAccountBalance().subtract(BigDecimal.valueOf(Long.parseLong(dto.getAmount()))));
 
 		// 입금 계좌에 금액 추가
-		BigDecimal newTargetAmount = targetAccount.setAccountBalance(targetAccount.getAccountBalance().add(BigDecimal.valueOf(Long.parseLong(dto.getAmount()))));
+		targetAccount.setAccountBalance(targetAccount.getAccountBalance().add(BigDecimal.valueOf(Long.parseLong(dto.getAmount()))));
 
 		// 거래 내역 기록
 		AbstractTxHistory withedDrawCreateTransactionHistory = withDrawCreateTransactionHistory(sourceAccount, targetAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())),dto.getDescription() );
 		AbstractTxHistory depositCreateTransactionHistory = depositCreateTransactionHistory(targetAccount, sourceAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())), dto.getDescription());
+
+
 
 		txHistoryRepository.save(withedDrawCreateTransactionHistory);
 		txHistoryRepository.save(depositCreateTransactionHistory);
