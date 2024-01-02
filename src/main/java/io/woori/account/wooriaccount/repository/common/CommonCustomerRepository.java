@@ -3,13 +3,15 @@ package io.woori.account.wooriaccount.repository.common;
 import io.woori.account.wooriaccount.domain.entity.Account;
 import io.woori.account.wooriaccount.domain.entity.Customer;
 
+import java.util.Optional;
+
 public interface CommonCustomerRepository {
 
-    Customer findById(Long id);
+    Optional<Customer> findById(Long id);
     void deleteById(Long id);
-    Customer findByCustomerEmail(String customerEmail);
+    Optional<Customer> findByCustomerEmail(String customerEmail);
 
-    void save(Customer customer);
+    Customer save(Customer customer);
 
 
 }

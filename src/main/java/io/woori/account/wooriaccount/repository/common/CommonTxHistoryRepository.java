@@ -3,10 +3,12 @@ package io.woori.account.wooriaccount.repository.common;
 import io.woori.account.wooriaccount.domain.entity.AbstractTxHistory;
 import io.woori.account.wooriaccount.domain.entity.Customer;
 
+import java.util.Optional;
+
 public interface CommonTxHistoryRepository {
 
-    AbstractTxHistory findById(Long id);
+    Optional<AbstractTxHistory> findById(Long id);
     void deleteById(Long id);
-    void save(AbstractTxHistory txHistory);
+    AbstractTxHistory save(AbstractTxHistory txHistory);
 
 }

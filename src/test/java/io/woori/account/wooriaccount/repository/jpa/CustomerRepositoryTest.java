@@ -2,6 +2,8 @@ package io.woori.account.wooriaccount.repository.jpa;
 
 
 
+import io.woori.account.wooriaccount.exception.CustomException;
+import io.woori.account.wooriaccount.exception.ErrorCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +48,9 @@ public class CustomerRepositoryTest {
 		
 		Long id = customer.getCustomerId();
 		
-		Customer findByIdCust = repository.findById(id);
+		Customer findByIdCust = repository.findById(id).orElseThrow(
+				() -> new CustomException(ErrorCode.INVALID_Customer_Login)
+		);
 		
 		Assertions.assertThat(findByIdCust.getCustomerId()).isEqualTo(id);
 	}
@@ -58,7 +62,9 @@ public class CustomerRepositoryTest {
 				
 		
 		Long id = customer.getCustomerId();
-		Customer findByIdCust = repository.findById(3L);
+		Customer findByIdCust = repository.findById(3L).orElseThrow(
+				() -> new CustomException(ErrorCode.INVALID_Customer_Login)
+		);
 		
 		Assertions.assertThat(findByIdCust.getCustomerId()).isNotEqualTo(id);
 	}

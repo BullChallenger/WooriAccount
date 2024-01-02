@@ -22,9 +22,9 @@ public class CustomerService {
     
     public String signUp(SignUpRequestDTO dto) {
         //이메일 중복여부 체크
-        if(customerRepository.findByCustomerEmail(dto.getCustomerEmail()) != null) {
-            throw new CustomException(ErrorCode.DUPLICATE_CUSTOMER);
-        }
+        customerRepository.findByCustomerEmail(dto.getCustomerEmail()).orElseThrow(
+                () -> new CustomException(ErrorCode.DUPLICATE_CUSTOMER)
+        );
 
         String encrypted = encryptHelper.encrypt(dto.getCustomerPwd());
         dto.setCustomerPwd(encrypted);
@@ -37,11 +37,9 @@ public class CustomerService {
 
     public LoginResponseDTO login(LoginRequestDTO dto) {
         //해당하는 회원이 있는지 체크
-        Customer find = customerRepository.findByCustomerEmail(dto.getEmail());
-
-        if(find == null){
-            throw new CustomException(ErrorCode.INVALID_Customer_Login);
-        }
+        Customer find = customerRepository.findByCustomerEmail(dto.getEmail()).orElseThrow(
+                () -> new CustomException(ErrorCode.INVALID_Customer_Login)
+        );
 
         String encrypted = find.getCustomerPwd(); // pwd 암호화되어 저장되어 있음
         boolean result = encryptHelper.isMatch(dto.getPwd(), encrypted);
