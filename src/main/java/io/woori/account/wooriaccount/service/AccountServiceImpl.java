@@ -58,12 +58,14 @@ public class AccountServiceImpl implements AccountService{
 		//8자리 난수 생성
 		int randomNumber = (int)(Math.random() * 89999999) + 10000000;
 
+
+		//생성한 난수 번호가 이미 존재한다면 사용하지 못하게 한다.
 		Optional<Account> op = accountRepository.findByAccountNumber(String.valueOf(randomNumber));
 
 		if (op.isPresent()){
 			throw new CustomException(ErrorCode.NOT_FOUND_ACCOUNT);
-
 		}
+
 		Account account = Account.createAccount(String.valueOf(randomNumber), accountBalance, accountLimit, customer);
 		accountRepository.save(account);
 
