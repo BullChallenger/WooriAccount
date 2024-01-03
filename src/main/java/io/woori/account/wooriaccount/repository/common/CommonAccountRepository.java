@@ -2,6 +2,7 @@ package io.woori.account.wooriaccount.repository.common;
 
 import io.woori.account.wooriaccount.domain.entity.Account;
 
+import javax.persistence.LockModeType;
 import java.util.Optional;
 
 public interface CommonAccountRepository {
@@ -10,6 +11,7 @@ public interface CommonAccountRepository {
     void deleteById(Long id);
     Account save(Account account);
     Optional<Account> findByAccountNumber(String accountNumber);
+
 
 
 }
