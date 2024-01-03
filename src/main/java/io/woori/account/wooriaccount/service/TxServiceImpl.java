@@ -7,6 +7,7 @@ import io.woori.account.wooriaccount.dto.tx.FindAllTxResponseDTO;
 import io.woori.account.wooriaccount.repository.jpa.DepositTxHistoryRepository;
 import io.woori.account.wooriaccount.repository.jpa.TxHistoryRepository;
 import io.woori.account.wooriaccount.repository.jpa.WithdrawTxHistoryRepository;
+import io.woori.account.wooriaccount.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
 import io.woori.account.wooriaccount.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,18 +26,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TxServiceImpl {
 
-    private final DepositTxHistoryRepository depositTxHistoryRepository;
-    private final WithdrawTxHistoryRepository withdrawTxHistoryRepository;
+    private final QueryTransactionHistoryRepositoryImpl txHistoryRepository;
 
     public Page<FindAllTxResponseDTO> findBySenderIdOrReceiverId(Long accountId, Pageable pageable) {
         List<FindAllTxResponseDTO> allMyTxHistory = new ArrayList<>();
-        List<FindAllTxResponseDTO> bySenderAccountId = depositTxHistoryRepository.findByReceiverAccountId(accountId)
+        List<FindAllTxResponseDTO> byDepositTx = txHistoryRepository.readDepositTxHistoryAllToList(accountId)
                 .stream().map(FindAllTxResponseDTO::of).toList();
-        List<FindAllTxResponseDTO> byReceiverAccountId = withdrawTxHistoryRepository.findBySenderAccountId(accountId)
+        List<FindAllTxResponseDTO> byWithdrawTx = txHistoryRepository.readWithdrawTxHistoryAllToList(accountId)
                 .stream().map(FindAllTxResponseDTO::of).toList();
 
-        allMyTxHistory.addAll(bySenderAccountId);
-        allMyTxHistory.addAll(byReceiverAccountId);
+        allMyTxHistory.addAll(byDepositTx);
+        allMyTxHistory.addAll(byWithdrawTx);
         Collections.sort(allMyTxHistory);
 
         return new PageImpl<>(allMyTxHistory, pageable, allMyTxHistory.size());

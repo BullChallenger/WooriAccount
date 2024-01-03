@@ -3,6 +3,8 @@ package io.woori.account.wooriaccount.repository.querydsl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.woori.account.wooriaccount.domain.entity.DepositTxHistory;
+import io.woori.account.wooriaccount.domain.entity.WithdrawTxHistory;
 import io.woori.account.wooriaccount.dto.tx.*;
 import io.woori.account.wooriaccount.repository.querydsl.inter.QueryTransactionHistoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,30 @@ import static io.woori.account.wooriaccount.domain.entity.QWithdrawTxHistory.wit
 public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHistoryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    public List<DepositTxHistory> readDepositTxHistoryAllToList(Long accountId) {
+        return jpaQueryFactory.select(
+                        depositTxHistory
+                ).from(depositTxHistory)
+                .where(depositTxHistory.sender.accountId.eq(accountId))
+                .innerJoin(depositTxHistory.receiver, account)
+                .innerJoin(account.customer, customer)
+                .orderBy(depositTxHistory.createdTime.desc())
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                .fetch();
+    }
+
+    public List<WithdrawTxHistory> readWithdrawTxHistoryAllToList(Long accountId) {
+        return jpaQueryFactory.select(
+                        withdrawTxHistory
+                ).from(withdrawTxHistory)
+                .where(withdrawTxHistory.sender.accountId.eq(accountId))
+                .innerJoin(withdrawTxHistory.receiver, account)
+                .innerJoin(account.customer, customer)
+                .orderBy(withdrawTxHistory.createdTime.desc())
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                .fetch();
+    }
 
     public Page<FindAllDepositTxResponseDTO> readDepositTxHistoryAll(Long accountId,
                                                                      Long lastTxHistoryId,
@@ -69,7 +95,7 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
                                                                        Pageable pageable) {
         List<FindAllWithdrawTxResponseDTO> pageContent = jpaQueryFactory.select(
                         new QFindAllWithdrawTxResponseDTO(
-                                withdrawTxHistory.receiver.customer.customerName,
+                                customer.customerName,
                                 withdrawTxHistory.amount,
                                 withdrawTxHistory.balanceAfterTx,
                                 withdrawTxHistory.description,
@@ -91,12 +117,12 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
         return PageableExecutionUtils.getPage(pageContent, pageable, countWithdrawTxHistoryQuery::fetchOne);
     }
 
-    private BooleanExpression ltWithdrawTxHistoryId(Long depositTxHistoryId) {
-        if (depositTxHistoryId == null) {
+    private BooleanExpression ltWithdrawTxHistoryId(Long withdrawTxHistoryId) {
+        if (withdrawTxHistoryId == null) {
             return null;
         }
 
-        return depositTxHistory.txId.lt(depositTxHistoryId);
+        return withdrawTxHistory.txId.lt(withdrawTxHistoryId);
     }
 
 }
