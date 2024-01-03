@@ -42,7 +42,7 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
         );
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Page<FindAllWithdrawTxResponseDTO> findTxHistoryAll(Long accountId,
                                                                Long lastTxHistoryId,
                                                                Pageable pageable)

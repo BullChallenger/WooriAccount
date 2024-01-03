@@ -77,7 +77,8 @@ public class TxHistoryTest {
         int threadCount = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch latch = new CountDownLatch(threadCount);
-        AccountRemittanceDTO dto = new AccountRemittanceDTO("ACC123456", "52862517", "송금송금", "5");
+        AccountRemittanceDTO dto = new AccountRemittanceDTO("ACC123456",
+                "52862517", "송금송금", "5");
 
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
