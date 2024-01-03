@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 import static io.woori.account.wooriaccount.domain.entity.QAccount.account;
@@ -45,6 +46,7 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
          .innerJoin(account.customer, customer)
          .orderBy(depositTxHistory.createdTime.desc())
          .limit(pageable.getPageSize())
+         .setLockMode(LockModeType.PESSIMISTIC_WRITE)
          .fetch();
 
         JPAQuery<Long> countDepositTxHistoryQuery = jpaQueryFactory
@@ -79,6 +81,7 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
                 .innerJoin(account.customer, customer)
                 .orderBy(withdrawTxHistory.createdTime.desc())
                 .limit(pageable.getPageSize())
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .fetch();
 
         JPAQuery<Long> countWithdrawTxHistoryQuery = jpaQueryFactory
