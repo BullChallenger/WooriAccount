@@ -4,12 +4,13 @@ import com.querydsl.core.annotations.QueryProjection;
 import io.woori.account.wooriaccount.domain.entity.AbstractTxHistory;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
-public class FindAllTxResponseDTO {
+public class FindAllTxResponseDTO implements Comparable<FindAllTxResponseDTO> {
 
     private final String senderName;
 
@@ -49,4 +50,8 @@ public class FindAllTxResponseDTO {
                 .build();
     }
 
+    @Override
+    public int compareTo(FindAllTxResponseDTO o) {
+        return this.createdAt.compareTo(o.getCreatedAt());
+    }
 }

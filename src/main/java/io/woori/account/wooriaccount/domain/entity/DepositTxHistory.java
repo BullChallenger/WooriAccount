@@ -1,9 +1,6 @@
 package io.woori.account.wooriaccount.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -23,6 +20,7 @@ import java.math.BigDecimal;
         column = @Column(name = "deposit_tx_id")
 )
 @DiscriminatorValue(value = "deposit_tx")
+@ToString
 public class DepositTxHistory extends AbstractTxHistory {
 
     @Builder
