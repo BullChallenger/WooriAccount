@@ -30,7 +30,9 @@ public enum ErrorCode implements EnumModel{
 	
     // 404 not fount Exception
     NOT_FOUND_CUSTOMER(404, "N001", "존재하지 않는 회원입니다."),
-    NOT_FOUND_ACCOUNT(404, "N002", "존재하지 않는 계좌입니다.");
+    NOT_FOUND_ACCOUNT(404, "N002", "존재하지 않는 계좌입니다."),
+    NOT_FOUNT_ACCOUNT_LIST(404, "N003", "계좌 내역이 존재하지 않습니다.")
+    ;
 	
     private int status;
     private String code;

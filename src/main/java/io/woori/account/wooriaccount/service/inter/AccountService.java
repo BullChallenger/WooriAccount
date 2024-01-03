@@ -1,10 +1,12 @@
 package io.woori.account.wooriaccount.service.inter;
 
 import io.woori.account.wooriaccount.domain.entity.Account;
+import io.woori.account.wooriaccount.dto.account.AccountAllDTO;
 import io.woori.account.wooriaccount.dto.account.AccountDTO;
 import io.woori.account.wooriaccount.dto.account.AccountRemittanceDTO;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 //TODO: DTO로 응답하기 
@@ -42,4 +44,12 @@ public interface AccountService {
 	 * @return 
 	 * */
 	AccountDTO accountDelete(String accountNumber);
+
+	/*
+	* 고객 pk로 계좌 정보를 모두 가져오는 메서드입니다.
+	*
+	* @param id 고객 pk
+	* @return 계좌 정보 dto
+	* */
+	List<AccountAllDTO> findAllByCustomerId(Long id);
 }

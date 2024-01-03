@@ -2,11 +2,12 @@ package io.woori.account.wooriaccount.repository.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.woori.account.wooriaccount.domain.entity.Account;
-//import io.woori.account.wooriaccount.domain.entity.QAccount;
 import io.woori.account.wooriaccount.domain.entity.QAccount;
+import io.woori.account.wooriaccount.domain.entity.QCustomer;
 import io.woori.account.wooriaccount.repository.querydsl.inter.QueryAccountRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -32,18 +33,14 @@ public class QueryAccountRepositoryImpl implements QueryAccountRepository {
 				.where(account.accountNumber.eq(accountNumber)).fetchOne());
 		
 	}
-	
 
-//    @Override
-//    public Account queryFindById(Long id) {
-//        QAccount account = QAccount.account;
-//
-//        return jpaQueryFactory
-//                .selectFrom(account)
-//                .where(account.id.eq(id))
-//                .fetchOne();
-//    }
-    
-    
-    
+	@Override
+	public List<Account> queryFindAllByCustomerId(Long id) {
+		QAccount account = QAccount.account;
+		return jpaQueryFactory.selectFrom(account)
+				.where(account.customer.customerId.eq(id))
+				.fetch();
+	}
+
+
 }

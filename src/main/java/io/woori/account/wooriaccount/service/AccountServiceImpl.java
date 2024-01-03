@@ -1,9 +1,13 @@
 package io.woori.account.wooriaccount.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import io.woori.account.wooriaccount.domain.entity.*;
+import io.woori.account.wooriaccount.dto.account.AccountAllDTO;
 import io.woori.account.wooriaccount.dto.account.AccountRemittanceDTO;
 import io.woori.account.wooriaccount.exception.CustomException;
 import io.woori.account.wooriaccount.exception.ErrorCode;
@@ -125,6 +129,31 @@ public class AccountServiceImpl implements AccountService{
 		return AccountDTO.fromEntity(deletedAccount);
 	}
 
+
+
+	@Override
+	public List<AccountAllDTO> findAllByCustomerId(Long id) {
+
+		List<Account> accounts = queryAccountRepository.queryFindAllByCustomerId(id);
+		if (Objects.isNull(accounts)){
+			throw new CustomException(ErrorCode.NOT_FOUNT_ACCOUNT_LIST);
+
+		}
+
+		List<AccountAllDTO> list = extractedDTO(accounts);
+
+		return list;
+	}
+
+	private static List<AccountAllDTO> extractedDTO(List<Account> accounts) {
+		List<AccountAllDTO> list = new ArrayList<>();
+		for (Account account : accounts) {
+
+			list.add(AccountAllDTO.fromEntity(account));
+		}
+
+		return list;
+	}
 
 
 	private WithdrawTxHistory withDrawCreateTransactionHistory(Account sourceAccount,

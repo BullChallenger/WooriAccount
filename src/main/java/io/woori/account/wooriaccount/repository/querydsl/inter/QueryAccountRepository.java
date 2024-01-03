@@ -1,6 +1,7 @@
 package io.woori.account.wooriaccount.repository.querydsl.inter;
 
 import java.lang.StackWalker.Option;
+import java.util.List;
 import java.util.Optional;
 
 import io.woori.account.wooriaccount.domain.entity.Account;
@@ -18,5 +19,13 @@ public interface QueryAccountRepository {
 	* */
 	Optional<Account> queryFindByAccountNumber(String accountNumber);
 	
+	
+	/*
+	* query dsl을 이용해서 계좌 정보를 모두 돌려줍니다.
+	* 
+	* @param id  회원 pk
+	* @return 모든 계좌 정보
+	* */
+	List<Account> queryFindAllByCustomerId(Long id);
 
 }
