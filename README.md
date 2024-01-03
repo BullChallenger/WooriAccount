@@ -2,6 +2,8 @@
 우리FISA 2기 간이 프로젝트
 뽕섭님 ERD랑 쿼리문 보내주세요 
 
+## ERD
+![image](https://github.com/BullChallenger/WooriAccount/assets/81970382/57872b7e-9b57-4a27-93b2-278569be7700)
 
 ## 프로젝트 구조
 ### 1. domain
