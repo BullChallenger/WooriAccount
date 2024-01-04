@@ -26,6 +26,11 @@ dependencies {
     //spring data jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    // spring security
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.1'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+
     //querydsl 설정 추가
     // QueryDSL Implementation  
     implementation 'com.querydsl:querydsl-jpa'
@@ -53,6 +58,10 @@ dependencies {
     // Swagger 3.0: springfox
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+
+
+
 
 }
 
