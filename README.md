@@ -6,6 +6,9 @@
 ![image](https://github.com/BullChallenger/WooriAccount/assets/81970382/57872b7e-9b57-4a27-93b2-278569be7700)
 
 ## 프로젝트 구조
+![제목 없는 다이어그램](https://github.com/BullChallenger/WooriAccount/assets/81970382/e59c80fe-7c48-4e6d-90ce-31539b290e7b)
+
+## 디렉토리 구조
 ### 1. domain
 - entity
   - BaseEntity
