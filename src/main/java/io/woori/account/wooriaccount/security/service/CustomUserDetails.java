@@ -20,6 +20,8 @@ public class CustomUserDetails implements UserDetails {
     private boolean isDeleted;
     private Collection<GrantedAuthority> authorities;
 
+
+    //TODO 2: 해당 부분 역시 role 관련 작업 후 수정 예정
     public CustomUserDetails(Customer customer){
         //this.authorities = customer.getRoles();
 
@@ -28,7 +30,7 @@ public class CustomUserDetails implements UserDetails {
         this.customerId = String.valueOf(customer.getCustomerId());
 
     }
-    //TODO: 해당 부분을 새로 생성해주기 위해서 user 정보에 role 정보 추가 요청 List<String> roles 등
+    //TODO 1: 해당 부분을 새로 생성해주기 위해서 user 정보에 role 정보 추가 요청 List<String> roles 등
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
