@@ -1,10 +1,18 @@
 package io.woori.account.wooriaccount.configuration;
 
 
+import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
 import io.woori.account.wooriaccount.security.filter.JwtAuthenticationFilter;
+import io.woori.account.wooriaccount.security.filter.JwtOncePerRequestFilter;
+import io.woori.account.wooriaccount.security.provider.JwtAuthenticationProvider;
+import io.woori.account.wooriaccount.security.service.CustomUserDetailsService;
+import io.woori.account.wooriaccount.security.utils.JwtProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,13 +21,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.Filter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CustomerRepository customerRepository;
+    private final JwtProvider jwtProvider;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,18 +52,31 @@ public class SecurityConfig {
                 .usernameParameter("loginId")
                 .passwordParameter("pwd")
                 .and()
-                .addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);// UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
+                .addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(JwtOncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(jwtAuthenticationProvider());// UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
         // TODO: JWT 성공했다면 로그인 세션 유지를 위한 filter를 하나 더 등록할 예정
 
         return http.build();
     }
 
+
+    @Bean
+    public AuthenticationProvider jwtAuthenticationProvider() {
+        return new JwtAuthenticationProvider(new CustomUserDetailsService(customerRepository), (BCryptPasswordEncoder) passwordEncoder());
+    }
+
     @Bean
     public UsernamePasswordAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        return new JwtAuthenticationFilter(authenticationManager(null));
+        return new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate);
 
     }
 
+    @Bean
+    public OncePerRequestFilter JwtOncePerRequestFilter(){
+        return new JwtOncePerRequestFilter();
+
+    }
     /*
     * AbstractAuthenticationProcessingFilter 는 객체 생성시 AuthenticationManager 를 필수로 요구합니다.
     * AuthenticationManager 는 스프링 시큐리티가 초기화 되면서 생성하고 있는데 AuthenticationManager 를 바로 참조할 수 있는 API 가 제공되지 않습니다.
