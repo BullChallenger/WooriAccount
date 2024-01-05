@@ -35,6 +35,9 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
+    //jwt 저장할 redis 설정 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 
     //querydsl 설정 추가
     // QueryDSL Implementation  
