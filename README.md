@@ -1,10 +1,10 @@
 # WooriAccount
 우리FISA 2기 간이 프로젝트
-뽕섭님 ERD랑 쿼리문 보내주세요 
 
 ## 프로젝트 소개
 - 미니 뱅킹 시스템
-- 금융권의 여러 도메인 중 계좌 송금, 조회에 집중한 프로젝트(1차 고도화 작업) 
+- 금융권의 여러 도메인 중 계좌 송금, 조회에 집중한 프로젝트(1차 고도화 작업)
+- 시큐리티 도입과 세션을 대체하는 jwt 토큰 사용 토큰 저장을 위한 redis 도입 (2차 고도화 작업)
 
 ## ERD
 ![image](https://github.com/BullChallenger/WooriAccount/assets/81970382/56a208d9-ff7f-45cc-ac1f-36a32a524a68)
