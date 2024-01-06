@@ -6,6 +6,7 @@ import io.woori.account.wooriaccount.security.filter.JwtAuthenticationFilter;
 import io.woori.account.wooriaccount.security.filter.JwtOncePerRequestFilter;
 import io.woori.account.wooriaccount.security.provider.JwtAuthenticationProvider;
 import io.woori.account.wooriaccount.security.service.CustomUserDetailsService;
+import io.woori.account.wooriaccount.security.utils.CookieUtil;
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ public class SecurityConfig {
     private final CustomerRepository customerRepository;
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, Object> redisTemplate;
-
+    private final CookieUtil cookieUtil;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -68,7 +69,7 @@ public class SecurityConfig {
 
     @Bean
     public UsernamePasswordAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        return new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate);
+        return new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate, cookieUtil);
 
     }
 

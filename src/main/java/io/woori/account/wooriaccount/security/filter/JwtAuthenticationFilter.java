@@ -1,10 +1,9 @@
 package io.woori.account.wooriaccount.security.filter;
 
+import io.woori.account.wooriaccount.security.utils.CookieUtil;
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -39,7 +38,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, Object> redisTemplate;
-
+    private final CookieUtil cookieUtil;
     /*
     * 해당 메서드는 처음 로그인 요청이 들어와 id값과 password 값이 넘어올 때 동작합니다.
     * AuthenticationToken 객체를 생성해 AuthenticationManager 해당 인증 객체를 넘겨줍니다.
@@ -85,11 +84,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("accessToken : ",accessToken);
         log.info("refreshToken : ",refreshToken);
         response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("refreshToken", refreshToken);
 
         String randomId = generateRandomId(10);
         redisTemplate.opsForHash().put(randomId, "accessToken", accessToken);
         redisTemplate.opsForHash().put(randomId, "refreshToken", refreshToken);
+        cookieUtil.addCookie(response, randomId, "randomId");
 
         // TODO : 해당 부분 객체 넣고 싶으면 넣긔 ~ 회원 정보를 DTO로 만들어서 넣어도 됨 ~
         //redisTemplate.opsForHash().put(randomId, "customer", );

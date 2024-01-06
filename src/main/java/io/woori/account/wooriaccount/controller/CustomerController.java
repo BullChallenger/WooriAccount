@@ -5,7 +5,6 @@ import io.woori.account.wooriaccount.dto.user.LoginRequestDTO;
 import io.woori.account.wooriaccount.dto.user.LoginResponseDTO;
 import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
 import io.woori.account.wooriaccount.service.inter.CustomerService;
-import io.woori.account.wooriaccount.util.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
