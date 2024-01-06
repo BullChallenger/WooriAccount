@@ -26,6 +26,19 @@ dependencies {
     //spring data jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    // spring security
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.1'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    //jwt 토큰 사용과 관련된 설정
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+    //jwt 저장할 redis 설정 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+
     //querydsl 설정 추가
     // QueryDSL Implementation  
     implementation 'com.querydsl:querydsl-jpa'
@@ -53,6 +66,10 @@ dependencies {
     // Swagger 3.0: springfox
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+
+
+
 
 }
 
