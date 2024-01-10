@@ -1,6 +1,8 @@
 package io.woori.account.wooriaccount.security.filter;
 
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
@@ -39,6 +41,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, Object> redisTemplate;
+
+
 
     /*
     * 해당 메서드는 처음 로그인 요청이 들어와 id값과 password 값이 넘어올 때 동작합니다.
