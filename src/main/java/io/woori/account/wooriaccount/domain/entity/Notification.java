@@ -39,6 +39,8 @@ public class Notification extends BaseEntity {
     @JoinColumn(name = "customer_id")
     private Customer receiver;
 
+    private String content;
+
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
@@ -47,15 +49,17 @@ public class Notification extends BaseEntity {
     private NotificationArgs notificationArgs;
 
     @Builder
-    public Notification(Customer receiver, NotificationType notificationType, NotificationArgs notificationArgs) {
+    public Notification(Customer receiver, String content, NotificationType notificationType, NotificationArgs notificationArgs) {
         this.receiver = receiver;
+        this.content = content;
         this.notificationType = notificationType;
         this.notificationArgs = notificationArgs;
     }
 
-    public static Notification of(Customer receiver, NotificationType notificationType, NotificationArgs notificationArgs) {
+    public static Notification of(Customer receiver, String content, NotificationType notificationType, NotificationArgs notificationArgs) {
         return Notification.builder()
                             .receiver(receiver)
+                            .content(content)
                             .notificationType(notificationType)
                             .notificationArgs(notificationArgs)
                             .build();
