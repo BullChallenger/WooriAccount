@@ -1,12 +1,9 @@
 package io.woori.account.wooriaccount.security.filter;
 
+import io.woori.account.wooriaccount.security.utils.CookieUtil;
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -41,7 +38,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, Object> redisTemplate;
-
+    private final CookieUtil cookieUtil;
 
 
     /*
@@ -95,6 +92,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         redisTemplate.opsForHash().put(randomId, "accessToken", accessToken);
         redisTemplate.opsForHash().put(randomId, "refreshToken", refreshToken);
 
+        cookieUtil.addCookie(response, "randomId", randomId);
         // TODO : 해당 부분 객체 넣고 싶으면 넣긔 ~ 회원 정보를 DTO로 만들어서 넣어도 됨 ~
         //redisTemplate.opsForHash().put(randomId, "customer", );
 
