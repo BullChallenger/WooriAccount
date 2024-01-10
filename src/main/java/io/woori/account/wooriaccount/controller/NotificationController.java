@@ -1,7 +1,10 @@
 package io.woori.account.wooriaccount.controller;
 
+import io.woori.account.wooriaccount.dto.notification.FindAllNotificationResponseDTO;
 import io.woori.account.wooriaccount.service.inter.CustomerService;
 import java.security.Principal;
+
+import io.woori.account.wooriaccount.service.inter.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class NotificationController {
 
-    private final CustomerService customerService;
+    private final NotificationService notificationService;
 
     @GetMapping
-    public ResponseEntity<Page<Void>> notification(Pageable pageable) {
-
+    public ResponseEntity<Page<FindAllNotificationResponseDTO>> notification(Pageable pageable,
+                                                                             @AuthenticationPrincipal Principal principal)
+    {
+        return ResponseEntity.ok(notificationService.readNotifications(pageable, 1L));
     }
 
 }
