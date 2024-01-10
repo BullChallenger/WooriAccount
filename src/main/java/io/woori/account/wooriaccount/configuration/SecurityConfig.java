@@ -67,10 +67,14 @@ public class SecurityConfig {
 
     @Bean
     public UsernamePasswordAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate,cookieUtil);
         jwtAuthenticationFilter.setAuthenticationManager(new ProviderManager(jwtAuthenticationProvider()));
 
         return jwtAuthenticationFilter;
+
+        return new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate, cookieUtil);
+
 
     }
 

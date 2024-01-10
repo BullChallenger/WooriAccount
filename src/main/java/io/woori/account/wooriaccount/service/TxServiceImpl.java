@@ -1,14 +1,7 @@
 package io.woori.account.wooriaccount.service;
 
-import io.woori.account.wooriaccount.domain.entity.AbstractTxHistory;
-import io.woori.account.wooriaccount.domain.entity.DepositTxHistory;
-import io.woori.account.wooriaccount.domain.entity.WithdrawTxHistory;
 import io.woori.account.wooriaccount.dto.tx.FindAllTxResponseDTO;
-import io.woori.account.wooriaccount.repository.jpa.DepositTxHistoryRepository;
-import io.woori.account.wooriaccount.repository.jpa.TxHistoryRepository;
-import io.woori.account.wooriaccount.repository.jpa.WithdrawTxHistoryRepository;
 import io.woori.account.wooriaccount.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
-import io.woori.account.wooriaccount.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
