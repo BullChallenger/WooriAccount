@@ -11,8 +11,11 @@ import io.woori.account.wooriaccount.service.inter.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -34,15 +37,29 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public SseEmitter connectNotification(final Long id) {
+    public SseEmitter subscribe(final Long id) {
         SseEmitter savedSseEmitter = emitterRepository.save(id, new SseEmitter(DEFAULT_TIME_OUT));
         savedSseEmitter.onCompletion(() -> emitterRepository.delete(id));
         savedSseEmitter.onTimeout(() -> emitterRepository.delete(id));
         savedSseEmitter.onError((e) -> emitterRepository.delete(id));
 
+        try {
 
+        }
 
         return null;
+    }
+
+    private void send(SseEmitter sseEmitter, String sseEmitterId, Object data) {
+        try {
+            sseEmitter.send(SseEmitter.event()
+                    .id(sseEmitterId)
+                    .name("sse")
+                    .data(data, MediaType.APPLICATION_JSON));
+        } catch(IOException exception) {
+            emitterRepository.deleteEmitterById(emitterId);
+            sseEmitter.completeWithError(exception);
+        }
     }
 
 }
