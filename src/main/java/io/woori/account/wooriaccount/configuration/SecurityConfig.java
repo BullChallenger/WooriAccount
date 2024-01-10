@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,8 +25,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.Filter;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -35,11 +34,13 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, Object> redisTemplate;
     private final CookieUtil cookieUtil;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         // token 사용을 위해 csrf를 diable 합니다.
         http.csrf().disable();
+        http.cors().disable();
 
         //세션을 대신해 jwt를 사용해 로그인 유지를 진행할 예정으로 해당 세션 사용 옵션을 stateless하게 설정합니다.
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -49,14 +50,11 @@ public class SecurityConfig {
 
         // form login 시 작동하는 필터를 등록해줍니다. (다른 로그인 방식이라면 usernamepasswordAuthentication 말고 다른 필터 사용 ok)
         http.formLogin()
-                .loginPage("/customeloginpage")
-                .usernameParameter("loginId")
-                .passwordParameter("pwd")
-                .and()
-                .addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(JwtOncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authenticationProvider(jwtAuthenticationProvider());// UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
-        // TODO: JWT 성공했다면 로그인 세션 유지를 위한 filter를 하나 더 등록할 예정
+                .loginPage("/customer/login").disable();
+        http.addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterAfter(JwtOncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
+            .authenticationProvider(jwtAuthenticationProvider());// UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
+
 
         return http.build();
     }
@@ -69,13 +67,20 @@ public class SecurityConfig {
 
     @Bean
     public UsernamePasswordAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate,cookieUtil);
+        jwtAuthenticationFilter.setAuthenticationManager(new ProviderManager(jwtAuthenticationProvider()));
+
+        return jwtAuthenticationFilter;
+
         return new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate, cookieUtil);
+
 
     }
 
     @Bean
     public OncePerRequestFilter JwtOncePerRequestFilter(){
-        return new JwtOncePerRequestFilter();
+        return new JwtOncePerRequestFilter(jwtProvider, cookieUtil, redisTemplate);
 
     }
     /*

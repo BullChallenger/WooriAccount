@@ -23,6 +23,7 @@ public class CookieUtil {
         }
         return Optional.empty();
     }
+
     public void addCookie(HttpServletResponse response, String name, String value, int maxExpiration) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
@@ -36,8 +37,6 @@ public class CookieUtil {
         cookie.setHttpOnly(false);
         response.addCookie(cookie);
     }
-
-
 
     public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie[] cookies = request.getCookies();

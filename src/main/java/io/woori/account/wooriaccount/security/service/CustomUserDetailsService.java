@@ -1,5 +1,6 @@
 package io.woori.account.wooriaccount.security.service;
 
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.woori.account.wooriaccount.domain.entity.Customer;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final CustomerRepository customerRepository;

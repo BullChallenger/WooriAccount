@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, Object> redisTemplate;
     private final CookieUtil cookieUtil;
+
     /*
     * 해당 메서드는 처음 로그인 요청이 들어와 id값과 password 값이 넘어올 때 동작합니다.
     * AuthenticationToken 객체를 생성해 AuthenticationManager 해당 인증 객체를 넘겨줍니다.
@@ -90,6 +91,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         redisTemplate.opsForHash().put(randomId, "refreshToken", refreshToken);
         cookieUtil.addCookie(response, randomId, "randomId");
 
+        cookieUtil.addCookie(response, "randomId", randomId);
         // TODO : 해당 부분 객체 넣고 싶으면 넣긔 ~ 회원 정보를 DTO로 만들어서 넣어도 됨 ~
         //redisTemplate.opsForHash().put(randomId, "customer", );
 
