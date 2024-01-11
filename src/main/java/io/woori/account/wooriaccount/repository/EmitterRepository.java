@@ -21,7 +21,7 @@ public class EmitterRepository {
     }
 
     public Optional<Map<String, SseEmitter>> findAllByCustomerId(Long id) {
-        Map<String, SseEmitter> matchedSseEmitter = new ConcurrentHashMap();
+        Map<String, SseEmitter> matchedSseEmitter = new ConcurrentHashMap<>();
 
         emitterMap.forEach((key, sseEmitter) -> {
             if (key.startsWith(String.valueOf(id))) {
@@ -29,7 +29,7 @@ public class EmitterRepository {
             }
         });
 
-        return Optional.ofNullable(matchedSseEmitter);
+        return Optional.of(matchedSseEmitter);
     }
 
     public void deleteById(final String sseKey) {

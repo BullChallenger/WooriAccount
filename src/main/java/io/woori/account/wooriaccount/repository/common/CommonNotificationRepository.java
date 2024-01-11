@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface CommonNotificationRepository {
 
-    Page<Notification> findAllByCustomer(Pageable pageable, Customer customer);
+    Page<Notification> findAllByReceiver(Pageable pageable, Customer receiver);
+
+    Notification save(Notification notification);
 
 }

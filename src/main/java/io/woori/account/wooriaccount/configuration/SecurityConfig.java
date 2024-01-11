@@ -50,7 +50,7 @@ public class SecurityConfig {
 
         // form login 시 작동하는 필터를 등록해줍니다. (다른 로그인 방식이라면 usernamepasswordAuthentication 말고 다른 필터 사용 ok)
         http.formLogin()
-                .loginPage("/customer/login").disable();
+                .loginPage("/customer/login");
         http.addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(JwtOncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
             .authenticationProvider(jwtAuthenticationProvider());// UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
@@ -72,10 +72,6 @@ public class SecurityConfig {
         jwtAuthenticationFilter.setAuthenticationManager(new ProviderManager(jwtAuthenticationProvider()));
 
         return jwtAuthenticationFilter;
-
-        return new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate, cookieUtil);
-
-
     }
 
     @Bean

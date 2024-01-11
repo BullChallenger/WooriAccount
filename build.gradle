@@ -25,7 +25,8 @@ repositories {
 dependencies {
     //spring data jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
+    // Hibernate Util
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-55:3.7.0'
     // spring security
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.1'
     testImplementation 'org.springframework.security:spring-security-test'

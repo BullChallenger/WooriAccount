@@ -1,20 +1,31 @@
 package io.woori.account.wooriaccount.domain;
 
 import java.util.List;
+
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NotificationArgs {
 
-    private final Long fromId;
+    private Long fromAccountId;
 
-    private final List<Long> receiverId;
+    private List<Long> receiverAccountId;
 
     @Builder
-    public NotificationArgs(Long fromCustomerId, List<Long> senderId) {
-        this.fromId = fromCustomerId;
-        this.receiverId = senderId;
+    public NotificationArgs(Long fromCustomerId, List<Long> receiverAccountId) {
+        this.fromAccountId = fromCustomerId;
+        this.receiverAccountId = receiverAccountId;
+    }
+
+    public static NotificationArgs of(Long fromAccountId, List<Long> receiverAccountId) {
+        return NotificationArgs.builder()
+                .fromCustomerId(fromAccountId)
+                .receiverAccountId(receiverAccountId)
+                .build();
     }
 
 }

@@ -1,25 +1,18 @@
 package io.woori.account.wooriaccount.domain.entity;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.woori.account.wooriaccount.constant.NotificationType;
 import io.woori.account.wooriaccount.domain.NotificationArgs;
-import javax.persistence.Column;
+
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 
 @Entity
 @Getter
@@ -28,6 +21,7 @@ import org.hibernate.annotations.Where;
 @Table(name = "notifications")
 @Where(clause = "IS_DELETED = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@TypeDef(name = "json", typeClass = JsonType.class)
 public class Notification extends BaseEntity {
 
     @Id
@@ -35,8 +29,8 @@ public class Notification extends BaseEntity {
     @Column(name = "notification_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id")
     private Customer receiver;
 
     private String content;

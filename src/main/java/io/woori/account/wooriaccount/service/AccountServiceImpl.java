@@ -1,18 +1,19 @@
 package io.woori.account.wooriaccount.service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
+import io.woori.account.wooriaccount.constant.NotificationType;
+import io.woori.account.wooriaccount.domain.NotificationArgs;
 import io.woori.account.wooriaccount.domain.entity.*;
 import io.woori.account.wooriaccount.dto.account.AccountAllDTO;
 import io.woori.account.wooriaccount.dto.account.AccountRemittanceDTO;
 import io.woori.account.wooriaccount.exception.CustomException;
 import io.woori.account.wooriaccount.exception.ErrorCode;
 
+import io.woori.account.wooriaccount.repository.jpa.NotificationRepository;
 import io.woori.account.wooriaccount.repository.jpa.TxHistoryRepository;
+import io.woori.account.wooriaccount.service.inter.NotificationService;
 import org.springframework.stereotype.Service;
 
 import io.woori.account.wooriaccount.dto.account.AccountDTO;
@@ -22,6 +23,9 @@ import io.woori.account.wooriaccount.repository.querydsl.inter.QueryAccountRepos
 import io.woori.account.wooriaccount.service.inter.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
+import static io.woori.account.wooriaccount.constant.NotificationType.DEPOSIT_TX_OCCUR;
+import static io.woori.account.wooriaccount.constant.NotificationType.WITHDRAW_TX_OCCUR;
 
 
 @RequiredArgsConstructor
@@ -33,8 +37,11 @@ public class AccountServiceImpl implements AccountService{
 	private final AccountRepository accountRepository;
 	private final QueryAccountRepository queryAccountRepository;
 	private final CustomerRepository customerRepository;
+	private final NotificationRepository notificationRepository;
 	private final TxHistoryRepository<DepositTxHistory> depositTxHistoryRepository;
 	private final TxHistoryRepository<WithdrawTxHistory> withdrawTxHistoryRepository;
+
+	private final NotificationService notificationService;
 
 	@Override
 	public AccountDTO accountInquiry(String accountNumber) {
@@ -75,16 +82,14 @@ public class AccountServiceImpl implements AccountService{
 		WithdrawTxHistory withedDrawCreateTransactionHistory = withDrawCreateTransactionHistory(sourceAccount, targetAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())),dto.getDescription() );
 		DepositTxHistory depositCreateTransactionHistory = depositCreateTransactionHistory(targetAccount, sourceAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())), dto.getDescription());
 
-
-
 		withdrawTxHistoryRepository.save(withedDrawCreateTransactionHistory);
 		depositTxHistoryRepository.save(depositCreateTransactionHistory);
 
+		notifyTx(dto, targetAccount, sourceAccount);
 
 		return AccountDTO.fromEntity(sourceAccount);
 
 	}
-
 
 	@Transactional
 	@Override
@@ -171,6 +176,35 @@ public class AccountServiceImpl implements AccountService{
 
 	}
 
-	
+	private void notifyTx(AccountRemittanceDTO dto, Account targetAccount, Account sourceAccount) {
+		// List 사용 이유 : 추후 N 명에게 동시에 출금할 수 있도록 고도화 예정이기 때문에 돈을 입금 받는 계좌의 id 값을
+		// List 로 받아서 알람을 전달
+		List<Long> targetAccountIds = new ArrayList<>();
+		targetAccountIds.add(targetAccount.getAccountId());
+		List<Long> sourceAccountIds = new ArrayList<>();
+		sourceAccountIds.add(sourceAccount.getAccountId());
+
+		// 입금 대상에게 알람 전달
+		generateNotification(dto, targetAccount, DEPOSIT_TX_OCCUR, targetAccountIds);
+		// 출금한 대상에게 알람 전달
+		generateNotification(dto, sourceAccount, WITHDRAW_TX_OCCUR, sourceAccountIds);
+	}
+
+
+	private void generateNotification(AccountRemittanceDTO dto, Account targetAccount, NotificationType type,
+									   List<Long> targetAccountIds)
+	{
+		targetAccountIds.forEach(id -> {
+			notificationService.notify(id,
+				notificationRepository.save(
+						Notification.of(targetAccount.getCustomer(),
+								dto.getAmount() + type.getNotificationContent(),
+										type,
+										NotificationArgs.of(targetAccount.getAccountId(), targetAccountIds)
+						)
+				)
+			);
+		});
+	}
 
 }
