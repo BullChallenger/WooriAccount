@@ -4,6 +4,7 @@ package io.woori.account.wooriaccount.configuration;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
 import io.woori.account.wooriaccount.security.filter.JwtAuthenticationFilter;
 import io.woori.account.wooriaccount.security.filter.JwtOncePerRequestFilter;
+import io.woori.account.wooriaccount.security.handler.CustomAuthenticationFailureHandler;
 import io.woori.account.wooriaccount.security.provider.JwtAuthenticationProvider;
 import io.woori.account.wooriaccount.security.service.CustomUserDetailsService;
 import io.woori.account.wooriaccount.security.utils.CookieUtil;
@@ -22,11 +23,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -46,14 +48,26 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //우선은 모든 url 접근에 허용 합니다. -> 추후 변경 ok
-        http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests((auth) ->
+                auth.regexMatchers("/customer/login", "/api/customers/signUp", "/").permitAll()
+                .anyRequest().authenticated());
 
-        // form login 시 작동하는 필터를 등록해줍니다. (다른 로그인 방식이라면 usernamepasswordAuthentication 말고 다른 필터 사용 ok)
-        http.formLogin()
-                .loginPage("/customer/login").disable();
+        /*
+        * 폼 로그인을 사용하지 않고 서버와 프론트 분리를 진행했기 때문에 다른 필터를 등록해서 사용하는 방식을 사용하기로 했기 때문에
+        * form login 기능 사용 disable 하게 했음
+        * */
+        http.formLogin().disable();
+//                .loginPage("/customer/login")
+//                .usernameParameter("email")
+//                .passwordParameter("pwd")
+//                .loginProcessingUrl("/customer/login")
+//                .defaultSuccessUrl("/");
+
+
+
         http.addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(JwtOncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
-            .authenticationProvider(jwtAuthenticationProvider());// UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
+            .authenticationProvider(jwtAuthenticationProvider()); // UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
 
 
         return http.build();
@@ -70,12 +84,15 @@ public class SecurityConfig {
 
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate,cookieUtil);
         jwtAuthenticationFilter.setAuthenticationManager(new ProviderManager(jwtAuthenticationProvider()));
+        jwtAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
 
         return jwtAuthenticationFilter;
 
-        return new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate, cookieUtil);
+    }
 
-
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler(){
+        return new CustomAuthenticationFailureHandler();
     }
 
     @Bean
