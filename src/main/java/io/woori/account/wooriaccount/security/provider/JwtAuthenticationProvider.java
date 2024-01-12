@@ -36,16 +36,21 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         log.info("JwtAuthenticationProvider : authenticate");
 
         String email = authentication.getName();
-        String principal = (String)authentication.getPrincipal();
+        String principal = (String)authentication.getCredentials();
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        log.info("{}, {}", userDetails.getUsername(),userDetails.getPassword());
+        log.info(principal);
 
         if (userDetails.getUsername().equals(email) && encoder.matches(principal, userDetails.getPassword())){
+
+            log.info("JwtAuthenticationProvider : authenticate, {} ", userDetails.getUsername());
 
             // TODO 3: 해당 부분 getAuthorities 값 설정 없어서 이부분도 수정 예정
             return UsernamePasswordAuthenticationToken.authenticated(userDetails.getUsername(), "", userDetails.getAuthorities());
 
         }
+
 
         throw new BadCredentialsException("해당 로그인 정보가 매칭되지 않습니다. 로그인 비밀번호를 다시 확인해주세요");
     }
@@ -57,7 +62,6 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     * */
     @Override
     public boolean supports(Class<?> authentication) {
-
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 
