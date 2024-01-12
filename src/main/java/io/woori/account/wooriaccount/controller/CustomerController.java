@@ -1,9 +1,9 @@
 package io.woori.account.wooriaccount.controller;
 
-import io.woori.account.wooriaccount.dto.user.CustomerUpdateDTO;
-import io.woori.account.wooriaccount.dto.user.LoginRequestDTO;
-import io.woori.account.wooriaccount.dto.user.LoginResponseDTO;
-import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
+import io.woori.account.wooriaccount.dto.customer.CustomerUpdateDTO;
+import io.woori.account.wooriaccount.dto.customer.LoginRequestDTO;
+import io.woori.account.wooriaccount.dto.customer.LoginResponseDTO;
+import io.woori.account.wooriaccount.dto.customer.SignUpRequestDTO;
 import io.woori.account.wooriaccount.service.inter.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +30,8 @@ public class CustomerController {
     public String signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
         return customerService.signUp(signUpRequestDTO);
     }
+
+
     @PostMapping("/delete")
     public String delete(@RequestParam(name = "customerId") Long customerId) {
         return customerService.delete(customerId);
