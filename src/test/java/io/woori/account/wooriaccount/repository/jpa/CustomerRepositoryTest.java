@@ -4,8 +4,6 @@ package io.woori.account.wooriaccount.repository.jpa;
 
 import io.woori.account.wooriaccount.exception.CustomException;
 import io.woori.account.wooriaccount.exception.ErrorCode;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,11 +13,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import io.woori.account.wooriaccount.domain.entity.Customer;
-import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
+import io.woori.account.wooriaccount.dto.customer.SignUpRequestDTO;
 import io.woori.account.wooriaccount.dummy.DummyCustomer;
 import org.springframework.dao.EmptyResultDataAccessException;
-
-import javax.swing.text.html.Option;
 
 import java.util.Optional;
 
