@@ -1,10 +1,10 @@
 package io.woori.account.wooriaccount.service;
 
 import io.woori.account.wooriaccount.domain.entity.Customer;
-import io.woori.account.wooriaccount.dto.user.CustomerUpdateDTO;
-import io.woori.account.wooriaccount.dto.user.LoginRequestDTO;
-import io.woori.account.wooriaccount.dto.user.LoginResponseDTO;
-import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
+import io.woori.account.wooriaccount.dto.customer.CustomerUpdateDTO;
+import io.woori.account.wooriaccount.dto.customer.LoginRequestDTO;
+import io.woori.account.wooriaccount.dto.customer.LoginResponseDTO;
+import io.woori.account.wooriaccount.dto.customer.SignUpRequestDTO;
 import io.woori.account.wooriaccount.encryption.EncryptHelper;
 import io.woori.account.wooriaccount.exception.CustomException;
 import io.woori.account.wooriaccount.exception.ErrorCode;
