@@ -1,4 +1,4 @@
-package io.woori.account.wooriaccount.dto.user;
+package io.woori.account.wooriaccount.dto.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-// 알람 응답값을 위한 DTO
-public class GetResponseDTO {
+public class CustomerUpdateDTO {
+    private Long customerId;
     private String customerName;  // 고객 이름
+    private String customerPhone;  // 고객 전화번호
     private String customerEmail;  // 고객 이메일
+    private String customerPwd;  //고객 비밀번호
 }
