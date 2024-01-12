@@ -3,6 +3,7 @@ package io.woori.account.wooriaccount.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
+import io.woori.account.wooriaccount.security.filter.ExceptionHandlerFilter;
 import io.woori.account.wooriaccount.security.filter.JsonAuthenticationFilter;
 import io.woori.account.wooriaccount.security.filter.JwtAuthenticationFilter;
 import io.woori.account.wooriaccount.security.filter.JwtOncePerRequestFilter;
@@ -60,7 +61,6 @@ public class SecurityConfig {
         * form login 기능 사용 disable 하게 했음
         * */
         http.formLogin().disable();
-
 //                .loginPage("/customer/login")
 //                .usernameParameter("email")
 //                .passwordParameter("pwd")
@@ -72,6 +72,7 @@ public class SecurityConfig {
 
         http.addFilterAt(jsonAuthenticationFiler(), UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(JwtOncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterAfter(exceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
             .authenticationProvider(jwtAuthenticationProvider()); // UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
 
 
@@ -107,6 +108,12 @@ public class SecurityConfig {
         //jwtAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
 
         return jwtAuthenticationFilter;
+
+    }
+
+    @Bean
+    public OncePerRequestFilter exceptionHandlerFilter(){
+        return new ExceptionHandlerFilter(objectMapper);
 
     }
 
