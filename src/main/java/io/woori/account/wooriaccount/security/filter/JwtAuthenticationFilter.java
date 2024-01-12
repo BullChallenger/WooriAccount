@@ -46,9 +46,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     * */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        log.info("진입 시작 ~ ");
 
-
-        String loginId = request.getParameter("loginId");
+        String loginId = request.getParameter("email");
         String pwd = request.getParameter("pwd");
 
         if (loginId.isBlank() || loginId.isEmpty() || pwd.isBlank() || pwd.isEmpty()){
@@ -57,12 +57,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         log.info("jwtAuthenticationFilter : attemptAuthentication");
 
-
         UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.unauthenticated(loginId, pwd);
 
-        authenticationManager.authenticate(authenticationToken);
-
-        return authenticationToken;
+        return  authenticationManager.authenticate(authenticationToken);
     }
 
 
@@ -72,7 +69,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     * */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain chain, Authentication authentication) throws IOException, ServletException {
+                                            FilterChain chain, Authentication authentication) {
         log.info("jwtAuthenticationFilter : successfulAuthentication");
 
         String customEmail = (String) authentication.getPrincipal();
