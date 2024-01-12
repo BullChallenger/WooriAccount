@@ -24,7 +24,6 @@ public class CustomUserDetails implements UserDetails {
     //TODO 2: 해당 부분 역시 role 관련 작업 후 수정 예정
     public CustomUserDetails(Customer customer){
         //this.authorities = customer.getRoles();
-
         this.customerEmail = customer.getCustomerEmail();
         this.customerPwd = customer.getCustomerPwd();
         this.customerId = String.valueOf(customer.getCustomerId());
