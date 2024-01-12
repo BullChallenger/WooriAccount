@@ -1,12 +1,11 @@
 package io.woori.account.wooriaccount.domain.entity;
 
 
-import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
+import io.woori.account.wooriaccount.dto.customer.SignUpRequestDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
