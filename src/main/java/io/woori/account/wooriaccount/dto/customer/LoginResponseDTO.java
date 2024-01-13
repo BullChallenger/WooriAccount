@@ -1,4 +1,4 @@
-package io.woori.account.wooriaccount.dto.user;
+package io.woori.account.wooriaccount.dto.customer;
 
 import lombok.*;
 

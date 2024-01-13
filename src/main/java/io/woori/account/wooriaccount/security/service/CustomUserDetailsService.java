@@ -1,6 +1,5 @@
 package io.woori.account.wooriaccount.security.service;
 
-import io.swagger.v3.oas.annotations.servers.Server;
 import io.woori.account.wooriaccount.domain.entity.Customer;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -31,11 +29,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         Customer customer;
         CustomUserDetails userDetails;
         if (op.isPresent()){
+
+            log.info("CustomUserDetailsService customer 찾았다!");
+
             customer= op.get();
             userDetails = new CustomUserDetails(customer);
-
             return userDetails;
         }
+
         throw new BadCredentialsException("해당 이메일을 가진 회원이 존재하지 않습니다.");
     }
 }

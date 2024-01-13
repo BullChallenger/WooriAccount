@@ -1,7 +1,7 @@
 package io.woori.account.wooriaccount.dummy;
 
 import io.woori.account.wooriaccount.domain.entity.Customer;
-import io.woori.account.wooriaccount.dto.user.SignUpRequestDTO;
+import io.woori.account.wooriaccount.dto.customer.SignUpRequestDTO;
 
 public class DummyCustomer {
 

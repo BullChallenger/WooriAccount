@@ -1,9 +1,14 @@
 package io.woori.account.wooriaccount.configuration;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
+import io.woori.account.wooriaccount.security.filter.ExceptionHandlerFilter;
+import io.woori.account.wooriaccount.security.filter.JsonAuthenticationFilter;
 import io.woori.account.wooriaccount.security.filter.JwtAuthenticationFilter;
 import io.woori.account.wooriaccount.security.filter.JwtOncePerRequestFilter;
+import io.woori.account.wooriaccount.security.handler.JsonAuthenticationFailureHandler;
+import io.woori.account.wooriaccount.security.handler.JsonAuthenticationSuccessHandler;
 import io.woori.account.wooriaccount.security.provider.JwtAuthenticationProvider;
 import io.woori.account.wooriaccount.security.service.CustomUserDetailsService;
 import io.woori.account.wooriaccount.security.utils.CookieUtil;
@@ -22,11 +27,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.*;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -34,6 +39,7 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, Object> redisTemplate;
     private final CookieUtil cookieUtil;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -46,14 +52,28 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //우선은 모든 url 접근에 허용 합니다. -> 추후 변경 ok
-        http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests((auth) ->
+                auth.regexMatchers("/customer/login", "/api/customers/signUp", "/").permitAll()
+                .anyRequest().authenticated());
 
-        // form login 시 작동하는 필터를 등록해줍니다. (다른 로그인 방식이라면 usernamepasswordAuthentication 말고 다른 필터 사용 ok)
-        http.formLogin()
-                .loginPage("/customer/login");
-        http.addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        /*
+        * 폼 로그인을 사용하지 않고 서버와 프론트 분리를 진행했기 때문에 다른 필터를 등록해서 사용하는 방식을 사용하기로 했기 때문에
+        * form login 기능 사용 disable 하게 했음
+        * */
+        http.formLogin().disable();
+//                .loginPage("/customer/login")
+//                .usernameParameter("email")
+//                .passwordParameter("pwd")
+//                .loginProcessingUrl("/customer/login")
+//                .defaultSuccessUrl("/");
+
+
+
+
+        http.addFilterAt(jsonAuthenticationFiler(), UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(JwtOncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
-            .authenticationProvider(jwtAuthenticationProvider());// UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
+            .addFilterAfter(exceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
+            .authenticationProvider(jwtAuthenticationProvider()); // UsernamePasswordAuthenticatioFilter가 작동할 때 jwt custom filter를 사용하려 합니다.
 
 
         return http.build();
@@ -61,17 +81,45 @@ public class SecurityConfig {
 
 
     @Bean
+    public AbstractAuthenticationProcessingFilter jsonAuthenticationFiler() throws Exception {
+        AbstractAuthenticationProcessingFilter jsonAuthenticationFilter = new JsonAuthenticationFilter(authenticationManager(null),objectMapper);
+        jsonAuthenticationFilter.setAuthenticationManager(new ProviderManager(jwtAuthenticationProvider()));//실제로 authentication manager는 이 필터에 넘겨줘야 하는데 이 작업은 직접 구현한 manager를 넣어도 되지만 해당 프로젝트에선 구현하고 있지 않아서 이방식을 사용
+        jsonAuthenticationFilter.setAuthenticationSuccessHandler(jsonAuthenticationSuccessHandler());
+        jsonAuthenticationFilter.setAuthenticationFailureHandler(jsonAuthenticationFailureHandler());
+        return jsonAuthenticationFilter;
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler jsonAuthenticationSuccessHandler(){
+        return new JsonAuthenticationSuccessHandler(jwtProvider, redisTemplate, cookieUtil, objectMapper);
+
+    }
+
+    @Bean
     public AuthenticationProvider jwtAuthenticationProvider() {
         return new JwtAuthenticationProvider(new CustomUserDetailsService(customerRepository), (BCryptPasswordEncoder) passwordEncoder());
     }
 
-    @Bean
+    //@Bean
     public UsernamePasswordAuthenticationFilter jwtAuthenticationFilter() throws Exception {
 
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(null), jwtProvider, redisTemplate,cookieUtil);
         jwtAuthenticationFilter.setAuthenticationManager(new ProviderManager(jwtAuthenticationProvider()));
+        //jwtAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
 
         return jwtAuthenticationFilter;
+
+    }
+
+    @Bean
+    public OncePerRequestFilter exceptionHandlerFilter(){
+        return new ExceptionHandlerFilter(objectMapper);
+
+    }
+
+    @Bean
+    public AuthenticationFailureHandler jsonAuthenticationFailureHandler(){
+        return new JsonAuthenticationFailureHandler(objectMapper);
     }
 
     @Bean

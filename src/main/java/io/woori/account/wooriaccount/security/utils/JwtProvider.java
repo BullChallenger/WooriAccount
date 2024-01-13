@@ -38,7 +38,7 @@ public class JwtProvider {
     * HMAC-SHA 알고리즘에 따라서 키를 생성하고 생성된 키는 JWT 서명에 사용하여 토큰 발급과 검증에 사용합니다.
     * */
     private Key getSecretKey(){
-        byte[] keyBytes = jwtSecretKey.getBytes(StandardCharsets.UTF_8);
+        byte[] keyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded();
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
