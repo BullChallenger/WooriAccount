@@ -36,3 +36,12 @@
 ### 프로젝트 구조
 
 
+## 고도화
+
+### 1차 작업
+
+
+### 2차 고도화
+- 시큐리티 도입
+![image](https://github.com/BullChallenger/WooriAccount/assets/81970382/c7bbb4dc-ed0c-4db2-b2bc-d441cbe64992)
+
