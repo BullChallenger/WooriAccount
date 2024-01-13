@@ -26,7 +26,6 @@ public abstract class BaseEntity {
     @Column(columnDefinition = "datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '수정일자'")
     private LocalDateTime lastModifiedTime; // 수정시간
 
-    @Setter
     @Column(columnDefinition = "bit default false NOT NULL COMMENT '이용가능여부'")
     private Boolean isDeleted;
 
