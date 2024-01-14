@@ -43,5 +43,5 @@
 
 ### 2차 고도화
 - 시큐리티 도입
-![image](https://github.com/BullChallenger/WooriAccount/assets/81970382/c7bbb4dc-ed0c-4db2-b2bc-d441cbe64992)
+![security](https://github.com/BullChallenger/WooriAccount/assets/81970382/ce6b425b-d2d0-436c-ad89-85a5ae8d5325)
 
