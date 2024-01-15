@@ -1,10 +1,8 @@
 package io.woori.account.wooriaccount.dto.tx;
 
-import com.querydsl.core.annotations.QueryProjection;
 import io.woori.account.wooriaccount.domain.entity.AbstractTxHistory;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

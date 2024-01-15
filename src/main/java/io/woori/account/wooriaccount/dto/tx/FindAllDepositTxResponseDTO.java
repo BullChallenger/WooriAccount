@@ -1,8 +1,6 @@
 package io.woori.account.wooriaccount.dto.tx;
 
 import com.querydsl.core.annotations.QueryProjection;
-import io.woori.account.wooriaccount.domain.entity.DepositTxHistory;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;

@@ -5,7 +5,6 @@ import io.woori.account.wooriaccount.dto.tx.FindAllDepositTxResponseDTO;
 import io.woori.account.wooriaccount.dto.tx.SaveTxRequestDTO;
 import io.woori.account.wooriaccount.exception.ErrorCode;
 import io.woori.account.wooriaccount.exception.TxHistoryException;
-import io.woori.account.wooriaccount.repository.jpa.AccountRepository;
 import io.woori.account.wooriaccount.repository.jpa.TxHistoryRepository;
 import io.woori.account.wooriaccount.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
 import io.woori.account.wooriaccount.service.inter.TxHistoryService;
@@ -15,9 +14,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -48,8 +44,8 @@ public class DepositTxServiceImpl implements TxHistoryService<DepositTxHistory, 
 
     @Transactional
     public Page<FindAllDepositTxResponseDTO> findTxHistoryAll(Long accountId,
-                                                               Long lastTxHistoryId,
-                                                               Pageable pageable)
+                                                              Long lastTxHistoryId,
+                                                              Pageable pageable)
     {
         return queryTransactionHistoryRepository
                 .readDepositTxHistoryAll(accountId, lastTxHistoryId, pageable);

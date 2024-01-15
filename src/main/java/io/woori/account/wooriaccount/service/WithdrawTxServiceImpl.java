@@ -1,7 +1,6 @@
 package io.woori.account.wooriaccount.service;
 
 import io.woori.account.wooriaccount.domain.entity.WithdrawTxHistory;
-import io.woori.account.wooriaccount.dto.tx.FindAllDepositTxResponseDTO;
 import io.woori.account.wooriaccount.dto.tx.FindAllWithdrawTxResponseDTO;
 import io.woori.account.wooriaccount.dto.tx.SaveTxRequestDTO;
 import io.woori.account.wooriaccount.exception.ErrorCode;
@@ -14,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional

@@ -60,15 +60,13 @@ public class NotificationServiceImpl implements NotificationService {
     public void notify(Long receiverId, Notification notification) {
         log.info("### notify {} ###", receiverId);
         emitterRepository.findAllByCustomerId(receiverId).ifPresent(
-            emitterMap -> {
-                emitterMap.forEach(
-                        (key, sseEmitter) -> {
-                            log.info("SseEmitter - {} : {}", key, sseEmitter);
-                            emitterRepository.save(key, sseEmitter);
-                            send(sseEmitter, key, TxNotifyDTO.from(notification));
-                        }
-                );
-            }
+            emitterMap -> emitterMap.forEach(
+                (key, sseEmitter) -> {
+                    log.info("SseEmitter - {} : {}", key, sseEmitter);
+                    emitterRepository.save(key, sseEmitter);
+                    send(sseEmitter, key, TxNotifyDTO.from(notification));
+                }
+            )
         );
     }
 
