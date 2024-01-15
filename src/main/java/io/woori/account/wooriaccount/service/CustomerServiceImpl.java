@@ -22,6 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final EncryptHelper encryptHelper;
 
+
     @Override
     public String signUp(SignUpRequestDTO dto) {
         // 이메일 중복 여부 체크

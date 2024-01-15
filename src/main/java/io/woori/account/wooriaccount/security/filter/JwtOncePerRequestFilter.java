@@ -41,40 +41,37 @@ public class JwtOncePerRequestFilter extends OncePerRequestFilter {
     * 그 후에 해당 객체를 security context 안에 저장해 로그인 유지를 진행할 수 있게 합니다.
     * */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         String removePrefixToken;
 
+        log.info("request.getHeader {}", request.getHeader("Authorization"));
+
+
         if (request.getHeader("Authorization") == null || request.getHeader("Authorization").isEmpty()){
             log.info("토큰 없어~ 돌아가 ~");
-           filterChain.doFilter(request,response);
+            filterChain.doFilter(request,response);
            return;
         }
+
         removePrefixToken= removePrefixToken(request);
-        
+        log.info(removePrefixToken(request));
+
 //        Optional<Cookie> randomId =
 //                cookieUtil.getCookie(request, "randomId");
 //        if (randomId.isEmpty()){
 //            filterChain.doFilter(request, response);
 //            return;
 //        }
-//        
-//        String value = randomId.get().getValue();
-//
-//        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
-//            Object accessToken = (String) redisTemplate.opsForHash().get(value, "accessToken");
-//            
-//            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken();
-//
-//
-//        }
-        // 유효한 토큰인지를 확인하고 security context에 해당 정보를 저장.
-        if (Objects.nonNull(removePrefixToken) && jwtProvider.isValidToken(removePrefixToken)){
+
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
+                && jwtProvider.isValidToken(removePrefixToken)){
 
             Authentication authentication = jwtProvider.getAuthentication(removePrefixToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            
         }
 
         filterChain.doFilter(request, response);
