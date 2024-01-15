@@ -22,8 +22,10 @@ public class TxServiceImpl {
 
     public Page<FindAllTxResponseDTO> findBySenderIdOrReceiverId(Long accountId, Pageable pageable) {
         List<FindAllTxResponseDTO> allMyTxHistory = new ArrayList<>();
+
         List<FindAllTxResponseDTO> byDepositTx = txHistoryRepository.readDepositTxHistoryAllToList(accountId)
                 .stream().map(FindAllTxResponseDTO::of).toList();
+
         List<FindAllTxResponseDTO> byWithdrawTx = txHistoryRepository.readWithdrawTxHistoryAllToList(accountId)
                 .stream().map(FindAllTxResponseDTO::of).toList();
 
