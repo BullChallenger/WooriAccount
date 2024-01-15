@@ -52,40 +52,27 @@ public class JwtOncePerRequestFilter extends OncePerRequestFilter {
 
         if (request.getHeader("Authorization") == null || request.getHeader("Authorization").isEmpty()){
             log.info("토큰 없어~ 돌아가 ~");
-           filterChain.doFilter(request,response);
+            filterChain.doFilter(request,response);
            return;
         }
 
         removePrefixToken= removePrefixToken(request);
         log.info(removePrefixToken(request));
 
-        Optional<Cookie> randomId =
-                cookieUtil.getCookie(request, "randomId");
-        if (randomId.isEmpty()){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String value = randomId.get().getValue();
-
-        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
-            Object accessToken = (String) redisTemplate.opsForHash().get(value, "accessToken");
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(acc);
-
-
-        }
-//        // 유효한 토큰인지를 확인하고 security context에 해당 정보를 저장.
-//
-//        //if (StringUtils.hasText(removePrefixToken) && jwtProvider.isValidToken(removePrefixToken)){
-//        if (StringUtils.hasText(removePrefixToken) && jwtProvider.isValidToken(removePrefixToken)){
-//            Authentication authentication = jwtProvider.getAuthentication(removePrefixToken);
-//            log.info("{} {}", authentication.getName(), authentication.getCredentials());
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//            Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
-//            log.info("{} {}", authentication1.getName(), authentication1.getPrincipal());
+//        Optional<Cookie> randomId =
+//                cookieUtil.getCookie(request, "randomId");
+//        if (randomId.isEmpty()){
+//            filterChain.doFilter(request, response);
+//            return;
 //        }
+
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
+                && jwtProvider.isValidToken(removePrefixToken)){
+
+            Authentication authentication = jwtProvider.getAuthentication(removePrefixToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        }
 
         filterChain.doFilter(request, response);
 

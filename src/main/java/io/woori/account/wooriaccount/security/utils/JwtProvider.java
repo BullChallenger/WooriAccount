@@ -30,7 +30,6 @@ public class JwtProvider {
     //해당 jwtSecretKey는 실제 토큰이 아닌 JWT 생성, 검증에 사용되는 비밀키입니다. (서버에서 공유함)
     @Value("${jwt.secretKey}")
     private String jwtSecretKey;
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     private final UserDetailsService userDetailsService;
     private static final long ACCESS_TOKEN_EXPIRED_TIME = 1000L * 60 * 60; // 1시간
@@ -42,7 +41,7 @@ public class JwtProvider {
     * */
 
     private Key getSecretKey() {
-        return SECRET_KEY;
+        return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
 
 
