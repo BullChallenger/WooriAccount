@@ -28,7 +28,9 @@ public class CustomerController {
 
     @PostMapping("/signUp")
     public String signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
+
         return customerService.signUp(signUpRequestDTO);
+
     }
 
 

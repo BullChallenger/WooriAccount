@@ -8,6 +8,7 @@ import io.woori.account.wooriaccount.service.AccountServiceImpl;
 import io.woori.account.wooriaccount.service.inter.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class AccountController {
     private final AccountServiceImpl accountService;
 
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/create/{customerId}")
     public ResponseEntity<AccountDTO> createAccount(@PathVariable("customerId") Long customerId){
 
