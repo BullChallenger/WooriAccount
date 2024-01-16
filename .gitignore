@@ -229,3 +229,6 @@ gradle-app.setting
 
 *.yml
 src/main/resources/application.properties
+
+### QClass
+/src/main/generated
