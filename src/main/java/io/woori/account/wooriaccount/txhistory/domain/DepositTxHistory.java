@@ -1,14 +1,13 @@
 package io.woori.account.wooriaccount.txhistory.domain;
 
 import io.woori.account.wooriaccount.account.domain.entity.Account;
+import io.woori.account.wooriaccount.common.domain.entity.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -16,22 +15,37 @@ import java.math.BigDecimal;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AttributeOverride(
-        name = "txId",
-        column = @Column(name = "deposit_tx_id")
-)
-@DiscriminatorValue(value = "deposit_tx")
-@ToString
-public class DepositTxHistory extends AbstractTxHistory {
+@Where(clause = "IS_DELETED = false")
+public class DepositTxHistory extends BaseEntity {
+
+    @Id
+    @Column(name = "tx_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long txId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_account_id")
+    private Account sender;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_account_id")
+    private Account receiver;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
+
+    @Column(nullable = false)
+    private BigDecimal balanceAfterTx;
+
+    private String description;
 
     @Builder
-    public DepositTxHistory(Account sender,
-                            Account receiver,
-                            BigDecimal amount,
-                            BigDecimal balanceAfterTx,
-                            String description
-    ) {
-        super(sender, receiver, amount, balanceAfterTx, description);
+    public DepositTxHistory(Account sender, Account receiver, BigDecimal amount, BigDecimal balanceAfterTx, String description) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.amount = amount;
+        this.balanceAfterTx = balanceAfterTx;
+        this.description = description;
     }
 
     public static DepositTxHistory of(Account sender,

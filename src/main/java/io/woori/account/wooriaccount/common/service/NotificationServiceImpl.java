@@ -43,8 +43,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public SseEmitter subscribe(final Long id) {
-        final String sseKey = generateSseKey(id);
+    public SseEmitter subscribe(final Long customerId) {
+        final String sseKey = generateSseKey(customerId);
         SseEmitter savedSseEmitter = emitterRepository.save(sseKey, new SseEmitter(DEFAULT_TIME_OUT));
 
         savedSseEmitter.onCompletion(() -> emitterRepository.deleteById(sseKey));

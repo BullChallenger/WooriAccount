@@ -5,7 +5,7 @@ import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllWithdrawTxRespo
 import io.woori.account.wooriaccount.txhistory.domain.dto.SaveTxRequestDTO;
 import io.woori.account.wooriaccount.common.exception.ErrorCode;
 import io.woori.account.wooriaccount.common.exception.TxHistoryException;
-import io.woori.account.wooriaccount.txhistory.repository.jpa.TxHistoryRepository;
+import io.woori.account.wooriaccount.txhistory.repository.jpa.WithdrawTxHistoryRepository;
 import io.woori.account.wooriaccount.txhistory.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
 import io.woori.account.wooriaccount.txhistory.service.inter.TxHistoryService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory, Long> {
 
-    private final TxHistoryRepository<WithdrawTxHistory> txHistoryRepository;
+    private final WithdrawTxHistoryRepository txHistoryRepository;
     private final QueryTransactionHistoryRepositoryImpl queryTransactionHistoryRepository;
 
     @Override
     public WithdrawTxHistory save(SaveTxRequestDTO dto) {
-        return WithdrawTxHistory.of(dto.getSender(),
+        return WithdrawTxHistory.of(
+                dto.getSender(),
                 dto.getReceiver(),
                 dto.getAmount(),
                 dto.getBalanceAfterTx(),

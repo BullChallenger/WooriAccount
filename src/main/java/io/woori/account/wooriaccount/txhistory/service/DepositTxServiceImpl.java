@@ -5,7 +5,7 @@ import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllDepositTxRespon
 import io.woori.account.wooriaccount.txhistory.domain.dto.SaveTxRequestDTO;
 import io.woori.account.wooriaccount.common.exception.ErrorCode;
 import io.woori.account.wooriaccount.common.exception.TxHistoryException;
-import io.woori.account.wooriaccount.txhistory.repository.jpa.TxHistoryRepository;
+import io.woori.account.wooriaccount.txhistory.repository.jpa.DepositTxHistoryRepository;
 import io.woori.account.wooriaccount.txhistory.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
 import io.woori.account.wooriaccount.txhistory.service.inter.TxHistoryService;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DepositTxServiceImpl implements TxHistoryService<DepositTxHistory, Long> {
 
-    private final TxHistoryRepository<DepositTxHistory> txHistoryRepository;
+    private final DepositTxHistoryRepository txHistoryRepository;
     private final QueryTransactionHistoryRepositoryImpl queryTransactionHistoryRepository;
 
     @Override

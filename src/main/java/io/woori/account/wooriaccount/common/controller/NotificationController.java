@@ -31,8 +31,8 @@ public class NotificationController {
     }
 
     @GetMapping(value = "/subscribe/{id}")
-    public SseEmitter subscribe(@PathVariable(value = "id") Long id) {
-        return notificationService.subscribe(id);
+    public SseEmitter subscribe(@PathVariable(value = "id") Long customerId) {
+        return notificationService.subscribe(customerId);
     }
 
 }

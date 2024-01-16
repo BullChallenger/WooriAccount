@@ -1,6 +1,7 @@
 package io.woori.account.wooriaccount.txhistory.domain.dto;
 
-import io.woori.account.wooriaccount.txhistory.domain.AbstractTxHistory;
+import io.woori.account.wooriaccount.txhistory.domain.DepositTxHistory;
+import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,9 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class FindAllTxResponseDTO implements Comparable<FindAllTxResponseDTO> {
 
-    private final String senderName;
-
-    private final String receiverName;
+    private final String targetName;
 
     private final BigDecimal amount;
 
@@ -23,24 +22,31 @@ public class FindAllTxResponseDTO implements Comparable<FindAllTxResponseDTO> {
     private final LocalDateTime createdAt;
 
     @Builder
-    public FindAllTxResponseDTO(String senderName,
-                                String receiverName,
+    public FindAllTxResponseDTO(String targetName,
                                 BigDecimal amount,
                                 BigDecimal balanceAfterTx,
                                 String description,
                                 LocalDateTime createdAt) {
-        this.senderName = senderName;
-        this.receiverName = receiverName;
+        this.targetName = targetName;
         this.amount = amount;
         this.balanceAfterTx = balanceAfterTx;
         this.description = description;
         this.createdAt = createdAt;
     }
 
-    public static FindAllTxResponseDTO of(AbstractTxHistory txHistory) {
+    public static FindAllTxResponseDTO of(DepositTxHistory depositTxHistory) {
         return FindAllTxResponseDTO.builder()
-                .senderName(txHistory.getSender().getCustomer().getCustomerName())
-                .receiverName(txHistory.getReceiver().getCustomer().getCustomerName())
+                .targetName(depositTxHistory.getReceiver().getCustomer().getCustomerName())
+                .amount(depositTxHistory.getAmount())
+                .balanceAfterTx(depositTxHistory.getBalanceAfterTx())
+                .description(depositTxHistory.getDescription())
+                .createdAt(depositTxHistory.getCreatedTime())
+                .build();
+    }
+
+    public static FindAllTxResponseDTO of(WithdrawTxHistory txHistory) {
+        return FindAllTxResponseDTO.builder()
+                .targetName(txHistory.getReceiver().getCustomer().getCustomerName())
                 .amount(txHistory.getAmount())
                 .balanceAfterTx(txHistory.getBalanceAfterTx())
                 .description(txHistory.getDescription())

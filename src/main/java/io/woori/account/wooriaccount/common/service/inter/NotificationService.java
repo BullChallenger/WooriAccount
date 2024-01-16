@@ -10,7 +10,7 @@ public interface NotificationService {
 
     Page<FindAllNotificationResponseDTO> readNotifications(Pageable pageable, Long customerId);
 
-    SseEmitter subscribe(Long id);
+    SseEmitter subscribe(Long customerId);
 
     void notify(Long receiverId, Notification notification);
 }
