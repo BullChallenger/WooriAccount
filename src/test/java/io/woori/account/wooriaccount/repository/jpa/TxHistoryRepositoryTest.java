@@ -2,11 +2,10 @@ package io.woori.account.wooriaccount.repository.jpa;
 
 import io.woori.account.wooriaccount.account.domain.entity.Account;
 import io.woori.account.wooriaccount.customer.domain.entity.Customer;
-import io.woori.account.wooriaccount.txhistory.domain.DepositTxHistory;
-import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
 import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
 import io.woori.account.wooriaccount.dummy.DummyCustomer;
-import io.woori.account.wooriaccount.txhistory.repository.jpa.TxHistoryRepository;
+import io.woori.account.wooriaccount.txhistory.repository.jpa.DepositTxHistoryRepository;
+import io.woori.account.wooriaccount.txhistory.repository.jpa.WithdrawTxHistoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,10 +27,10 @@ class TxHistoryRepositoryTest {
     private Customer receiverCustomer;
 
     @Autowired
-    private TxHistoryRepository<DepositTxHistory> depositTxHistoryTxHistoryRepository;
+    private DepositTxHistoryRepository depositTxHistoryTxHistoryRepository;
 
     @Autowired
-    private TxHistoryRepository<WithdrawTxHistory> withdrawTxHistoryTxHistoryRepository;
+    private WithdrawTxHistoryRepository withdrawTxHistoryTxHistoryRepository;
 
     @Autowired
     TestEntityManager testEntityManager;

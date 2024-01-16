@@ -1,17 +1,16 @@
 package io.woori.account.wooriaccount.txhistory.domain;
 
 import io.woori.account.wooriaccount.account.domain.entity.Account;
+import io.woori.account.wooriaccount.common.domain.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -19,28 +18,44 @@ import java.math.BigDecimal;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AttributeOverride(
-        name = "txId",
-        column = @Column(name = "withdraw_tx_id")
-)
-@DiscriminatorValue(value = "withdraw_tx")
-public class WithdrawTxHistory extends AbstractTxHistory {
+@Where(clause = "IS_DELETED = false")
+public class WithdrawTxHistory extends BaseEntity {
+
+    @Id
+    @Column(name = "tx_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long txId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_account_id")
+    private Account sender;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_account_id")
+    private Account receiver;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
+
+    @Column(nullable = false)
+    private BigDecimal balanceAfterTx;
+
+    private String description;
 
     @Builder
-    public WithdrawTxHistory(Account sender,
-                             Account receiver,
-                             BigDecimal amount,
-                             BigDecimal balanceAfterTx,
-                             String description
-    ) {
-        super(sender, receiver, amount, balanceAfterTx, description);
+    public WithdrawTxHistory(Account sender, Account receiver, BigDecimal amount, BigDecimal balanceAfterTx, String description) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.amount = amount;
+        this.balanceAfterTx = balanceAfterTx;
+        this.description = description;
     }
 
     public static WithdrawTxHistory of(Account sender,
-                                      Account receiver,
-                                      BigDecimal amount,
-                                      BigDecimal balanceAfterTx,
-                                      String description
+                                       Account receiver,
+                                       BigDecimal amount,
+                                       BigDecimal balanceAfterTx,
+                                       String description
     ) {
         return WithdrawTxHistory.builder()
                 .sender(sender)

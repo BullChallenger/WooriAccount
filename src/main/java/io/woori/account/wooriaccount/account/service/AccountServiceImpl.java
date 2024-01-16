@@ -17,8 +17,9 @@ import io.woori.account.wooriaccount.common.exception.ErrorCode;
 import io.woori.account.wooriaccount.common.repository.jpa.NotificationRepository;
 import io.woori.account.wooriaccount.txhistory.domain.DepositTxHistory;
 import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
-import io.woori.account.wooriaccount.txhistory.repository.jpa.TxHistoryRepository;
+import io.woori.account.wooriaccount.txhistory.repository.jpa.DepositTxHistoryRepository;
 import io.woori.account.wooriaccount.common.service.inter.NotificationService;
+import io.woori.account.wooriaccount.txhistory.repository.jpa.WithdrawTxHistoryRepository;
 import org.springframework.stereotype.Service;
 
 import io.woori.account.wooriaccount.account.domain.dto.AccountDTO;
@@ -42,8 +43,8 @@ public class AccountServiceImpl implements AccountService {
 	private final QueryAccountRepository queryAccountRepository;
 	private final CustomerRepository customerRepository;
 	private final NotificationRepository notificationRepository;
-	private final TxHistoryRepository<DepositTxHistory> depositTxHistoryRepository;
-	private final TxHistoryRepository<WithdrawTxHistory> withdrawTxHistoryRepository;
+	private final DepositTxHistoryRepository depositTxHistoryRepository;
+	private final WithdrawTxHistoryRepository withdrawTxHistoryRepository;
 
 	private final NotificationService notificationService;
 
@@ -63,11 +64,11 @@ public class AccountServiceImpl implements AccountService {
 	public AccountDTO accountRemittance(AccountRemittanceDTO dto) {
 
 		//출금 계좌 조회
-		Account sourceAccount = accountRepository.findByAccountNumber(dto.getAccountNumber())
+		final Account sourceAccount = accountRepository.findByAccountNumber(dto.getAccountNumber())
 				.orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
 		// 입금 계좌 조회
-		Account targetAccount = accountRepository.findByAccountNumber(dto.getTargetAccountNumber())
+		final Account targetAccount = accountRepository.findByAccountNumber(dto.getTargetAccountNumber())
 				.orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
 
@@ -84,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
 
 		// 거래 내역 기록
 		WithdrawTxHistory withedDrawCreateTransactionHistory = withDrawCreateTransactionHistory(sourceAccount, targetAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())),dto.getDescription() );
-		DepositTxHistory depositCreateTransactionHistory = depositCreateTransactionHistory(targetAccount, sourceAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())), dto.getDescription());
+		DepositTxHistory depositCreateTransactionHistory = depositCreateTransactionHistory(sourceAccount, targetAccount, BigDecimal.valueOf(Long.parseLong(dto.getAmount())), dto.getDescription());
 
 		withdrawTxHistoryRepository.save(withedDrawCreateTransactionHistory);
 		depositTxHistoryRepository.save(depositCreateTransactionHistory);
@@ -180,35 +181,39 @@ public class AccountServiceImpl implements AccountService {
 
 	}
 
-	private void notifyTx(AccountRemittanceDTO dto, Account targetAccount, Account sourceAccount) {
+	private void notifyTx(AccountRemittanceDTO dto, Account to, Account from) {
 		// List 사용 이유 : 추후 N 명에게 동시에 출금할 수 있도록 고도화 예정이기 때문에 돈을 입금 받는 계좌의 id 값을
 		// List 로 받아서 알람을 전달
 		List<Long> targetAccountIds = new ArrayList<>();
-		targetAccountIds.add(targetAccount.getAccountId());
+		targetAccountIds.add(to.getAccountId());
 		List<Long> sourceAccountIds = new ArrayList<>();
-		sourceAccountIds.add(sourceAccount.getAccountId());
+		sourceAccountIds.add(from.getAccountId());
 
 		// 입금 대상에게 알람 전달
-		generateNotification(dto, targetAccount, DEPOSIT_TX_OCCUR, targetAccountIds);
+		generateNotification(dto, to, from, DEPOSIT_TX_OCCUR, targetAccountIds);
 		// 출금한 대상에게 알람 전달
-		generateNotification(dto, sourceAccount, WITHDRAW_TX_OCCUR, sourceAccountIds);
+		generateNotification(dto, from, to, WITHDRAW_TX_OCCUR, sourceAccountIds);
 	}
 
 
-	private void generateNotification(AccountRemittanceDTO dto, Account targetAccount, NotificationType type,
-									   List<Long> targetAccountIds)
+	private void generateNotification(AccountRemittanceDTO dto, Account to, Account from, NotificationType type, List<Long> targetAccountIds)
 	{
 		targetAccountIds.forEach(id -> {
+			Customer fromCustomer = from.getCustomer();
 			notificationService.notify(id,
 				notificationRepository.save(
-						Notification.of(targetAccount.getCustomer(),
-								dto.getAmount() + type.getNotificationContent(),
+						Notification.of(to.getCustomer(),
+										writeNotificationContent(fromCustomer, dto, type),
 										type,
-										NotificationArgs.of(targetAccount.getAccountId(), targetAccountIds)
+										NotificationArgs.of(from.getAccountId(), targetAccountIds)
 						)
 				)
 			);
 		});
+	}
+
+	private static String writeNotificationContent(Customer from, AccountRemittanceDTO dto, NotificationType type) {
+		return from.getCustomerName() + "으로부터" + dto.getAmount() + type.getNotificationContent();
 	}
 
 }

@@ -3,7 +3,8 @@ package io.woori.account.wooriaccount.account.domain.entity;
 
 import io.woori.account.wooriaccount.common.domain.entity.BaseEntity;
 import io.woori.account.wooriaccount.customer.domain.entity.Customer;
-import io.woori.account.wooriaccount.txhistory.domain.AbstractTxHistory;
+import io.woori.account.wooriaccount.txhistory.domain.DepositTxHistory;
+import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -43,10 +44,10 @@ public class Account extends BaseEntity {
     private Customer customer; // 계좌 주인
 
     @OneToMany(mappedBy = "sender")
-    private List<AbstractTxHistory> withdrawTxHistories = new ArrayList<>(); // 출금 기록
+    private List<WithdrawTxHistory> withdrawTxHistories = new ArrayList<>(); // 출금 기록
 
     @OneToMany(mappedBy = "receiver")
-    private List<AbstractTxHistory> depositTxHistories = new ArrayList<>(); // 입금 기록
+    private List<DepositTxHistory   > depositTxHistories = new ArrayList<>(); // 입금 기록
 
     @Builder
     public Account(String accountNumber, BigDecimal accountBalance, BigDecimal accountLimit, Customer customer) {

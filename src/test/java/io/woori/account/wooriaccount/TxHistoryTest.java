@@ -6,7 +6,7 @@ import io.woori.account.wooriaccount.txhistory.domain.DepositTxHistory;
 import io.woori.account.wooriaccount.account.domain.dto.AccountRemittanceDTO;
 import io.woori.account.wooriaccount.account.repository.AccountRepository;
 import io.woori.account.wooriaccount.customer.repository.jpa.CustomerRepository;
-import io.woori.account.wooriaccount.txhistory.repository.jpa.TxHistoryRepository;
+import io.woori.account.wooriaccount.txhistory.repository.jpa.DepositTxHistoryRepository;
 import io.woori.account.wooriaccount.txhistory.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
 import io.woori.account.wooriaccount.account.service.AccountServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +32,7 @@ public class TxHistoryTest {
     AccountRepository accountRepository;
 
     @Autowired
-    TxHistoryRepository<DepositTxHistory> depositTxHistoryRepository;
+    DepositTxHistoryRepository depositTxHistoryRepository;
 
     @Autowired
     QueryTransactionHistoryRepositoryImpl queryTransactionHistoryRepository;
