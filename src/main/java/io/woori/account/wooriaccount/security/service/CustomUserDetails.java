@@ -1,8 +1,6 @@
 package io.woori.account.wooriaccount.security.service;
 
-import io.woori.account.wooriaccount.domain.entity.Customer;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import io.woori.account.wooriaccount.customer.domain.entity.Customer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,9 +1,8 @@
 package io.woori.account.wooriaccount.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.woori.account.wooriaccount.dto.customer.LoginRequestDTO;
+import io.woori.account.wooriaccount.customer.domain.dto.LoginRequestDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

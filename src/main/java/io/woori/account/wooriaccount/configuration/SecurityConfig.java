@@ -2,7 +2,7 @@ package io.woori.account.wooriaccount.configuration;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
+import io.woori.account.wooriaccount.customer.repository.jpa.CustomerRepository;
 import io.woori.account.wooriaccount.security.filter.ExceptionHandlerFilter;
 import io.woori.account.wooriaccount.security.filter.JsonAuthenticationFilter;
 import io.woori.account.wooriaccount.security.filter.JwtAuthenticationFilter;

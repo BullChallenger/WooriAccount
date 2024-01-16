@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.woori.account.wooriaccount.dto.customer.LoginRequestDTO;
-import io.woori.account.wooriaccount.dto.customer.LoginResponseDTO;
-import io.woori.account.wooriaccount.dto.customer.SignUpRequestDTO;
-import io.woori.account.wooriaccount.exception.CustomException;
-import io.woori.account.wooriaccount.service.CustomerServiceImpl;
+import io.woori.account.wooriaccount.customer.domain.dto.LoginRequestDTO;
+import io.woori.account.wooriaccount.customer.domain.dto.LoginResponseDTO;
+import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
+import io.woori.account.wooriaccount.common.exception.CustomException;
+import io.woori.account.wooriaccount.customer.service.CustomerServiceImpl;
 
 @SpringBootTest
 @Transactional

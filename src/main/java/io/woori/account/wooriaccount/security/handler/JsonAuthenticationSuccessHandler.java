@@ -1,12 +1,11 @@
 package io.woori.account.wooriaccount.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.woori.account.wooriaccount.dto.ResponseDTO;
+import io.woori.account.wooriaccount.common.dto.ResponseDTO;
 import io.woori.account.wooriaccount.security.utils.CookieUtil;
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.type.CharacterType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
