@@ -1,13 +1,11 @@
 package io.woori.account.wooriaccount.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.woori.account.wooriaccount.dto.ResponseDTO;
+import io.woori.account.wooriaccount.common.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 

@@ -1,8 +1,7 @@
 package io.woori.account.wooriaccount.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.woori.account.wooriaccount.dto.ResponseDTO;
-import io.woori.account.wooriaccount.exception.ErrorCode;
+import io.woori.account.wooriaccount.common.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Map;
 
 

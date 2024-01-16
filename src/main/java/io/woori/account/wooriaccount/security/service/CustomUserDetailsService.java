@@ -1,7 +1,7 @@
 package io.woori.account.wooriaccount.security.service;
 
-import io.woori.account.wooriaccount.domain.entity.Customer;
-import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
+import io.woori.account.wooriaccount.customer.domain.entity.Customer;
+import io.woori.account.wooriaccount.customer.repository.jpa.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor

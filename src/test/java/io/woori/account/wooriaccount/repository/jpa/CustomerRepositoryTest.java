@@ -2,8 +2,9 @@ package io.woori.account.wooriaccount.repository.jpa;
 
 
 
-import io.woori.account.wooriaccount.exception.CustomException;
-import io.woori.account.wooriaccount.exception.ErrorCode;
+import io.woori.account.wooriaccount.customer.repository.jpa.CustomerRepository;
+import io.woori.account.wooriaccount.common.exception.CustomException;
+import io.woori.account.wooriaccount.common.exception.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +13,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import io.woori.account.wooriaccount.domain.entity.Customer;
-import io.woori.account.wooriaccount.dto.customer.SignUpRequestDTO;
+import io.woori.account.wooriaccount.customer.domain.entity.Customer;
+import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
 import io.woori.account.wooriaccount.dummy.DummyCustomer;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -30,7 +31,7 @@ public class CustomerRepositoryTest {
 	private Customer customer;
 	
 	@Autowired
-	private CustomerRepository repository; 
+	private CustomerRepository repository;
 	
 	@Autowired
 	TestEntityManager testEntityManager;

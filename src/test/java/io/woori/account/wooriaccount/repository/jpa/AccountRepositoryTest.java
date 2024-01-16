@@ -1,8 +1,9 @@
 package io.woori.account.wooriaccount.repository.jpa;
 
-import io.woori.account.wooriaccount.domain.entity.Account;
-import io.woori.account.wooriaccount.domain.entity.Customer;
-import io.woori.account.wooriaccount.dto.customer.SignUpRequestDTO;
+import io.woori.account.wooriaccount.account.domain.entity.Account;
+import io.woori.account.wooriaccount.account.repository.AccountRepository;
+import io.woori.account.wooriaccount.customer.domain.entity.Customer;
+import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
 import io.woori.account.wooriaccount.dummy.DummyCustomer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
