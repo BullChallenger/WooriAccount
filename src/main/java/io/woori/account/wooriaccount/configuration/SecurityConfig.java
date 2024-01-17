@@ -23,6 +23,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,10 +52,15 @@ public class SecurityConfig {
         //세션을 대신해 jwt를 사용해 로그인 유지를 진행할 예정으로 해당 세션 사용 옵션을 stateless하게 설정합니다.
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        http.authorizeRequests()
+                .antMatchers("/swagger-ui/", "/swagger-ui/**", "/v3/api-docs/**")
+                .permitAll();
+
         //우선은 모든 url 접근에 허용 합니다. -> 추후 변경 ok
         http.authorizeRequests((auth) ->
-                auth.regexMatchers("/customer/login", "/api/customers/signUp", "/").permitAll()
+                auth.regexMatchers("/customer/login", "/api/customers/signUp", "/", "/swagger-ui/*").permitAll()
                 .anyRequest().authenticated());
+
 
         /*
         * 폼 로그인을 사용하지 않고 서버와 프론트 분리를 진행했기 때문에 다른 필터를 등록해서 사용하는 방식을 사용하기로 했기 때문에
@@ -148,4 +154,10 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**");
+    }
+
 }

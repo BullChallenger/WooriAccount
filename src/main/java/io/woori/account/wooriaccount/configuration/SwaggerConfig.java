@@ -7,8 +7,16 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -20,12 +28,30 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("io.woori.account.wooriaccount.controller"))
                 .paths(PathSelectors.ant("/api/**"))
                 .build()
-                .apiInfo(apiInfo());
+                .apiInfo(apiInfo())
+                .securitySchemes(List.of(apiKeyHeader()))
+                .securityContexts(Collections.singletonList(securityContext()));
     }
 
     @Bean
     public InternalResourceViewResolver defaultViewResolver() {
         return new InternalResourceViewResolver();
+    }
+
+    private ApiKey apiKeyHeader() {
+        return new ApiKey("Authorization", "Authorization", "header");
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(List.of(headerAuthReference()))
+                .build();
+    }
+
+    private SecurityReference headerAuthReference() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[]{authorizationScope};
+        return new SecurityReference("Authorization", authorizationScopes);
     }
 
     private ApiInfo apiInfo() {
