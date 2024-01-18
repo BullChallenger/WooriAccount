@@ -16,7 +16,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import io.woori.account.wooriaccount.account.domain.entity.Account;
-import io.woori.account.wooriaccount.account.repository.AccountRepository;
+import io.woori.account.wooriaccount.account.repository.jpa.AccountRepository;
 import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
 import io.woori.account.wooriaccount.customer.domain.entity.Customer;
 import io.woori.account.wooriaccount.dummy.DummyCustomer;

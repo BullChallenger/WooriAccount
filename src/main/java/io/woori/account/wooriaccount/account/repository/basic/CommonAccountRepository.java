@@ -1,4 +1,4 @@
-package io.woori.account.wooriaccount.account.repository;
+package io.woori.account.wooriaccount.account.repository.basic;
 
 import java.util.Optional;
 

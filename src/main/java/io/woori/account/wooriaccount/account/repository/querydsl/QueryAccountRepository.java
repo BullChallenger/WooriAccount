@@ -1,4 +1,4 @@
-package io.woori.account.wooriaccount.account.repository;
+package io.woori.account.wooriaccount.account.repository.querydsl;
 
 import java.util.List;
 import java.util.Optional;
