@@ -9,3 +9,7 @@ public interface CustomerRoleRepository
 	extends Repository<CustomerRole, CustomerRole.Pk>, CommonCustomerRoleRepository {
 
 }
+public interface CustomerRoleRepository extends Repository<CustomerRole, CustomerRole.Pk>,
+	CommonCustomerRoleRepository {
+
+}

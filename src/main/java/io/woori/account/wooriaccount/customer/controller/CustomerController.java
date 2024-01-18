@@ -2,6 +2,7 @@ package io.woori.account.wooriaccount.customer.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import io.woori.account.wooriaccount.customer.domain.dto.CustomerUpdateDTO;
 import io.woori.account.wooriaccount.customer.domain.dto.LoginRequestDTO;
 import io.woori.account.wooriaccount.customer.domain.dto.LoginResponseDTO;
 import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
+import io.woori.account.wooriaccount.customer.domain.dto.SignUpResponseDTO;
 import io.woori.account.wooriaccount.customer.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/customers")
 public class CustomerController {
-    
+
 	private final CustomerService customerService;
 
 	@PostMapping("/login")
@@ -32,8 +34,10 @@ public class CustomerController {
 	}
 
 	@PostMapping("/signUp")
-	public String signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
-		return customerService.signUp(signUpRequestDTO);
+	public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
+
+		return ResponseEntity.ok(customerService.signUp(signUpRequestDTO));
+
 	}
 
 	@PostMapping("/delete")
