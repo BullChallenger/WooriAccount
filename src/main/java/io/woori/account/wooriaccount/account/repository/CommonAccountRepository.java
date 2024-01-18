@@ -1,20 +1,22 @@
 package io.woori.account.wooriaccount.account.repository;
 
-import io.woori.account.wooriaccount.account.domain.entity.Account;
-import org.springframework.data.jpa.repository.Lock;
+import java.util.Optional;
 
 import javax.persistence.LockModeType;
-import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Lock;
+
+import io.woori.account.wooriaccount.account.domain.entity.Account;
 
 public interface CommonAccountRepository {
 
-    Optional<Account> findById(Long id);
-    void deleteById(Long id);
-    Account save(Account account);
+	Optional<Account> findById(Long id);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<Account> findByAccountNumber(String accountNumber);
+	void deleteById(Long id);
 
+	Account save(Account account);
 
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	Optional<Account> findByAccountNumber(String accountNumber);
 
 }

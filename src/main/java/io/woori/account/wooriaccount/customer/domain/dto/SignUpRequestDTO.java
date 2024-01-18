@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpRequestDTO {
-    private String customerName;  // 고객 이름
-    private String customerPhone;  // 고객 전화번호
-    private String customerEmail;  // 고객 이메일
-    private String customerPwd;  //고객 비밀번호
+	private String customerName;  // 고객 이름
+	private String customerPhone;  // 고객 전화번호
+	private String customerEmail;  // 고객 이메일
+	private String customerPwd;  //고객 비밀번호
 }

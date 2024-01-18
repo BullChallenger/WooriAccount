@@ -1,41 +1,42 @@
 package io.woori.account.wooriaccount.security.service;
 
-import io.woori.account.wooriaccount.customer.domain.entity.Customer;
-import io.woori.account.wooriaccount.customer.repository.jpa.CustomerRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import io.woori.account.wooriaccount.customer.domain.entity.Customer;
+import io.woori.account.wooriaccount.customer.repository.jpa.CustomerRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final CustomerRepository customerRepository;
+	private final CustomerRepository customerRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        log.info("CustomUserDetailsService : loadUserByUsername");
+		log.info("CustomUserDetailsService : loadUserByUsername");
 
-        Optional<Customer> op = customerRepository.findByCustomerEmail(username);
-        Customer customer;
-        CustomUserDetails userDetails;
-        if (op.isPresent()){
+		Optional<Customer> op = customerRepository.findByCustomerEmail(username);
+		Customer customer;
+		CustomUserDetails userDetails;
+		if (op.isPresent()) {
 
-            log.info("CustomUserDetailsService customer 찾았다!");
+			log.info("CustomUserDetailsService customer 찾았다!");
 
-            customer= op.get();
-            userDetails = new CustomUserDetails(customer);
-            return userDetails;
-        }
+			customer = op.get();
+			userDetails = new CustomUserDetails(customer);
+			return userDetails;
+		}
 
-        throw new BadCredentialsException("해당 이메일을 가진 회원이 존재하지 않습니다.");
-    }
+		throw new BadCredentialsException("해당 이메일을 가진 회원이 존재하지 않습니다.");
+	}
 }

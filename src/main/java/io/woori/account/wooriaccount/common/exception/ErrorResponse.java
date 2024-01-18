@@ -9,14 +9,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ErrorResponse {
 
-    private String message;
-    private String code;
-    private int status;
+	private String message;
+	private String code;
+	private int status;
 
-    public ErrorResponse(ErrorCode code){
-        this.message = code.getMessage();
-        this.code = code.getCode();
-        this.status = code.getStatus();
-    }
+	public ErrorResponse(ErrorCode code) {
+		this.message = code.getMessage();
+		this.code = code.getCode();
+		this.status = code.getStatus();
+	}
 
 }

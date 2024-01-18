@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 // 알람 응답값을 위한 DTO
 public class GetResponseDTO {
-    private String customerName;  // 고객 이름
-    private String customerEmail;  // 고객 이메일
+	private String customerName;  // 고객 이름
+	private String customerEmail;  // 고객 이메일
 }

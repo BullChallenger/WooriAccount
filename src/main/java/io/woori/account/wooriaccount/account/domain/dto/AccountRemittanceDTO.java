@@ -1,6 +1,5 @@
 package io.woori.account.wooriaccount.account.domain.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountRemittanceDTO {
 
+	private String accountNumber;
 
-    private String accountNumber;
+	private String targetAccountNumber;
 
-    private String targetAccountNumber;
+	private String description;
 
-    private String description;
-
-    private String amount;
+	private String amount;
 
 }

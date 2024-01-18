@@ -7,11 +7,11 @@ import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
 
 public interface CustomerService {
 
-    String signUp(SignUpRequestDTO dto);
+	String signUp(SignUpRequestDTO dto);
 
-    String update(CustomerUpdateDTO dto);
+	String update(CustomerUpdateDTO dto);
 
-    String delete(Long id);
+	String delete(Long id);
 
-    LoginResponseDTO login(LoginRequestDTO dto);
+	LoginResponseDTO login(LoginRequestDTO dto);
 }
