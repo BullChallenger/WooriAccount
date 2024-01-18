@@ -7,7 +7,7 @@ public class DummyCustomer {
 
 	public static Customer dummy(SignUpRequestDTO dto, String pwd) {
 
-		return Customer.of(dto, pwd);
+		return Customer.createCustomer(dto, pwd);
 	}
 
 }

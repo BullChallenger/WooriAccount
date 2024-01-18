@@ -29,11 +29,14 @@ public class JsonAuthenticationFailureHandler implements AuthenticationFailureHa
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException exception) throws IOException, ServletException {
 
+
+		log.info("failureHandler");
+
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-		exception.getMessage();
+
 
 		ResponseDTO<Map<String, String>> responseDTO = ResponseDTO.of(HttpStatus.UNAUTHORIZED, exception.getMessage(),
 			Map.of());

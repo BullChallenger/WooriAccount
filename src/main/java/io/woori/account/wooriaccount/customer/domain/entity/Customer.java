@@ -54,12 +54,12 @@ public class Customer extends BaseEntity {
 		this.customerPwd = customerPwd;
 	}
 
-	public static Customer of(SignUpRequestDTO dto, String encodePwd) {
+	public static Customer createCustomer(SignUpRequestDTO dto, String encodePwd) {
 		return Customer.builder()
 			.customerName(dto.getCustomerName())
 			.customerPhone(dto.getCustomerPhone())
 			.customerEmail(dto.getCustomerEmail())
-			.customerPwd(dto.getCustomerPwd())
+			.customerPwd(encodePwd)
 			.build();
 	}
 

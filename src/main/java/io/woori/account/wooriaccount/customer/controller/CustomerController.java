@@ -2,6 +2,8 @@ package io.woori.account.wooriaccount.customer.controller;
 
 import javax.servlet.http.HttpSession;
 
+import io.woori.account.wooriaccount.common.dto.ResponseDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,9 +36,11 @@ public class CustomerController {
 	}
 
 	@PostMapping("/signUp")
-	public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
+	public ResponseEntity<ResponseDTO<SignUpResponseDTO>> signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
 
-		return ResponseEntity.ok(customerService.signUp(signUpRequestDTO));
+		return ResponseEntity.ok(ResponseDTO.of(HttpStatus.CREATED, "회원 가입에 성공했습니다.", customerService.signUp(signUpRequestDTO)));
+
+
 
 	}
 

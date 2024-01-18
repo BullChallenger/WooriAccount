@@ -41,8 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
 				throw new CustomException(ErrorCode.DUPLICATE_CUSTOMER);
 			}
 		);
-
-		Customer customer = Customer.of(dto, encoder.encode(dto.getCustomerPwd()));
+		Customer customer = Customer.createCustomer(dto, encoder.encode(dto.getCustomerPwd()));
 		customerRepository.save(customer);
 
 		// 1번 ROLE_ADMIN , 2번 ROLE_USER 저장후 사용하셈
