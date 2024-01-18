@@ -44,6 +44,8 @@ public class SecurityConfig {
 	private final RedisTemplate<String, Object> redisTemplate;
 	private final CookieUtil cookieUtil;
 	private final ObjectMapper objectMapper;
+	private final CorsConfig config;
+
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -76,7 +78,8 @@ public class SecurityConfig {
 		//                .loginProcessingUrl("/customer/login")
 		//                .defaultSuccessUrl("/");
 
-		http.addFilterAt(jsonAuthenticationFiler(), UsernamePasswordAuthenticationFilter.class)
+		http.addFilter(config.corsFilter())
+			.addFilterAt(jsonAuthenticationFiler(), UsernamePasswordAuthenticationFilter.class)
 			.addFilterAfter(JwtOncePerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
 			.addFilterAfter(exceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
 			.authenticationProvider(
@@ -164,5 +167,7 @@ public class SecurityConfig {
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**");
 	}
+
+
 
 }
