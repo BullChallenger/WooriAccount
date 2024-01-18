@@ -34,6 +34,9 @@ import io.woori.account.wooriaccount.security.service.CustomUserDetailsService;
 import io.woori.account.wooriaccount.security.utils.CookieUtil;
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -125,7 +128,7 @@ public class SecurityConfig {
 
 	@Bean
 	public OncePerRequestFilter exceptionHandlerFilter() {
-		return new ExceptionHandlerFilter(objectMapper);
+		return new ExceptionHandlerFilter(objectMapper, jwtProvider);
 
 	}
 

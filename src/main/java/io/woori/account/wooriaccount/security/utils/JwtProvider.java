@@ -96,6 +96,7 @@ public class JwtProvider {
 
 		} catch (Exception e) {
 			log.info("Invalid token. Reason: {}", e.getMessage());
+
 			return false;
 		}
 		return true;

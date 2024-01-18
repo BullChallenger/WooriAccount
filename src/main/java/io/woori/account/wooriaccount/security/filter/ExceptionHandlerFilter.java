@@ -10,8 +10,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,12 +31,17 @@ import lombok.extern.slf4j.Slf4j;
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
 	private final ObjectMapper mapper;
+	private final JwtProvider jwtProvider;
+
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 
 		try {
+			if (jwtProvider.isValidToken(request.getHeader("Authorization"))){
+				throw new AuthenticationServiceException("jwt 토큰이 만료 됐습니다.");
+			}
 			filterChain.doFilter(request, response);
 		} catch (AuthenticationException authenticationException) {
 
@@ -48,6 +55,9 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 			ResponseDTO<Map<String, String>> responseDTO = ResponseDTO.of(HttpStatus.UNAUTHORIZED, "로그인 정보가 올바르지 않습니다",
 				Map.of(email, pwd));
 			response.getWriter().write(mapper.writeValueAsString(responseDTO));
+		} catch (AuthenticationServiceException authenticationServiceException){
+			// TODO 여기서 이제 JWT 관련 리프레시 토큰이 되면은 다시 액세스 토큰 발급해주고 안 되면은 다시 로그인 요청할 수 있게!
+
 		}
 
 	}
