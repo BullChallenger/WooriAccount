@@ -29,7 +29,8 @@ public class TxController {
 	public ResponseEntity<Page<FindAllDepositTxResponseDTO>> readDepositTxHistory(
 		@PathVariable(value = "accountId") Long accountId,
 		@PathVariable(value = "lastTxHistoryId") Long lastTxHistoryId,
-		Pageable pageable) {
+		Pageable pageable
+	) {
 		return ResponseEntity.ok(depositTxService.findTxHistoryAll(accountId, lastTxHistoryId, pageable));
 	}
 
@@ -37,13 +38,16 @@ public class TxController {
 	public ResponseEntity<Page<FindAllWithdrawTxResponseDTO>> readWithdrawTxHistory(
 		@PathVariable(value = "accountId") Long accountId,
 		@PathVariable(value = "lastTxHistoryId") Long lastTxHistoryId,
-		Pageable pageable) {
+		Pageable pageable
+	) {
 		return ResponseEntity.ok(withdrawTxService.findTxHistoryAll(accountId, lastTxHistoryId, pageable));
 	}
 
 	@GetMapping(value = "/all/{accountId}")
-	public ResponseEntity<Page<FindAllTxResponseDTO>> readAllTxHistory(@PathVariable Long accountId,
-		Pageable pageable) {
+	public ResponseEntity<Page<FindAllTxResponseDTO>> readAllTxHistory(
+		@PathVariable Long accountId,
+		Pageable pageable
+	) {
 		return ResponseEntity.ok(txService.findBySenderIdOrReceiverId(accountId, pageable));
 	}
 

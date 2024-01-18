@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHistoryRepository {
-	
+
 	private final JPAQueryFactory jpaQueryFactory;
 
 	public List<DepositTxHistory> readDepositTxHistoryAllToList(Long accountId) {

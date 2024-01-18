@@ -30,7 +30,8 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
 			dto.getReceiver(),
 			dto.getAmount(),
 			dto.getBalanceAfterTx(),
-			dto.getDescription());
+			dto.getDescription()
+		);
 	}
 
 	@Override
@@ -42,9 +43,11 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
 	}
 
 	@Transactional
-	public Page<FindAllWithdrawTxResponseDTO> findTxHistoryAll(Long accountId,
+	public Page<FindAllWithdrawTxResponseDTO> findTxHistoryAll(
+		Long accountId,
 		Long lastTxHistoryId,
-		Pageable pageable) {
+		Pageable pageable
+	) {
 		return queryTransactionHistoryRepository
 			.readWithdrawTxHistoryAll(accountId, lastTxHistoryId, pageable);
 	}

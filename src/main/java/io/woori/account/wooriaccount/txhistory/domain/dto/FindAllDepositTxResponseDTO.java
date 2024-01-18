@@ -21,11 +21,13 @@ public class FindAllDepositTxResponseDTO {
 	private final LocalDateTime createdAt;
 
 	@QueryProjection
-	public FindAllDepositTxResponseDTO(String senderName,
+	public FindAllDepositTxResponseDTO(
+		String senderName,
 		BigDecimal amount,
 		BigDecimal balanceAfterTx,
 		String description,
-		LocalDateTime createdAt) {
+		LocalDateTime createdAt
+	) {
 		this.senderName = senderName;
 		this.amount = amount;
 		this.balanceAfterTx = balanceAfterTx;

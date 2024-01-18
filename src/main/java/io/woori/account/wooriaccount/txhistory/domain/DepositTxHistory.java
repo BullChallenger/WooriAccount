@@ -52,8 +52,13 @@ public class DepositTxHistory extends BaseEntity {
 	private String description;
 
 	@Builder
-	public DepositTxHistory(Account sender, Account receiver, BigDecimal amount, BigDecimal balanceAfterTx,
-		String description) {
+	public DepositTxHistory(
+		Account sender,
+		Account receiver,
+		BigDecimal amount,
+		BigDecimal balanceAfterTx,
+		String description
+	) {
 		this.sender = sender;
 		this.receiver = receiver;
 		this.amount = amount;
@@ -61,7 +66,8 @@ public class DepositTxHistory extends BaseEntity {
 		this.description = description;
 	}
 
-	public static DepositTxHistory of(Account sender,
+	public static DepositTxHistory of(
+		Account sender,
 		Account receiver,
 		BigDecimal amount,
 		BigDecimal balanceAfterTx,

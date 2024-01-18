@@ -21,11 +21,13 @@ public class FindAllWithdrawTxResponseDTO {
 	private final LocalDateTime createdAt;
 
 	@QueryProjection
-	public FindAllWithdrawTxResponseDTO(String receiverName,
+	public FindAllWithdrawTxResponseDTO(
+		String receiverName,
 		BigDecimal amount,
 		BigDecimal balanceAfterTx,
 		String description,
-		LocalDateTime createdAt) {
+		LocalDateTime createdAt
+	) {
 		this.receiverName = receiverName;
 		this.amount = amount;
 		this.balanceAfterTx = balanceAfterTx;

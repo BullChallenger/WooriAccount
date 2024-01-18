@@ -22,11 +22,13 @@ public class FindAllTxResponseDTO implements Comparable<FindAllTxResponseDTO> {
 	private final LocalDateTime createdAt;
 
 	@Builder
-	public FindAllTxResponseDTO(String targetName,
+	public FindAllTxResponseDTO(
+		String targetName,
 		BigDecimal amount,
 		BigDecimal balanceAfterTx,
 		String description,
-		LocalDateTime createdAt) {
+		LocalDateTime createdAt
+	) {
 		this.targetName = targetName;
 		this.amount = amount;
 		this.balanceAfterTx = balanceAfterTx;

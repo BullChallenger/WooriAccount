@@ -43,9 +43,11 @@ public class DepositTxServiceImpl implements TxHistoryService<DepositTxHistory, 
 	}
 
 	@Transactional
-	public Page<FindAllDepositTxResponseDTO> findTxHistoryAll(Long accountId,
+	public Page<FindAllDepositTxResponseDTO> findTxHistoryAll(
+		Long accountId,
 		Long lastTxHistoryId,
-		Pageable pageable) {
+		Pageable pageable
+	) {
 		return queryTransactionHistoryRepository
 			.readDepositTxHistoryAll(accountId, lastTxHistoryId, pageable);
 	}
