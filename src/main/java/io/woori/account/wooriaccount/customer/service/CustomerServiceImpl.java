@@ -46,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
 		customerRepository.save(customer);
 
 		// 1번 ROLE_ADMIN , 2번 ROLE_USER 저장후 사용하셈
-		Optional<Role> op = roleRepository.findById(2L);
+		Optional<Role> op = roleRepository.findById(Byte.valueOf("2"));
 
 		if (op.isEmpty()) {
 			throw new CustomException(ErrorCode.NOT_FOUND_ROLE);

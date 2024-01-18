@@ -13,9 +13,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import io.woori.account.wooriaccount.customer.domain.entity.Customer;
-
 import lombok.AccessLevel;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -56,7 +54,7 @@ public class CustomerRole {
 		private Long customerId;
 
 		@Column(name = "role_id")
-		private Long roleId;
+		private Byte roleId;
 
 	}
 }

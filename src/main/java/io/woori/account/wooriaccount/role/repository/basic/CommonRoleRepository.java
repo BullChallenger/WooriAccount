@@ -6,7 +6,7 @@ import io.woori.account.wooriaccount.role.domain.Role;
 
 public interface CommonRoleRepository {
 
-	Optional<Role> findById(Long roleId);
+	Optional<Role> findById(Byte roleId);
 
 	Optional<Role> save(Role role);
 
