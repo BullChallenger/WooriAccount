@@ -1,10 +1,10 @@
 package io.woori.account.wooriaccount.repository.jpa;
 
-import io.woori.account.wooriaccount.account.domain.entity.Account;
-import io.woori.account.wooriaccount.account.repository.AccountRepository;
-import io.woori.account.wooriaccount.customer.domain.entity.Customer;
-import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
-import io.woori.account.wooriaccount.dummy.DummyCustomer;
+import static org.assertj.core.api.Assertions.*;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,120 +13,114 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
+import io.woori.account.wooriaccount.account.domain.entity.Account;
+import io.woori.account.wooriaccount.account.repository.AccountRepository;
+import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
+import io.woori.account.wooriaccount.customer.domain.entity.Customer;
+import io.woori.account.wooriaccount.dummy.DummyCustomer;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AccountRepositoryTest {
-    private Account account;
-    private Customer customer;
+	private Account account;
+	private Customer customer;
 
-    @Autowired
-    private AccountRepository repository;
+	@Autowired
+	private AccountRepository repository;
 
-    @Autowired
-    TestEntityManager testEntityManager;
+	@Autowired
+	TestEntityManager testEntityManager;
 
+	private PasswordEncoder encoder;
 
-    @BeforeEach
-    void setUp() {
-        SignUpRequestDTO dto = new SignUpRequestDTO("test name","01011111111" , "test@test.com", "test pw");
-        customer= DummyCustomer.dummy(dto);
+	@BeforeEach
+	void setUp() {
+		SignUpRequestDTO dto = new SignUpRequestDTO("test name", "01011111111", "test@test.com", "test pw");
+		customer = DummyCustomer.dummy(dto, encoder.encode(dto.getCustomerPwd()));
 
-        testEntityManager.persist(customer);
+		testEntityManager.persist(customer);
 
+		account = Account.builder()
+			.accountNumber("99998888")
+			.accountBalance(BigDecimal.valueOf(1000))
+			.accountLimit(BigDecimal.valueOf(1000000))
+			.customer(customer)
+			.build();
 
-        account = Account.builder()
-                .accountNumber("99998888")
-                .accountBalance(BigDecimal.valueOf(1000))
-                .accountLimit(BigDecimal.valueOf(1000000))
-                .customer(customer)
-                .build();
+		testEntityManager.persist(account);
 
-        testEntityManager.persist(account);
+	}
 
+	@DisplayName("pk값으로 해당 계좌 찾아오는 테스트 - 성공")
+	@Test
+	public void testFindById() {
+		Long id = 1L;
 
-    }
+		Optional<Account> op = repository.findById(id);
 
-    @DisplayName("pk값으로 해당 계좌 찾아오는 테스트 - 성공")
-    @Test
-    public void testFindById(){
-        Long id =1L;
+		assertThat(op.isPresent());
 
-        Optional<Account> op = repository.findById(id);
+	}
 
-        assertThat(op.isPresent());
+	@DisplayName("pk값으로 해당 계좌 찾아오는 테스트 - 실패")
+	@Test
+	public void testFindById_fail() {
+		Long id = 5L;
 
-    }
+		Optional<Account> op = repository.findById(id);
 
-    @DisplayName("pk값으로 해당 계좌 찾아오는 테스트 - 실패")
-    @Test
-    public void testFindById_fail(){
-        Long id =5L;
+		assertThat(op.isPresent()).isFalse();
 
-        Optional<Account> op = repository.findById(id);
+	}
 
-        assertThat(op.isPresent()).isFalse();
+	@DisplayName("계좌 삭제 테스트 - 성공")
+	@Test
+	public void testDeleteById() {
+		Long id = 1L;
 
-    }
+		repository.deleteById(id);
 
+		Optional<Account> op = repository.findById(id);
+		assertThat(op.isPresent()).isFalse();
+	}
 
+	@DisplayName("계좌 삭제 테스트 - 실패")
+	@Test
+	public void testDeleteById_fail() {
+		Long id = 5L;
 
-    @DisplayName("계좌 삭제 테스트 - 성공")
-    @Test
-    public void testDeleteById(){
-        Long id = 1L;
+		assertThatThrownBy(() -> repository.deleteById(id)).isExactlyInstanceOf(EmptyResultDataAccessException.class);
 
-        repository.deleteById(id);
+	}
 
-        Optional<Account> op = repository.findById(id);
-        assertThat(op.isPresent()).isFalse();
-    }
+	@DisplayName("계좌 저장 테스트")
+	@Test
+	public void testSave() {
 
-    @DisplayName("계좌 삭제 테스트 - 실패")
-    @Test
-    public void testDeleteById_fail(){
-        Long id = 5L;
+		Account save = repository.save(account);
+		assertThat(save.getAccountId()).isEqualTo(customer.getCustomerId());
+	}
 
-        assertThatThrownBy(()-> repository.deleteById(id)).isExactlyInstanceOf(EmptyResultDataAccessException.class);
+	@DisplayName("계좌 번호로 해당 계좌 찾는 테스트 - 성공")
+	@Test
+	public void testFiindByAccountNumber() {
+		String accountNumber = "99998888";
 
-    }
+		Optional<Account> op = repository.findByAccountNumber(accountNumber);
 
-    @DisplayName("계좌 저장 테스트")
-    @Test
-    public void testSave(){
+		assertThat(op.isPresent());
+	}
 
-        Account save = repository.save(account);
-        assertThat(save.getAccountId()).isEqualTo(customer.getCustomerId());
-    }
+	@DisplayName("계좌 번호로 해당 계좌 찾는 테스트 - 실패")
+	@Test
+	public void testFiindByAccountNumber_fail() {
+		String accountNumber = "4444444444";
 
+		Optional<Account> op = repository.findByAccountNumber(accountNumber);
 
-    @DisplayName("계좌 번호로 해당 계좌 찾는 테스트 - 성공")
-    @Test
-    public void testFiindByAccountNumber(){
-        String accountNumber = "99998888";
-
-        Optional<Account> op = repository.findByAccountNumber(accountNumber);
-
-        assertThat(op.isPresent());
-    }
-    @DisplayName("계좌 번호로 해당 계좌 찾는 테스트 - 실패")
-    @Test
-    public void testFiindByAccountNumber_fail(){
-        String accountNumber = "4444444444";
-
-        Optional<Account> op = repository.findByAccountNumber(accountNumber);
-
-        assertThat(op.isPresent()).isFalse();
-    }
-
-
-
+		assertThat(op.isPresent()).isFalse();
+	}
 
 }

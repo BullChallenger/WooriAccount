@@ -145,7 +145,8 @@ public class AccountServiceImpl implements AccountService {
 
 		List<Account> accounts = queryAccountRepository.queryFindAllByCustomerId(id);
 		if (Objects.isNull(accounts)) {
-			throw new CustomException(ErrorCode.NOT_FOUNT_ACCOUNT_LIST);
+
+			throw new CustomException(ErrorCode.NOT_FOUND_ACCOUNT_LIST);
 
 		}
 

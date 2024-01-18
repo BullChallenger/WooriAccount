@@ -14,4 +14,5 @@ public class SignUpRequestDTO {
 	private String customerPhone;  // 고객 전화번호
 	private String customerEmail;  // 고객 이메일
 	private String customerPwd;  //고객 비밀번호
+
 }
