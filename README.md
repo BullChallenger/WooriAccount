@@ -44,4 +44,6 @@
 ### 2차 고도화
 - 시큐리티 도입
 ![security](https://github.com/BullChallenger/WooriAccount/assets/81970382/ce6b425b-d2d0-436c-ad89-85a5ae8d5325)
+- 알람 기능 도입
+![image](https://github.com/BullChallenger/WooriAccount/assets/81970382/c07ee61e-6c71-4d76-b0e8-6e8d9fbdb30e)
 

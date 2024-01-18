@@ -28,7 +28,7 @@ dependencies {
     // Hibernate Util
     implementation 'io.hypersistence:hypersistence-utils-hibernate-55:3.7.0'
     // spring security
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.1'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
 
     //jwt 토큰 사용과 관련된 설정
@@ -70,9 +70,6 @@ dependencies {
 
     // Kafka
     implementation 'org.springframework.kafka:spring-kafka'
-    
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
 
 
 

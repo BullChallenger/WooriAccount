@@ -1,26 +1,23 @@
 package io.woori.account.wooriaccount;
 
-import io.woori.account.wooriaccount.domain.entity.AbstractTxHistory;
-import io.woori.account.wooriaccount.domain.entity.Account;
-import io.woori.account.wooriaccount.domain.entity.Customer;
-import io.woori.account.wooriaccount.domain.entity.DepositTxHistory;
-import io.woori.account.wooriaccount.dto.account.AccountRemittanceDTO;
-import io.woori.account.wooriaccount.repository.jpa.AccountRepository;
-import io.woori.account.wooriaccount.repository.jpa.CustomerRepository;
-import io.woori.account.wooriaccount.repository.jpa.TxHistoryRepository;
-import io.woori.account.wooriaccount.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
-import io.woori.account.wooriaccount.service.AccountServiceImpl;
+import io.woori.account.wooriaccount.account.domain.entity.Account;
+import io.woori.account.wooriaccount.customer.domain.entity.Customer;
+import io.woori.account.wooriaccount.txhistory.domain.DepositTxHistory;
+import io.woori.account.wooriaccount.account.domain.dto.AccountRemittanceDTO;
+import io.woori.account.wooriaccount.account.repository.AccountRepository;
+import io.woori.account.wooriaccount.customer.repository.jpa.CustomerRepository;
+import io.woori.account.wooriaccount.txhistory.repository.jpa.DepositTxHistoryRepository;
+import io.woori.account.wooriaccount.txhistory.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
+import io.woori.account.wooriaccount.account.service.AccountServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,7 +32,7 @@ public class TxHistoryTest {
     AccountRepository accountRepository;
 
     @Autowired
-    TxHistoryRepository<DepositTxHistory> depositTxHistoryRepository;
+    DepositTxHistoryRepository depositTxHistoryRepository;
 
     @Autowired
     QueryTransactionHistoryRepositoryImpl queryTransactionHistoryRepository;

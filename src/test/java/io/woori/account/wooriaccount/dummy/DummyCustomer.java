@@ -1,14 +1,13 @@
 package io.woori.account.wooriaccount.dummy;
 
-import io.woori.account.wooriaccount.domain.entity.Customer;
-import io.woori.account.wooriaccount.dto.customer.SignUpRequestDTO;
+import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
+import io.woori.account.wooriaccount.customer.domain.entity.Customer;
 
 public class DummyCustomer {
 
-	public static Customer dummy(SignUpRequestDTO dto) {
-	
-		return Customer.of(dto);
-	}
+	public static Customer dummy(SignUpRequestDTO dto, String pwd) {
 
+		return Customer.of(dto, pwd);
+	}
 
 }
