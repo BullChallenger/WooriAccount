@@ -13,7 +13,9 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import io.woori.account.wooriaccount.customer.domain.entity.Customer;
+
 import lombok.AccessLevel;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -24,6 +26,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+
 @Entity
 @Table(name = "customer_roles")
 public class CustomerRole {

@@ -7,6 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+@Entity
+@Table(name = "roles")
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,12 +18,15 @@ import lombok.Getter;
 @Table(name = "roles")
 @Getter
 @Builder
+
 public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long roleId;
 
+
+	@Column(name = "role_type")
 	@Column(name = "role_name")
 	private String roleName;
 
