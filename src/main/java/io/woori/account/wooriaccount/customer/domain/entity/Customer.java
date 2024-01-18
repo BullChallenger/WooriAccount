@@ -31,12 +31,16 @@ public class Customer extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long customerId;  //고객 ID
+
 	@Column(nullable = false)
 	private String customerName;  // 고객 이름
+
 	@Column(nullable = false)
 	private String customerPhone;  // 고객 전화번호
+
 	@Column(nullable = false)
 	private String customerEmail;  // 고객 이메일
+
 	@Column(nullable = false)
 	private String customerPwd;  //고객 비밀번호
 
