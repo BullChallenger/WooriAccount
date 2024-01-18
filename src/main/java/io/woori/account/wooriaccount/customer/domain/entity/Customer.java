@@ -14,6 +14,7 @@ import org.hibernate.annotations.Where;
 import io.woori.account.wooriaccount.common.domain.entity.BaseEntity;
 import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +22,14 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "customers")
 @Where(clause = "IS_DELETED = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@Setter
 public class Customer extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +43,6 @@ public class Customer extends BaseEntity {
 	@Column(nullable = false)
 	private String customerPwd;  //고객 비밀번호
 
-	@Builder
 	public Customer(String customerName, String customerPhone, String customerEmail, String customerPwd) {
 		this.customerName = customerName;
 		this.customerPhone = customerPhone;
@@ -48,8 +50,7 @@ public class Customer extends BaseEntity {
 		this.customerPwd = customerPwd;
 	}
 
-	@Builder
-	public static Customer of(SignUpRequestDTO dto) {
+	public static Customer of(SignUpRequestDTO dto, String encodePwd) {
 		return Customer.builder()
 			.customerName(dto.getCustomerName())
 			.customerPhone(dto.getCustomerPhone())
