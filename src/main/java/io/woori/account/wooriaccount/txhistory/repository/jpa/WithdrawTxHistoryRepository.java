@@ -8,4 +8,7 @@ import io.woori.account.wooriaccount.txhistory.repository.basic.CommonTxHistoryR
 public interface WithdrawTxHistoryRepository
 	extends Repository<WithdrawTxHistory, Long>, CommonTxHistoryRepository<WithdrawTxHistory> {
 
+	// 출금 조회 보류
+	// List<WithdrawTxHistory> findAllBySender(Account sender);
+
 }
