@@ -123,7 +123,8 @@ public class AccountServiceImpl implements AccountService {
 		return AccountDTO.builder()
 			.accountId(account.getAccountId())
 			.accountNumber(account.getAccountNumber())
-			.accountBalance(account.getAccountLimit())
+			.accountBalance(account.getAccountBalance())
+			.accountLimit(account.getAccountLimit())
 			.customerName(customer.getCustomerName())
 			.build();
 

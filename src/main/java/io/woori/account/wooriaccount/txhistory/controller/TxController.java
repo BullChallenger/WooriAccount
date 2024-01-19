@@ -1,7 +1,5 @@
 package io.woori.account.wooriaccount.txhistory.controller;
 
-import java.math.BigDecimal;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +57,7 @@ public class TxController {
 	@PostMapping(value = "/withdraw")
 	public ResponseEntity<WithdrawTxHistory> withdraw(
 		@RequestParam("accountNumber") String accountNumber,
-		@RequestParam("amount") BigDecimal amount
+		@RequestParam("amount") String amount
 	) {
 		WithdrawTxHistory withdrawTxHistory = withdrawTxService.withdraw(accountNumber, amount);
 		return ResponseEntity.ok(withdrawTxHistory);

@@ -21,7 +21,9 @@ import io.woori.account.wooriaccount.txhistory.repository.jpa.WithdrawTxHistoryR
 import io.woori.account.wooriaccount.txhistory.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
 import io.woori.account.wooriaccount.txhistory.service.inter.TxHistoryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -61,26 +63,29 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
 	}
 
 	@Transactional
-	public WithdrawTxHistory withdraw(String accountNumber, BigDecimal amount) {
+	public WithdrawTxHistory withdraw(String accountNumber, String amount) {
+		BigDecimal withdrawAmount = BigDecimal.valueOf(Long.parseLong(amount));
+
 		final Account account = accountRepository.findByAccountNumber(accountNumber)
 			.orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-		if (account.getAccountBalance().compareTo(amount) < 0) {
+		if (account.getAccountBalance().compareTo(withdrawAmount) < 0) {
 			throw new CustomException(ErrorCode.INSUFFICIENT_FUNDS);
 		}
 
-		account.setAccountBalance(account.getAccountBalance().subtract(amount));
-		Account savedAccount = accountRepository.save(account);
+		account.setAccountBalance(account.getAccountBalance().subtract(withdrawAmount));
 
-		WithdrawTxHistory withdrawTxHistory = WithdrawTxHistory.builder()
-			.sender(account)
-			.amount(amount)
-			.balanceAfterTx(account.getAccountBalance())
-			.description("Withdrawal")
-			.build();
+		WithdrawTxHistory withdrawTxHistory = WithdrawTxHistory.of(
+			account,
+			account,
+			withdrawAmount,
+			account.getAccountBalance(),
+			"Withdrawal"
+		);
+
 		withdrawTxHistory = txHistoryRepository.save(withdrawTxHistory);
 
-		notifyTx(savedAccount, amount);
+		notifyTx(account, withdrawAmount);
 
 		return withdrawTxHistory;
 	}
