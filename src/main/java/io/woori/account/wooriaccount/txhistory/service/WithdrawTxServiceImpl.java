@@ -1,10 +1,17 @@
 package io.woori.account.wooriaccount.txhistory.service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.woori.account.wooriaccount.account.domain.entity.Account;
+import io.woori.account.wooriaccount.account.repository.jpa.AccountRepository;
+import io.woori.account.wooriaccount.common.exception.CustomException;
 import io.woori.account.wooriaccount.common.exception.ErrorCode;
 import io.woori.account.wooriaccount.common.exception.TxHistoryException;
 import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
@@ -20,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory, Long> {
 
+	private final AccountRepository accountRepository;
 	private final WithdrawTxHistoryRepository txHistoryRepository;
 	private final QueryTransactionHistoryRepositoryImpl queryTransactionHistoryRepository;
 
@@ -52,5 +60,35 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
 			.readWithdrawTxHistoryAll(accountId, lastTxHistoryId, pageable);
 	}
 
+	@Transactional
+	public WithdrawTxHistory withdraw(String accountNumber, BigDecimal amount) {
+		final Account account = accountRepository.findByAccountNumber(accountNumber)
+			.orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+		if (account.getAccountBalance().compareTo(amount) < 0) {
+			throw new CustomException(ErrorCode.INSUFFICIENT_FUNDS);
+		}
+
+		account.setAccountBalance(account.getAccountBalance().subtract(amount));
+		Account savedAccount = accountRepository.save(account);
+
+		WithdrawTxHistory withdrawTxHistory = WithdrawTxHistory.builder()
+			.sender(account)
+			.amount(amount)
+			.balanceAfterTx(account.getAccountBalance())
+			.description("Withdrawal")
+			.build();
+		withdrawTxHistory = txHistoryRepository.save(withdrawTxHistory);
+
+		notifyTx(savedAccount, amount);
+
+		return withdrawTxHistory;
+	}
+
+	private void notifyTx(Account account, BigDecimal amount) {
+		List<Long> accountIds = new ArrayList<>();
+		accountIds.add(account.getAccountId());
+		//? 모르겠음
+	}
 }
 
