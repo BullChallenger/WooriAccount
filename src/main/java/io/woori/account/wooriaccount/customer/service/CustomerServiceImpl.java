@@ -53,14 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		Role role = op.get();
 
-		CustomerRole customerRole = CustomerRole.builder()
-			.pk(Pk.builder()
-				.roleId(role.getRoleId())
-				.customerId(customer.getCustomerId())
-				.build())
-			.customer(customer)
-			.role(role)
-			.build();
+		CustomerRole customerRole = CustomerRole.createCustomerRole(customer, role);
 
 		customerRoleRepository.save(customerRole);
 

@@ -57,4 +57,15 @@ public class CustomerRole {
 		private Byte roleId;
 
 	}
+
+	public static CustomerRole createCustomerRole(Customer customer, Role role){
+		return CustomerRole.builder()
+				.pk(Pk.builder()
+						.roleId(role.getRoleId())
+						.customerId(customer.getCustomerId())
+						.build())
+				.customer(customer)
+				.role(role)
+				.build();
+	}
 }
