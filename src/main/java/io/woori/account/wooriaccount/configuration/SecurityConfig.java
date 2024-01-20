@@ -131,7 +131,7 @@ public class SecurityConfig {
 
 	@Bean
 	public OncePerRequestFilter JwtOncePerRequestFilter() {
-		return new JwtOncePerRequestFilter(jwtProvider, cookieUtil, redisTemplate);
+		return new JwtOncePerRequestFilter(jwtProvider);
 
 	}
 
