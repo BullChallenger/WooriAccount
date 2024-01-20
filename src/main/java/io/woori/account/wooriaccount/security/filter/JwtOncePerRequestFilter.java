@@ -55,13 +55,6 @@ public class JwtOncePerRequestFilter extends OncePerRequestFilter {
 		removePrefixToken = removePrefixToken(request);
 		log.info(removePrefixToken(request));
 
-		//        Optional<Cookie> randomId =
-		//                cookieUtil.getCookie(request, "randomId");
-		//        if (randomId.isEmpty()){
-		//            filterChain.doFilter(request, response);
-		//            return;
-		//        }
-
 		if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
 			&& jwtProvider.isValidToken(removePrefixToken)) {
 
