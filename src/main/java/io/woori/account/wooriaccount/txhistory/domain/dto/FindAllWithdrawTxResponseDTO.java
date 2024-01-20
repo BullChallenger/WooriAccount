@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import com.querydsl.core.annotations.QueryProjection;
 
+import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -20,6 +22,7 @@ public class FindAllWithdrawTxResponseDTO {
 
 	private final LocalDateTime createdAt;
 
+	@Builder
 	@QueryProjection
 	public FindAllWithdrawTxResponseDTO(
 		String receiverName,
@@ -33,6 +36,16 @@ public class FindAllWithdrawTxResponseDTO {
 		this.balanceAfterTx = balanceAfterTx;
 		this.description = description;
 		this.createdAt = createdAt;
+	}
+
+	public static FindAllWithdrawTxResponseDTO from(WithdrawTxHistory entity) {
+		return FindAllWithdrawTxResponseDTO.builder()
+			.receiverName(entity.getReceiver().getCustomer().getCustomerName())
+			.amount(entity.getAmount())
+			.balanceAfterTx(entity.getBalanceAfterTx())
+			.description(entity.getDescription())
+			.createdAt(entity.getCreatedTime())
+			.build();
 	}
 
 }

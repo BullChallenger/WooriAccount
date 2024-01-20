@@ -63,7 +63,7 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
 	}
 
 	@Transactional
-	public WithdrawTxHistory withdraw(String accountNumber, String amount) {
+	public FindAllWithdrawTxResponseDTO withdraw(String accountNumber, String amount) {
 		BigDecimal withdrawAmount = BigDecimal.valueOf(Long.parseLong(amount));
 
 		final Account account = accountRepository.findByAccountNumber(accountNumber)
@@ -75,19 +75,17 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
 
 		account.setAccountBalance(account.getAccountBalance().subtract(withdrawAmount));
 
-		WithdrawTxHistory withdrawTxHistory = WithdrawTxHistory.of(
+		WithdrawTxHistory savedWithdrawTxHistory = txHistoryRepository.save(WithdrawTxHistory.of(
 			account,
 			account,
 			withdrawAmount,
 			account.getAccountBalance(),
 			"Withdrawal"
-		);
-
-		withdrawTxHistory = txHistoryRepository.save(withdrawTxHistory);
+		));
 
 		notifyTx(account, withdrawAmount);
 
-		return withdrawTxHistory;
+		return FindAllWithdrawTxResponseDTO.from(savedWithdrawTxHistory);
 	}
 
 	private void notifyTx(Account account, BigDecimal amount) {

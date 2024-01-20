@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
 import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllDepositTxResponseDTO;
 import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllTxResponseDTO;
 import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllWithdrawTxResponseDTO;
@@ -55,12 +54,11 @@ public class TxController {
 	}
 
 	@PostMapping(value = "/withdraw")
-	public ResponseEntity<WithdrawTxHistory> withdraw(
+	public ResponseEntity<FindAllWithdrawTxResponseDTO> withdraw(
 		@RequestParam("accountNumber") String accountNumber,
 		@RequestParam("amount") String amount
 	) {
-		WithdrawTxHistory withdrawTxHistory = withdrawTxService.withdraw(accountNumber, amount);
-		return ResponseEntity.ok(withdrawTxHistory);
+		return ResponseEntity.ok(withdrawTxService.withdraw(accountNumber, amount));
 	}
 
 }

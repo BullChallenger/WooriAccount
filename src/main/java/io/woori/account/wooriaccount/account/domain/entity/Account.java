@@ -70,6 +70,7 @@ public class Account extends BaseEntity {
 		this.accountBalance = accountBalance;
 		this.accountLimit = accountLimit;
 		this.customer = customer;
+
 	}
 
 	public static Account createAccount(String accountNumber, BigDecimal accountBalance, BigDecimal accountLimit,
