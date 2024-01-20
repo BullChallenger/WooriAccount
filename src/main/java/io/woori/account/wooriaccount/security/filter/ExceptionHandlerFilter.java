@@ -48,7 +48,9 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 
+		log.info(request.getHeader("Authorization"));
 		try {
+			log.info("1");
 			jwtProvider.isValidTokenWithException(JwtProvider.removePrefixToken(request));
 
 			filterChain.doFilter(request, response);
@@ -81,7 +83,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 					Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 					List<String> roles= new ArrayList<>();
 					for (GrantedAuthority authority : authorities) {
-						roles.add(authentication.getName());
+						roles.add(authority.getAuthority());
 					}
 
 					redisTemplate.opsForHash().delete(randomId, "accessToken");
