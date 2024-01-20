@@ -39,7 +39,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 	private final CustomerRepository customerRepository;
@@ -120,7 +120,7 @@ public class SecurityConfig {
 
 	@Bean
 	public OncePerRequestFilter exceptionHandlerFilter() {
-		return new ExceptionHandlerFilter(objectMapper, jwtProvider);
+		return new ExceptionHandlerFilter(objectMapper, jwtProvider, redisTemplate, cookieUtil);
 
 	}
 

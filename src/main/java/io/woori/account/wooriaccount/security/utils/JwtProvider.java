@@ -5,6 +5,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,13 +13,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @Component
@@ -96,28 +96,13 @@ public class JwtProvider {
 
 		} catch (Exception e) {
 			log.info("Invalid token. Reason: {}", e.getMessage());
+			log.info(e.getClass().getName());
 
 			return false;
 		}
 		return true;
 	}
 
-	//    public boolean isValidToken(String token) {
-	//        try {
-	//            Jws<Claims> claimsJws = Jwts.parserBuilder()
-	//                    .setSigningKey(getSecretKey())
-	//                    .build()
-	//                    .parseClaimsJws(token);
-	//
-	//        } catch (SignatureException e) {
-	//            log.error("SignatureException: {}", e.getMessage());
-	//            return false;
-	//        } catch (Exception e) {
-	//            log.error("Unexpected exception while parsing JWT token", e);
-	//            return false;
-	//        }
-	//        return true;
-	//    }
 
 	/**
 	 * 엑세스 토큰을 재발급해줍니다.
@@ -136,6 +121,29 @@ public class JwtProvider {
 			"",
 			userDetails.getAuthorities()
 		);
+	}
+
+	public void isValidTokenWithException(String token) throws ExpiredJwtException {
+		Jws<Claims> claimsJws = Jwts.parserBuilder()
+				.setSigningKey(getSecretKey())
+				.build()
+				.parseClaimsJws(token);
+	}
+
+	public static String removePrefixToken(HttpServletRequest request) {
+
+		String token = request.getHeader("Authorization");
+		if (token.startsWith("Bearer ") && StringUtils.hasText(token)) {
+			return token.split(" ")[1].trim();
+		}
+		return null;
+	}
+	public static String removePrefixToken(String token) {
+
+		if (token.startsWith("Bearer ") && StringUtils.hasText(token)) {
+			return token.split(" ")[1].trim();
+		}
+		return null;
 	}
 
 }

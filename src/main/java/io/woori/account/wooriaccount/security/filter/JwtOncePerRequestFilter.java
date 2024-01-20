@@ -19,6 +19,8 @@ import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import static io.woori.account.wooriaccount.security.utils.JwtProvider.removePrefixToken;
+
 
 /*
  * OncePerRequestFilter는 시큐리티 필터가 아님!
@@ -65,12 +67,5 @@ public class JwtOncePerRequestFilter extends OncePerRequestFilter {
 
 	}
 
-	private static String removePrefixToken(HttpServletRequest request) {
-		String token = request.getHeader("Authorization");
-		if (token.startsWith("Bearer ") && StringUtils.hasText(token)) {
-			//
-			return token.substring(7);
-		}
-		return null;
-	}
+
 }
