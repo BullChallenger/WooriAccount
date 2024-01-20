@@ -70,16 +70,8 @@ public class SecurityConfig {
 				.anyRequest().authenticated());
 
 
-		/*
-		 * 폼 로그인을 사용하지 않고 서버와 프론트 분리를 진행했기 때문에 다른 필터를 등록해서 사용하는 방식을 사용하기로 했기 때문에
-		 * form login 기능 사용 disable 하게 했음
-		 * */
+
 		http.formLogin().disable();
-		//                .loginPage("/customer/login")
-		//                .usernameParameter("email")
-		//                .passwordParameter("pwd")
-		//                .loginProcessingUrl("/customer/login")
-		//                .defaultSuccessUrl("/");
 
 		http.addFilter(config.corsFilter())
 			.addFilterAt(jsonAuthenticationFiler(), UsernamePasswordAuthenticationFilter.class)
@@ -143,15 +135,7 @@ public class SecurityConfig {
 
 	}
 
-	/*
-	 * AbstractAuthenticationProcessingFilter 는 객체 생성시 AuthenticationManager 를 필수로 요구합니다.
-	 * AuthenticationManager 는 스프링 시큐리티가 초기화 되면서 생성하고 있는데 AuthenticationManager 를 바로 참조할 수 있는 API 가 제공되지 않습니다.
-	 * 대신에 초기화 때 AuthenticationManager 를 생성한 설정 클래스를 참조할 수 있습니다.
-	 * AuthenticationConfiguration 가 초기화 때 AuthenticationManager 를 생성한 설정 클래스인데 이 클래스로부터 AuthenticationManager 를 얻을 수 있습니다.
-	 *
-	 * 해당 인터페이스를 직접 구현하지 않는 이유는 스프링 시큐리티에서 제공하는 설정을 활요하는 것이 더 이점이 많기 때문입니다.
-	 * 그래서 해당 작업은 이렇게 매니저를 불러와서 사용하는 방식으로 코드를 작성했습니다.
-	 * */
+
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws
 		Exception {
