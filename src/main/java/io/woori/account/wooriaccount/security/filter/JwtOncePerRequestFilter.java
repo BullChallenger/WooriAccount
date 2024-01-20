@@ -30,8 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtOncePerRequestFilter extends OncePerRequestFilter {
 	private final JwtProvider jwtProvider;
-	private final CookieUtil cookieUtil;
-	private final RedisTemplate<String, Object> redisTemplate;
 
 	/*
 	 * 토큰 유효성 검사를 진행하여 해당 토큰이 유효한 경우에 jwtProvider 내에서 해당 Authentication 객체를 꺼내옵니다.
