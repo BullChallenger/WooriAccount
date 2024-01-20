@@ -2,6 +2,7 @@ package io.woori.account.wooriaccount.security.handler;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -57,7 +58,7 @@ public class JsonAuthenticationSuccessHandler implements AuthenticationSuccessHa
 		log.info(randomId);
 		redisTemplate.opsForHash().put(randomId, "accessToken", accessToken);
 		redisTemplate.opsForHash().put(randomId, "refreshToken", refreshToken);
-		cookieUtil.addCookie(response, randomId, "randomId");
+		redisTemplate.expire(randomId, Duration.ofDays(14)); //hash 사용에는 따로 따로 각자 만료시간 설정이 불가 ;
 
 		cookieUtil.addCookie(response, "randomId", randomId);
 

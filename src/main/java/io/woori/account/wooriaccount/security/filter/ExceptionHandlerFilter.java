@@ -2,6 +2,7 @@ package io.woori.account.wooriaccount.security.filter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.*;
 
 import javax.security.sasl.AuthenticationException;
@@ -86,7 +87,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 					redisTemplate.opsForHash().delete(randomId, "accessToken");
 					String accessToken = jwtProvider.createAccessToken(authentication.getName(), roles);
 					redisTemplate.opsForHash().put(randomId, "accessToken", accessToken);
+					redisTemplate.expire(randomId, Duration.ofDays(14));
+
 					filterChain.doFilter(request,response);
+
+
 				}
 				// 2번 경우: 리프레시 토큰도 만료된 경우
 				else if (!jwtProvider.isValidToken(JwtProvider.removePrefixToken(refreshToken))){
