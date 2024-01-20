@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllDepositTxResponseDTO;
-import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllTxResponseDTO;
-import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllWithdrawTxResponseDTO;
+import io.woori.account.wooriaccount.txhistory.domain.dto.FindTxResponseDTO;
 import io.woori.account.wooriaccount.txhistory.service.DepositTxServiceImpl;
 import io.woori.account.wooriaccount.txhistory.service.TxServiceImpl;
 import io.woori.account.wooriaccount.txhistory.service.WithdrawTxServiceImpl;
@@ -28,7 +26,7 @@ public class TxController {
 	private final TxServiceImpl txService;
 
 	@GetMapping(value = "/deposit/{accountId}/{lastTxHistoryId}")
-	public ResponseEntity<Page<FindAllDepositTxResponseDTO>> readDepositTxHistory(
+	public ResponseEntity<Page<FindTxResponseDTO>> readDepositTxHistory(
 		@PathVariable(value = "accountId") Long accountId,
 		@PathVariable(value = "lastTxHistoryId") Long lastTxHistoryId,
 		Pageable pageable
@@ -37,7 +35,7 @@ public class TxController {
 	}
 
 	@GetMapping(value = "/withdraw/{accountId}/{lastTxHistoryId}")
-	public ResponseEntity<Page<FindAllWithdrawTxResponseDTO>> readWithdrawTxHistory(
+	public ResponseEntity<Page<FindTxResponseDTO>> readWithdrawTxHistory(
 		@PathVariable(value = "accountId") Long accountId,
 		@PathVariable(value = "lastTxHistoryId") Long lastTxHistoryId,
 		Pageable pageable
@@ -46,7 +44,7 @@ public class TxController {
 	}
 
 	@GetMapping(value = "/all/{accountId}")
-	public ResponseEntity<Page<FindAllTxResponseDTO>> readAllTxHistory(
+	public ResponseEntity<Page<FindTxResponseDTO>> readAllTxHistory(
 		@PathVariable Long accountId,
 		Pageable pageable
 	) {
@@ -54,7 +52,7 @@ public class TxController {
 	}
 
 	@PostMapping(value = "/withdraw")
-	public ResponseEntity<FindAllWithdrawTxResponseDTO> withdraw(
+	public ResponseEntity<FindTxResponseDTO> withdraw(
 		@RequestParam("accountNumber") String accountNumber,
 		@RequestParam("amount") String amount
 	) {

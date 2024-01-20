@@ -15,7 +15,7 @@ import io.woori.account.wooriaccount.common.exception.CustomException;
 import io.woori.account.wooriaccount.common.exception.ErrorCode;
 import io.woori.account.wooriaccount.common.exception.TxHistoryException;
 import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
-import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllWithdrawTxResponseDTO;
+import io.woori.account.wooriaccount.txhistory.domain.dto.FindTxResponseDTO;
 import io.woori.account.wooriaccount.txhistory.domain.dto.SaveTxRequestDTO;
 import io.woori.account.wooriaccount.txhistory.repository.jpa.WithdrawTxHistoryRepository;
 import io.woori.account.wooriaccount.txhistory.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
@@ -53,7 +53,7 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
 	}
 
 	@Transactional
-	public Page<FindAllWithdrawTxResponseDTO> findTxHistoryAll(
+	public Page<FindTxResponseDTO> findTxHistoryAll(
 		Long accountId,
 		Long lastTxHistoryId,
 		Pageable pageable
@@ -63,7 +63,7 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
 	}
 
 	@Transactional
-	public FindAllWithdrawTxResponseDTO withdraw(String accountNumber, String amount) {
+	public FindTxResponseDTO withdraw(String accountNumber, String amount) {
 		BigDecimal withdrawAmount = BigDecimal.valueOf(Long.parseLong(amount));
 
 		final Account account = accountRepository.findByAccountNumber(accountNumber)
@@ -85,7 +85,7 @@ public class WithdrawTxServiceImpl implements TxHistoryService<WithdrawTxHistory
 
 		notifyTx(account, withdrawAmount);
 
-		return FindAllWithdrawTxResponseDTO.from(savedWithdrawTxHistory);
+		return FindTxResponseDTO.from(savedWithdrawTxHistory);
 	}
 
 	private void notifyTx(Account account, BigDecimal amount) {

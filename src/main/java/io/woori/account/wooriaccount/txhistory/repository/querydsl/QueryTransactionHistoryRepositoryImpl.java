@@ -20,10 +20,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import io.woori.account.wooriaccount.txhistory.domain.DepositTxHistory;
 import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
-import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllDepositTxResponseDTO;
-import io.woori.account.wooriaccount.txhistory.domain.dto.FindAllWithdrawTxResponseDTO;
-import io.woori.account.wooriaccount.txhistory.domain.dto.QFindAllDepositTxResponseDTO;
-import io.woori.account.wooriaccount.txhistory.domain.dto.QFindAllWithdrawTxResponseDTO;
+import io.woori.account.wooriaccount.txhistory.domain.dto.FindTxResponseDTO;
+import io.woori.account.wooriaccount.txhistory.domain.dto.QFindTxResponseDTO;
 import lombok.RequiredArgsConstructor;
 
 /*
@@ -60,11 +58,11 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
 			.fetch();
 	}
 
-	public Page<FindAllDepositTxResponseDTO> readDepositTxHistoryAll(Long accountId,
+	public Page<FindTxResponseDTO> readDepositTxHistoryAll(Long accountId,
 		Long lastTxHistoryId,
 		Pageable pageable) {
-		List<FindAllDepositTxResponseDTO> pageContent = jpaQueryFactory.select(
-				new QFindAllDepositTxResponseDTO(
+		List<FindTxResponseDTO> pageContent = jpaQueryFactory.select(
+				new QFindTxResponseDTO(
 					customer.customerName,
 					depositTxHistory.amount,
 					depositTxHistory.balanceAfterTx,
@@ -95,11 +93,11 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
 		return depositTxHistory.txId.lt(depositTxHistoryId);
 	}
 
-	public Page<FindAllWithdrawTxResponseDTO> readWithdrawTxHistoryAll(Long accountId,
+	public Page<FindTxResponseDTO> readWithdrawTxHistoryAll(Long accountId,
 		Long lastTxHistoryId,
 		Pageable pageable) {
-		List<FindAllWithdrawTxResponseDTO> pageContent = jpaQueryFactory.select(
-				new QFindAllWithdrawTxResponseDTO(
+		List<FindTxResponseDTO> pageContent = jpaQueryFactory.select(
+				new QFindTxResponseDTO(
 					customer.customerName,
 					withdrawTxHistory.amount,
 					withdrawTxHistory.balanceAfterTx,
@@ -107,7 +105,7 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
 					withdrawTxHistory.createdTime
 				)
 			).from(withdrawTxHistory)
-			.where(withdrawTxHistory.receiver.accountId.eq(accountId).and(ltWithdrawTxHistoryId(lastTxHistoryId)))
+			.where(withdrawTxHistory.sender.accountId.eq(accountId).and(ltWithdrawTxHistoryId(lastTxHistoryId)))
 			.innerJoin(withdrawTxHistory.sender, account)
 			.innerJoin(account.customer, customer)
 			.orderBy(withdrawTxHistory.createdTime.desc())

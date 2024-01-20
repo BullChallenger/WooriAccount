@@ -3,13 +3,15 @@ package io.woori.account.wooriaccount.txhistory.domain.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.querydsl.core.annotations.QueryProjection;
+
 import io.woori.account.wooriaccount.txhistory.domain.DepositTxHistory;
 import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class FindAllTxResponseDTO implements Comparable<FindAllTxResponseDTO> {
+public class FindTxResponseDTO implements Comparable<FindTxResponseDTO> {
 
 	private final String targetName;
 
@@ -22,7 +24,8 @@ public class FindAllTxResponseDTO implements Comparable<FindAllTxResponseDTO> {
 	private final LocalDateTime createdAt;
 
 	@Builder
-	public FindAllTxResponseDTO(
+	@QueryProjection
+	public FindTxResponseDTO(
 		String targetName,
 		BigDecimal amount,
 		BigDecimal balanceAfterTx,
@@ -36,8 +39,8 @@ public class FindAllTxResponseDTO implements Comparable<FindAllTxResponseDTO> {
 		this.createdAt = createdAt;
 	}
 
-	public static FindAllTxResponseDTO of(DepositTxHistory depositTxHistory) {
-		return FindAllTxResponseDTO.builder()
+	public static FindTxResponseDTO from(DepositTxHistory depositTxHistory) {
+		return FindTxResponseDTO.builder()
 			.targetName(depositTxHistory.getReceiver().getCustomer().getCustomerName())
 			.amount(depositTxHistory.getAmount())
 			.balanceAfterTx(depositTxHistory.getBalanceAfterTx())
@@ -46,8 +49,8 @@ public class FindAllTxResponseDTO implements Comparable<FindAllTxResponseDTO> {
 			.build();
 	}
 
-	public static FindAllTxResponseDTO of(WithdrawTxHistory txHistory) {
-		return FindAllTxResponseDTO.builder()
+	public static FindTxResponseDTO from(WithdrawTxHistory txHistory) {
+		return FindTxResponseDTO.builder()
 			.targetName(txHistory.getReceiver().getCustomer().getCustomerName())
 			.amount(txHistory.getAmount())
 			.balanceAfterTx(txHistory.getBalanceAfterTx())
@@ -57,7 +60,7 @@ public class FindAllTxResponseDTO implements Comparable<FindAllTxResponseDTO> {
 	}
 
 	@Override
-	public int compareTo(FindAllTxResponseDTO o) {
+	public int compareTo(FindTxResponseDTO o) {
 		return this.createdAt.compareTo(o.getCreatedAt());
 	}
 }
