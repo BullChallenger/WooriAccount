@@ -47,6 +47,7 @@ public class Customer extends BaseEntity {
 	@Column(nullable = false)
 	private String customerPwd;  //고객 비밀번호
 
+
 	public Customer(String customerName, String customerPhone, String customerEmail, String customerPwd) {
 		this.customerName = customerName;
 		this.customerPhone = customerPhone;

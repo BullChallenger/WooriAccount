@@ -35,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class AccountServiceImpl implements AccountService {
 
 	private final AccountRepository accountRepository;
@@ -44,21 +44,23 @@ public class AccountServiceImpl implements AccountService {
 	private final NotificationRepository notificationRepository;
 	private final DepositTxHistoryRepository depositTxHistoryRepository;
 	private final WithdrawTxHistoryRepository withdrawTxHistoryRepository;
-
 	private final NotificationService notificationService;
+
 
 	@Override
 	public AccountDTO accountInquiry(String accountNumber) {
-		Optional<Account> optionalAccount = accountRepository.findByAccountNumber(accountNumber);
-		Account account = optionalAccount.orElseThrow(() ->
+
+		Optional<Account> op = queryAccountRepository.queryFindByAccountNumber(accountNumber);
+
+		Account account = op.orElseThrow(() ->
 			new CustomException(ErrorCode.ACCOUNT_NOT_FOUND)
 		);
 
 		return AccountDTO.fromEntity(account);
+
 	}
 
 	@Override
-	@Transactional
 	public AccountDTO accountRemittance(AccountRemittanceDTO dto) {
 
 		//출금 계좌 조회
@@ -97,7 +99,6 @@ public class AccountServiceImpl implements AccountService {
 
 	}
 
-	@Transactional
 	@Override
 	public AccountDTO accountCreate(Long customerId) {
 		customerRepository.findById(customerId).orElseThrow();

@@ -38,7 +38,7 @@ public class AccountController {
 	}
 
 	@GetMapping("/{accountNumber}")
-	public ResponseEntity<AccountDTO> getAccountByAccountNumber(@RequestParam("accountNumber") String accountNumber) {
+	public ResponseEntity<AccountDTO> getAccountByAccountNumber(@PathVariable String accountNumber) {
 
 		return ResponseEntity.ok(accountService.accountInquiry(accountNumber));
 

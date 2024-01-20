@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import io.woori.account.wooriaccount.configuration.SecurityConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import io.woori.account.wooriaccount.account.domain.entity.Account;
@@ -20,7 +24,6 @@ import io.woori.account.wooriaccount.account.repository.jpa.AccountRepository;
 import io.woori.account.wooriaccount.customer.domain.dto.SignUpRequestDTO;
 import io.woori.account.wooriaccount.customer.domain.entity.Customer;
 import io.woori.account.wooriaccount.dummy.DummyCustomer;
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AccountRepositoryTest {
@@ -37,6 +40,8 @@ class AccountRepositoryTest {
 
 	@BeforeEach
 	void setUp() {
+		encoder = new BCryptPasswordEncoder();
+
 		SignUpRequestDTO dto = new SignUpRequestDTO("test name", "01011111111", "test@test.com", "test pw");
 		customer = DummyCustomer.dummy(dto, encoder.encode(dto.getCustomerPwd()));
 
@@ -50,6 +55,7 @@ class AccountRepositoryTest {
 			.build();
 
 		testEntityManager.persist(account);
+
 
 	}
 
@@ -91,7 +97,8 @@ class AccountRepositoryTest {
 	public void testDeleteById_fail() {
 		Long id = 5L;
 
-		assertThatThrownBy(() -> repository.deleteById(id)).isExactlyInstanceOf(EmptyResultDataAccessException.class);
+		assertThatThrownBy(() -> repository.deleteById(id))
+				.isExactlyInstanceOf(EmptyResultDataAccessException.class);
 
 	}
 
@@ -122,5 +129,6 @@ class AccountRepositoryTest {
 
 		assertThat(op.isPresent()).isFalse();
 	}
+
 
 }

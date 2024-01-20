@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.woori.account.wooriaccount.security.utils.CookieUtil;
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -48,10 +49,12 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 
-		log.info(request.getHeader("Authorization"));
+		String authorization = request.getHeader("Authorization");
+
 		try {
-			log.info("1");
-			jwtProvider.isValidTokenWithException(JwtProvider.removePrefixToken(request));
+			if (authorization != null){
+				jwtProvider.isValidTokenWithException(JwtProvider.removePrefixToken(request));
+			}
 
 			filterChain.doFilter(request, response);
 		} catch (AuthenticationException authenticationException) {
@@ -107,12 +110,27 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 					response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
 					ResponseDTO<Map<String, String>> responseDTO = ResponseDTO.of(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다. 다시 로그인 해주세요", null);
 					response.getWriter().write(mapper.writeValueAsString(responseDTO));
-
 				}
 			}
 
-		}
+		} catch (MalformedJwtException malformedJwtException){
+			Optional<Cookie> op = cookieUtil.getCookie(request, "randomId");
+			if (op.isPresent()){
 
+				Cookie cookie = op.get();
+				String randomId = cookie.getValue();
+
+				redisTemplate.opsForHash().delete(randomId, "accessToken");
+				redisTemplate.opsForHash().delete(randomId, "refreshToken");
+				SecurityContextHolder.clearContext();
+				cookieUtil.deleteCookie(request,response,"randomId");
+				log.info("MalformedJwt");
+				filterChain.doFilter(request, response);
+			}
+
+
+		}
 	}
+
 
 }

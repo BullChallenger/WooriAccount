@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -132,15 +133,17 @@ public class JwtProvider {
 
 	public static String removePrefixToken(HttpServletRequest request) {
 
-		String token = request.getHeader("Authorization");
-		if (token.startsWith("Bearer ") && StringUtils.hasText(token)) {
+		String token = Objects.requireNonNull(request.getHeader("Authorization"));
+
+		if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
 			return token.split(" ")[1].trim();
 		}
+
 		return null;
 	}
-	public static String removePrefixToken(String token) {
 
-		if (token.startsWith("Bearer ") && StringUtils.hasText(token)) {
+	public static String removePrefixToken(String token) {
+		if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
 			return token.split(" ")[1].trim();
 		}
 		return null;
