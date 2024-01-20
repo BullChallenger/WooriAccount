@@ -179,7 +179,7 @@ public class AccountServiceImpl implements AccountService {
 		BigDecimal amount,
 		String description) {
 
-		return DepositTxHistory.of(sourceAccount, targetAccount, amount, sourceAccount.getAccountBalance(),
+		return DepositTxHistory.of(sourceAccount, targetAccount, amount, targetAccount.getAccountBalance(),
 			description);
 
 	}
