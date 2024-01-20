@@ -18,7 +18,8 @@ public enum ErrorCode implements EnumModel {
 	INVALID_Customer_Login(401, "C001", "존재하지 않는 고객 정보입니다."),
 	INVALID_Customer_Password(401, "C002", "비밀번호가 일치하지 않습니다."),
 	INVALID_CUSTOMER_LOGIN_INFO(401, "C003", "올바르지 않은 로그인 회원 정보입니다."),
-
+	INVALID_JWT_TOKEN(401, "C004", "올바르지 않은 액세스 토큰 정보를 가진 사용자입니다."),
+	INVALID_JWT_REFRESH_TOKEN(401, "C005", "올바르지 않은 리프레시 토큰 정보를 가진 사용자입니다."),
 	//중복여부 체크
 	DUPLICATE_CUSTOMER(400, "C003", "중복된 이메일입니다."),
 
