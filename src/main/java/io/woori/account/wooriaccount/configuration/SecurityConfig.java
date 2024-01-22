@@ -34,9 +34,6 @@ import io.woori.account.wooriaccount.security.service.CustomUserDetailsService;
 import io.woori.account.wooriaccount.security.utils.CookieUtil;
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-
 
 @Configuration
 @EnableWebSecurity
@@ -49,7 +46,6 @@ public class SecurityConfig {
 	private final ObjectMapper objectMapper;
 	private final CorsConfig config;
 
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -61,15 +57,13 @@ public class SecurityConfig {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		http.authorizeRequests()
-			.antMatchers("/swagger-ui/", "/swagger-ui/**", "/v3/api-docs/**")
+			.antMatchers("/swagger-ui/", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**")
 			.permitAll();
 
 		//우선은 모든 url 접근에 허용 합니다. -> 추후 변경 ok
 		http.authorizeRequests((auth) ->
 			auth.regexMatchers("/customer/login", "/api/customers/signUp", "/", "/swagger-ui/*").permitAll()
 				.anyRequest().authenticated());
-
-
 
 		http.formLogin().disable();
 
@@ -135,7 +129,6 @@ public class SecurityConfig {
 
 	}
 
-
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws
 		Exception {
@@ -152,7 +145,8 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**");
+		return (web) -> web.ignoring()
+			.antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/h2-console/**");
 	}
 
 }

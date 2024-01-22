@@ -18,8 +18,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import io.woori.account.wooriaccount.txhistory.domain.DepositTxHistory;
-import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
 import io.woori.account.wooriaccount.txhistory.domain.dto.FindTxResponseDTO;
 import io.woori.account.wooriaccount.txhistory.domain.dto.QFindTxResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +32,15 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
 
 	private final JPAQueryFactory jpaQueryFactory;
 
-	public List<DepositTxHistory> readDepositTxHistoryAllToList(Long accountId) {
+	public List<FindTxResponseDTO> readDepositTxHistoryAllToList(Long accountId) {
 		return jpaQueryFactory.select(
-				depositTxHistory
+				new QFindTxResponseDTO(
+					customer.customerName,
+					depositTxHistory.amount,
+					depositTxHistory.balanceAfterTx,
+					depositTxHistory.description,
+					depositTxHistory.createdTime
+				)
 			).from(depositTxHistory)
 			.where(depositTxHistory.sender.accountId.eq(accountId))
 			.innerJoin(depositTxHistory.receiver, account)
@@ -46,9 +50,15 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
 			.fetch();
 	}
 
-	public List<WithdrawTxHistory> readWithdrawTxHistoryAllToList(Long accountId) {
+	public List<FindTxResponseDTO> readWithdrawTxHistoryAllToList(Long accountId) {
 		return jpaQueryFactory.select(
-				withdrawTxHistory
+				new QFindTxResponseDTO(
+					customer.customerName,
+					withdrawTxHistory.amount,
+					withdrawTxHistory.balanceAfterTx,
+					withdrawTxHistory.description,
+					withdrawTxHistory.createdTime
+				)
 			).from(withdrawTxHistory)
 			.where(withdrawTxHistory.sender.accountId.eq(accountId))
 			.innerJoin(withdrawTxHistory.receiver, account)
@@ -71,8 +81,8 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
 				)
 			).from(depositTxHistory)
 			.where(depositTxHistory.receiver.accountId.eq(accountId).and(ltDepositTxHistoryId(lastTxHistoryId)))
-			.innerJoin(depositTxHistory.sender, account)
-			.innerJoin(account.customer, customer)
+			.leftJoin(depositTxHistory.sender, account)
+			.leftJoin(account.customer, customer)
 			.orderBy(depositTxHistory.createdTime.desc())
 			.limit(pageable.getPageSize())
 			.setLockMode(LockModeType.PESSIMISTIC_WRITE)
