@@ -61,6 +61,6 @@ public class FindTxResponseDTO implements Comparable<FindTxResponseDTO> {
 
 	@Override
 	public int compareTo(FindTxResponseDTO o) {
-		return this.createdAt.compareTo(o.getCreatedAt());
+		return o.getCreatedAt().compareTo(this.createdAt);
 	}
 }

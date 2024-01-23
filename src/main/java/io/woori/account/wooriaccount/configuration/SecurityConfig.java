@@ -22,6 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.woori.account.wooriaccount.customer.repository.CustomerCacheRepository;
 import io.woori.account.wooriaccount.customer.repository.jpa.CustomerRepository;
 import io.woori.account.wooriaccount.security.filter.ExceptionHandlerFilter;
 import io.woori.account.wooriaccount.security.filter.JsonAuthenticationFilter;
@@ -34,21 +35,18 @@ import io.woori.account.wooriaccount.security.service.CustomUserDetailsService;
 import io.woori.account.wooriaccount.security.utils.CookieUtil;
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 	private final CustomerRepository customerRepository;
+	private final CustomerCacheRepository customerCacheRepository;
 	private final JwtProvider jwtProvider;
 	private final RedisTemplate<String, Object> redisTemplate;
 	private final CookieUtil cookieUtil;
 	private final ObjectMapper objectMapper;
 	private final CorsConfig config;
-
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -61,15 +59,13 @@ public class SecurityConfig {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		http.authorizeRequests()
-			.antMatchers("/swagger-ui/", "/swagger-ui/**", "/v3/api-docs/**")
+			.antMatchers("/swagger-ui/", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**")
 			.permitAll();
 
 		//우선은 모든 url 접근에 허용 합니다. -> 추후 변경 ok
 		http.authorizeRequests((auth) ->
 			auth.regexMatchers("/customer/login", "/api/customers/signUp", "/", "/swagger-ui/*").permitAll()
 				.anyRequest().authenticated());
-
-
 
 		http.formLogin().disable();
 
@@ -102,7 +98,7 @@ public class SecurityConfig {
 
 	@Bean
 	public AuthenticationProvider jwtAuthenticationProvider() {
-		return new JwtAuthenticationProvider(new CustomUserDetailsService(customerRepository),
+		return new JwtAuthenticationProvider(new CustomUserDetailsService(customerRepository, customerCacheRepository),
 			(BCryptPasswordEncoder)passwordEncoder());
 	}
 
@@ -135,7 +131,6 @@ public class SecurityConfig {
 
 	}
 
-
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws
 		Exception {
@@ -152,7 +147,8 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**");
+		return (web) -> web.ignoring()
+			.antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/h2-console/**");
 	}
 
 }
