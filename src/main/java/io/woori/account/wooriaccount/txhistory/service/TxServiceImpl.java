@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import io.woori.account.wooriaccount.txhistory.domain.dto.FindTxResponseDTO;
 import io.woori.account.wooriaccount.txhistory.repository.querydsl.QueryTransactionHistoryRepositoryImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -24,15 +26,11 @@ public class TxServiceImpl {
 	public Page<FindTxResponseDTO> findBySenderIdOrReceiverId(Long accountId, Pageable pageable) {
 		List<FindTxResponseDTO> allMyTxHistory = new ArrayList<>();
 
-		List<FindTxResponseDTO> byDepositTx = txHistoryRepository.readDepositTxHistoryAllToList(accountId);
-		List<FindTxResponseDTO> byWithdrawTx = txHistoryRepository.readWithdrawTxHistoryAllToList(accountId);
-
-		allMyTxHistory.addAll(byDepositTx);
-		allMyTxHistory.addAll(byWithdrawTx);
+		allMyTxHistory.addAll(txHistoryRepository.readDepositTxHistoryAllToList(accountId));
+		allMyTxHistory.addAll(txHistoryRepository.readWithdrawTxHistoryAllToList(accountId));
 		Collections.sort(allMyTxHistory);
 
 		return new PageImpl<>(allMyTxHistory, pageable, allMyTxHistory.size());
-
 	}
 
 }

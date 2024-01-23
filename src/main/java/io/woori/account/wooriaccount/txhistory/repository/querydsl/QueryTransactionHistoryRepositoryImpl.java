@@ -21,11 +21,13 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.woori.account.wooriaccount.txhistory.domain.dto.FindTxResponseDTO;
 import io.woori.account.wooriaccount.txhistory.domain.dto.QFindTxResponseDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /*
  * queryDsl을 사용한 레포지토리 입니다.
  * @author yeom hwiju
  * */
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHistoryRepository {
@@ -42,10 +44,9 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
 					depositTxHistory.createdTime
 				)
 			).from(depositTxHistory)
-			.where(depositTxHistory.sender.accountId.eq(accountId))
-			.innerJoin(depositTxHistory.receiver, account)
+			.where(depositTxHistory.receiver.accountId.eq(accountId))
+			.innerJoin(depositTxHistory.sender, account)
 			.innerJoin(account.customer, customer)
-			.orderBy(depositTxHistory.createdTime.desc())
 			.setLockMode(LockModeType.PESSIMISTIC_WRITE)
 			.fetch();
 	}
@@ -61,9 +62,8 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
 				)
 			).from(withdrawTxHistory)
 			.where(withdrawTxHistory.sender.accountId.eq(accountId))
-			.innerJoin(withdrawTxHistory.receiver, account)
+			.innerJoin(withdrawTxHistory.sender, account)
 			.innerJoin(account.customer, customer)
-			.orderBy(withdrawTxHistory.createdTime.desc())
 			.setLockMode(LockModeType.PESSIMISTIC_WRITE)
 			.fetch();
 	}

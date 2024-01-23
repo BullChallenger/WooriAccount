@@ -8,7 +8,10 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import io.woori.account.wooriaccount.customer.domain.dto.CacheCustomerDTO;
 
 /*
  * jwt를 저장할 때 사용할 레디스를 위한 설정 클래스입니다.
@@ -40,9 +43,11 @@ public class RedisConfig {
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
 
 		//key : value 값으로 시리얼라이저
+		// Customer Cache 전용으로 사용
 		redisTemplate.setKeySerializer(new StringRedisSerializer()); //key값은 String
 		redisTemplate.setValueSerializer(
-			new StringRedisSerializer()); //json serializer, Value는 Object를 Json 형태로 직렬화하여 저장하도록 설정
+			new Jackson2JsonRedisSerializer<>(
+				CacheCustomerDTO.class)); //json serializer, Value는 Object를 Json 형태로 직렬화하여 저장하도록 설정
 
 		// hash 사용할 경우에 시리얼라이저
 		redisTemplate.setHashKeySerializer(new StringRedisSerializer());

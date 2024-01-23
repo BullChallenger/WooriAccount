@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import io.woori.account.wooriaccount.customer.domain.dto.CacheCustomerDTO;
 import io.woori.account.wooriaccount.customer.domain.entity.Customer;
 
 
@@ -25,6 +26,12 @@ public class CustomUserDetails implements UserDetails {
 		this.customerPwd = customer.getCustomerPwd();
 		this.customerId = String.valueOf(customer.getCustomerId());
 
+	}
+
+	public CustomUserDetails(CacheCustomerDTO dto) {
+		this.customerId = String.valueOf(dto.getCustomerId());
+		this.customerEmail = dto.getCustomerEmail();
+		this.customerPwd = dto.getCustomerPwd();
 	}
 
 	//TODO 1: 해당 부분을 새로 생성해주기 위해서 user 정보에 role 정보 추가 요청 List<String> roles 등

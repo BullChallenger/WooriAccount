@@ -22,6 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.woori.account.wooriaccount.customer.repository.CustomerCacheRepository;
 import io.woori.account.wooriaccount.customer.repository.jpa.CustomerRepository;
 import io.woori.account.wooriaccount.security.filter.ExceptionHandlerFilter;
 import io.woori.account.wooriaccount.security.filter.JsonAuthenticationFilter;
@@ -40,6 +41,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	private final CustomerRepository customerRepository;
+	private final CustomerCacheRepository customerCacheRepository;
 	private final JwtProvider jwtProvider;
 	private final RedisTemplate<String, Object> redisTemplate;
 	private final CookieUtil cookieUtil;
@@ -96,7 +98,7 @@ public class SecurityConfig {
 
 	@Bean
 	public AuthenticationProvider jwtAuthenticationProvider() {
-		return new JwtAuthenticationProvider(new CustomUserDetailsService(customerRepository),
+		return new JwtAuthenticationProvider(new CustomUserDetailsService(customerRepository, customerCacheRepository),
 			(BCryptPasswordEncoder)passwordEncoder());
 	}
 
