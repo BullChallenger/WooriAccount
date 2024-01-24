@@ -32,7 +32,9 @@ import io.woori.account.wooriaccount.txhistory.domain.WithdrawTxHistory;
 import io.woori.account.wooriaccount.txhistory.repository.jpa.DepositTxHistoryRepository;
 import io.woori.account.wooriaccount.txhistory.repository.jpa.WithdrawTxHistoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -45,7 +47,6 @@ public class AccountServiceImpl implements AccountService {
 	private final DepositTxHistoryRepository depositTxHistoryRepository;
 	private final WithdrawTxHistoryRepository withdrawTxHistoryRepository;
 	private final NotificationService notificationService;
-
 
 	@Override
 	public AccountDTO accountInquiry(String accountNumber) {
@@ -188,27 +189,27 @@ public class AccountServiceImpl implements AccountService {
 	private void notifyTx(AccountRemittanceDTO dto, Account to, Account from) {
 		// List 사용 이유 : 추후 N 명에게 동시에 출금할 수 있도록 고도화 예정이기 때문에 돈을 입금 받는 계좌의 id 값을
 		// List 로 받아서 알람을 전달
-		List<Long> targetAccountIds = new ArrayList<>();
-		targetAccountIds.add(to.getAccountId());
-		List<Long> sourceAccountIds = new ArrayList<>();
-		sourceAccountIds.add(from.getAccountId());
+		List<Long> targetCustomerIds = new ArrayList<>();
+		targetCustomerIds.add(to.getCustomer().getCustomerId());
+		List<Long> sourceCustomerIds = new ArrayList<>();
+		sourceCustomerIds.add(from.getCustomer().getCustomerId());
 
 		// 입금 대상에게 알람 전달
-		generateNotification(dto, to, from, DEPOSIT_TX_OCCUR, targetAccountIds);
+		generateNotification(dto, to, from, DEPOSIT_TX_OCCUR, targetCustomerIds);
 		// 출금한 대상에게 알람 전달
-		generateNotification(dto, from, to, WITHDRAW_TX_OCCUR, sourceAccountIds);
+		generateNotification(dto, from, to, WITHDRAW_TX_OCCUR, sourceCustomerIds);
 	}
 
 	private void generateNotification(AccountRemittanceDTO dto, Account to, Account from, NotificationType type,
-		List<Long> targetAccountIds) {
-		targetAccountIds.forEach(id -> {
+		List<Long> targetCustomerIds) {
+		targetCustomerIds.forEach(id -> {
 			Customer fromCustomer = from.getCustomer();
 			notificationService.notify(id,
 				notificationRepository.save(
 					Notification.of(to.getCustomer(),
 						writeNotificationContent(fromCustomer, dto, type),
 						type,
-						NotificationArgs.of(from.getAccountId(), targetAccountIds)
+						NotificationArgs.of(from.getAccountId(), targetCustomerIds)
 					)
 				)
 			);

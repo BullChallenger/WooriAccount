@@ -11,19 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NotificationArgs {
 
-	private Long fromAccountId;
-	private List<Long> receiverAccountId;
+	private Long fromCustomerId;
+	private List<Long> receiverCustomerId;
 
 	@Builder
-	public NotificationArgs(Long fromCustomerId, List<Long> receiverAccountId) {
-		this.fromAccountId = fromCustomerId;
-		this.receiverAccountId = receiverAccountId;
+	public NotificationArgs(Long fromCustomerId, List<Long> receiverCustomerId) {
+		this.fromCustomerId = fromCustomerId;
+		this.receiverCustomerId = receiverCustomerId;
 	}
 
-	public static NotificationArgs of(Long fromAccountId, List<Long> receiverAccountId) {
+	public static NotificationArgs of(Long fromAccountId, List<Long> receiverCustomerId) {
 		return NotificationArgs.builder()
 			.fromCustomerId(fromAccountId)
-			.receiverAccountId(receiverAccountId)
+			.receiverCustomerId(receiverCustomerId)
 			.build();
 	}
 

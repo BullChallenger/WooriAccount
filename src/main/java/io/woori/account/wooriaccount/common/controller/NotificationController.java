@@ -1,11 +1,8 @@
 package io.woori.account.wooriaccount.common.controller;
 
-import java.security.Principal;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +20,12 @@ public class NotificationController {
 
 	private final NotificationService notificationService;
 
-	@GetMapping(value = "/read")
-	public ResponseEntity<Page<FindAllNotificationResponseDTO>> notification(Pageable pageable,
-		@AuthenticationPrincipal Principal principal) {
-		return ResponseEntity.ok(notificationService.readNotifications(pageable, 1L));
+	@GetMapping(value = "/read/{customerId}")
+	public ResponseEntity<Page<FindAllNotificationResponseDTO>> notification(
+		Pageable pageable,
+		@PathVariable(value = "customerId") Long customerId
+	) {
+		return ResponseEntity.ok(notificationService.readNotifications(pageable, customerId));
 	}
 
 	@GetMapping(value = "/subscribe/{id}")
