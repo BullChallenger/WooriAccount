@@ -30,8 +30,10 @@ import io.woori.account.wooriaccount.security.filter.JwtAuthenticationFilter;
 import io.woori.account.wooriaccount.security.filter.JwtOncePerRequestFilter;
 import io.woori.account.wooriaccount.security.handler.JsonAuthenticationFailureHandler;
 import io.woori.account.wooriaccount.security.handler.JsonAuthenticationSuccessHandler;
+import io.woori.account.wooriaccount.security.handler.WooriOidcAuthSuccessHandler;
 import io.woori.account.wooriaccount.security.provider.JwtAuthenticationProvider;
 import io.woori.account.wooriaccount.security.service.CustomUserDetailsService;
+import io.woori.account.wooriaccount.security.service.WooriOidcUserService;
 import io.woori.account.wooriaccount.security.utils.CookieUtil;
 import io.woori.account.wooriaccount.security.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
 	private final CustomerRepository customerRepository;
 	private final CustomerCacheRepository customerCacheRepository;
 	private final JwtProvider jwtProvider;
@@ -47,6 +50,10 @@ public class SecurityConfig {
 	private final CookieUtil cookieUtil;
 	private final ObjectMapper objectMapper;
 	private final CorsConfig config;
+	private final PasswordEncoder passwordEncoder;
+
+	private final WooriOidcUserService wooriOidcUserService;
+	private final WooriOidcAuthSuccessHandler wooriOidcAuthSuccessHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -64,8 +71,14 @@ public class SecurityConfig {
 
 		//우선은 모든 url 접근에 허용 합니다. -> 추후 변경 ok
 		http.authorizeRequests((auth) ->
-			auth.regexMatchers("/customer/login", "/api/customers/signUp", "/", "/swagger-ui/*").permitAll()
+			auth.regexMatchers("/customer/login", "/api/customers/signUp", "/", "/swagger-ui/*", "/").permitAll()
 				.anyRequest().authenticated());
+
+		http.oauth2Login(oauth2 ->
+			oauth2.userInfoEndpoint(userInfoEndpointConfig ->
+					userInfoEndpointConfig.oidcUserService(wooriOidcUserService))
+				.successHandler(wooriOidcAuthSuccessHandler)
+		);
 
 		http.formLogin().disable();
 
@@ -99,7 +112,7 @@ public class SecurityConfig {
 	@Bean
 	public AuthenticationProvider jwtAuthenticationProvider() {
 		return new JwtAuthenticationProvider(new CustomUserDetailsService(customerRepository, customerCacheRepository),
-			(BCryptPasswordEncoder)passwordEncoder());
+			(BCryptPasswordEncoder)passwordEncoder);
 	}
 
 	//@Bean
@@ -135,14 +148,6 @@ public class SecurityConfig {
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws
 		Exception {
 		return authenticationConfiguration.getAuthenticationManager();
-	}
-
-	/*
-	 * 비밀번호를 평문 저장하지 않기 위해서 사용하는 Encoder를 빈등록 했습니다.
-	 * */
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 
 	@Bean

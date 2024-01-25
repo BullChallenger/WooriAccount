@@ -47,12 +47,16 @@ public class Customer extends BaseEntity {
 	@Column(nullable = false)
 	private String customerPwd;  //고객 비밀번호
 
+	@Column(nullable = false)
+	private String provider; // 어떤 플랫폼을 통해 가입했는지 여부
 
-	public Customer(String customerName, String customerPhone, String customerEmail, String customerPwd) {
+	public Customer(String customerName, String customerPhone, String customerEmail, String customerPwd,
+		String provider) {
 		this.customerName = customerName;
 		this.customerPhone = customerPhone;
 		this.customerEmail = customerEmail;
 		this.customerPwd = customerPwd;
+		this.provider = provider;
 	}
 
 	public static Customer createCustomer(SignUpRequestDTO dto, String encodePwd) {
@@ -61,6 +65,7 @@ public class Customer extends BaseEntity {
 			.customerPhone(dto.getCustomerPhone())
 			.customerEmail(dto.getCustomerEmail())
 			.customerPwd(encodePwd)
+			.provider("none")
 			.build();
 	}
 

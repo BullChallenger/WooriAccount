@@ -45,7 +45,7 @@ public class QueryTransactionHistoryRepositoryImpl implements QueryTransactionHi
 				)
 			).from(depositTxHistory)
 			.where(depositTxHistory.receiver.accountId.eq(accountId))
-			.innerJoin(depositTxHistory.sender, account)
+			.innerJoin(depositTxHistory.receiver, account)
 			.innerJoin(account.customer, customer)
 			.setLockMode(LockModeType.PESSIMISTIC_WRITE)
 			.fetch();
