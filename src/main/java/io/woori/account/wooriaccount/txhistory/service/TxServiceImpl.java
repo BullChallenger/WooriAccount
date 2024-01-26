@@ -17,12 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class TxServiceImpl {
 
 	private final QueryTransactionHistoryRepositoryImpl txHistoryRepository;
 
+	@Transactional
 	public Page<FindTxResponseDTO> findBySenderIdOrReceiverId(Long accountId, Pageable pageable) {
 		List<FindTxResponseDTO> allMyTxHistory = new ArrayList<>();
 

@@ -35,7 +35,8 @@ public class WooriOidcUserService extends AbstractOAuth2UserService
 				.userNameAttributeName("sub")
 				.build();
 
-		OidcUserRequest oidcUserRequest = new OidcUserRequest(clientRegistration,
+		OidcUserRequest oidcUserRequest = new OidcUserRequest(
+			clientRegistration,
 			userRequest.getAccessToken(),
 			userRequest.getIdToken(),
 			userRequest.getAdditionalParameters()
